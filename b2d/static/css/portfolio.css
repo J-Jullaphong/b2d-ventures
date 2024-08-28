@@ -1,0 +1,52 @@
+.portfolio-content {
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+.portfolio-header {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: #444;
+    text-transform: uppercase;
+}
+
+.investment-breakdown {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.portfolio-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.portfolio-details p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.portfolio-amount {
+    text-align: right;
+}
+
