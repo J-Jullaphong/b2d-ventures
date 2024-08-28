@@ -4,8 +4,8 @@ from .business import Business
 from .investment import Investment
 
 
-class FundRaise(models.Model):
-    """FundRaise Model represents a fundraise of a business, containing details information."""
+class FundRaising(models.Model):
+    """FundRaising Model represents a fundraising of a business, containing details information."""
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
     goal_amount = models.DecimalField(max_digits=10, decimal_places=2)
     publish_date = models.DateField(auto_now_add=True)
