@@ -1,0 +1,42 @@
+{% extends 'b2d/base.html' %}
+{% load static %}
+
+{% block style %}
+<link href="{% static 'css/transaction.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 qr-container">
+        <h5>Transaction QR</h5>
+        <img src="{% static 'images/qrcode.png' %}" alt="Transaction QR" class="img-fluid mb-4">
+    </div>
+    <div class="col-lg-12">
+        <h1>Invest in Salmon Lake</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="investmentAmount" class="form-label">Investment amount</label>
+                <input type="number" class="form-control" id="investmentAmount" name="investmentAmount"
+                    placeholder="Min $1000" required>
+            </div>
+            <div class="mb-3">
+                <label for="transactionDateTime" class="form-label">Date and time of transfer</label>
+                <input type="datetime-local" class="form-control" id="transactionDateTime" name="transactionDateTime"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label for="transactionQR" class="form-label">Submit-transaction-QR</label>
+                <input type="file" class="form-control" id="transactionQR" name="transactionQR" required>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" value="" id="agreementCheck" required>
+                <label class="form-check-label" for="agreementCheck">
+                    I have read and agree to the <a href="#">agreement</a>
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
