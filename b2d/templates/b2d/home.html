@@ -3,6 +3,104 @@
 
 {% block style %}
 <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <style>
+        .carousel-item{
+            background-color:black;
+        }
+
+        .img_slide {
+            background-position: center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            -o-background-size: cover;
+            opacity:0.5;
+        }
+
+        /**
+         * Button
+         */
+        .btn-transparent {
+          background: transparent;
+          color: #fff;
+          border: 2px solid #fff;
+        }
+        .btn-transparent:hover {
+          background-color: black;
+        }
+
+        .btn-rounded {
+          border-radius: 70px;
+        }
+
+        .btn-large {
+          padding: 11px 45px;
+          font-size: 18px;
+        }
+
+        /**
+         * Change animation duration
+         */
+        .animated {
+          -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
+        }
+
+        @-webkit-keyframes fadeInRight {
+          from {
+            opacity: 0;
+            -webkit-transform: translate3d(100px, 0, 0);
+            transform: translate3d(100px, 0, 0);
+          }
+
+          to {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none;
+          }
+        }
+
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            -webkit-transform: translate3d(100px, 0, 0);
+            transform: translate3d(100px, 0, 0);
+          }
+
+          to {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none;
+          }
+        }
+
+        .fadeInRight {
+          -webkit-animation-name: fadeInRight;
+          animation-name: fadeInRight;
+        }
+
+        .seeMore {
+            font-size: 22px;
+        }
+
+        .card-img-top {
+            height: 250px;
+        }
+
+        .card:hover .card-img-top{
+            height: 200px;
+            transition: all 0.5s;
+        }
+
+        .card:hover .card-body{
+            transition: all 0.5s;
+        }
+
+        .text-underline {
+            border-bottom: 1px solid #C5C5C5;
+        }
+
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -14,25 +112,28 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{% static 'images/salmon.png' %}" class="d-block w-100" alt="salmon">
-            <div class="carousel-caption d-none d-md-block text-start">
-                <h2 class="display-5">Salmon Bear</h2>
-                <p>Working with local ingredients our chefs look forward to
+            <img src="{% static 'images/salmon.png' %}" class="d-block w-100 img_slide" alt="salmon">
+            <div class="carousel-caption">
+                <h1 class="animated fadeInRight">Salmon Bear</h1>
+                <p class="animated fadeInRight"><p>Working with local ingredients our chefs look forward to
                 surprising and delighting guests with their unique style.</p>
+                <p class="animated fadeInRight"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="{% static 'images/noodle-golden.png' %}" class="d-block w-100" alt="noodle-golden">
-            <div class="carousel-caption d-none d-md-block text-start">
-                <h2 class="display-5">Noodle Golden</h2>
-                <p>Thai dish of soft rice noodles served with curry and fresh vegetables.</p>
+            <img src="{% static 'images/noodle-golden.png' %}" class="d-block w-100 img_slide" alt="noodle-golden">
+            <div class="carousel-caption">
+                <h1 class="animated fadeInRight">Noodle Golden</h1>
+                <p class="animated fadeInRight"><p>Thai dish of soft rice noodles served with curry and fresh vegetables.</p>
+                <p class="animated fadeInRight"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="{% static 'images/car.png' %}" class="d-block w-100" alt="Car">
-            <div class="carousel-caption d-none d-md-block text-start">
-                <h2 class="display-5">Mercedes-Benz</h2>
-                <p>Wellness, Productivity, Safety, and Entertainment all in one package.</p>
+            <img src="{% static 'images/car.png' %}" class="d-block w-100 img_slide" alt="Car">
+            <div class="carousel-caption">
+                <h1 class="animated fadeInRight">Mercedes-Benz</h1>
+                <p class="animated fadeInRight"><p>Wellness, Productivity, Safety, and Entertainment all in one package.</p>
+                <p class="animated fadeInRight"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
             </div>
         </div>
     </div>
@@ -48,77 +149,109 @@
 
 
 <div class="container my-5">
-    <h2 class="text-center">TOP DEAL</h2>
-    <p class="text-center">The deals attracting the most interest right now</p>
+    <h2 class="text-left" style="font-style:bold;">TOP DEAL</h2>
+    <p class="text-left" style="color:#585757;">The deals attracting the most interest right now</p>
+
     <div class="row">
         <div class="col-md-4">
-            <div class="card">
-                <img src="{% static 'images/salmon.png' %}" class="card-img-top" alt="Salmon Bear">
+            <div class="card mx-4 border border-2" onclick="location.href='#';" style="cursor: pointer;">
+                <div class="card-img">
+                    <img src="{% static 'images/Salmon.png' %}" class="card-img-top" alt="Salmon Bear">
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Salmon Bear</h5>
-                    <p class="badge badge-secondary">Food & Drink</p>
-                    <p class="card-text card-summary">Our chefs use local ingredients to surprise and delight guests with their unique style.</p>
+                    <h3 class="card-title">Salmon Bear</h3>
+                    <span class="badge bg-light border border-secondary mr-1 mb-2" style="color:black;">Food & Drink</span>
+                    <span class="badge bg-light border border-secondary mr-1 mb-2" style="color:black;">services</span>
+                    <div class="card-body-info">
+                        <p class="card-text card-summary">Working with local ingredients our chefs’ look forward to surprising and delighting guests with their unique style.</p>
+                    </div>
                     <div class="card-details">
-                        <p class="card-text">Our chefs use local ingredients to surprise and delight guests with their unique style.</p>
+                        <p class="card-text">Working with local ingredients our chefs’ look forward to surprising and delighting guests with their unique style.</p>
                         <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="3"
-                            aria-valuemin="0" aria-valuemax="100" style="height: 4px">
-                            <div class="progress-bar w-50"></div>
+                            aria-valuemin="0" aria-valuemax="100" style="height: 10px; background-color: #E2D9D9;">
+                            <div class="progress-bar w-50" style="background-color: #41F400;"></div>
                         </div>
+
                         <p></p>
-                        <p><strong>Raised:</strong> $1,500,000</p>
-                        <p><strong>Target:</strong> $3000,000</p>
-                        <p><strong>Investors:</strong> 20</p>
+                        <div class="text-underline mb-3">
+                            <h5><strong>Raised:</strong> $1,600,000</h5>
+                        </div>
+                        <div class="text-underline mb-3">
+                            <h5><strong>Target:</strong> $2,000,000</h5>
+                        </div>
+                        <div>
+                            <h5><strong>Investors:</strong> 8</h5>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card">
-                <img src="{% static 'images/kitchen.png' %}" class="card-img-top" alt="Hell's Kitchen">
+            <div class="card mx-4 border border-2" onclick="location.href='#';" style="cursor: pointer;">
+                <div class="card-img">
+                    <img src="{% static 'images/Hell_Kitchen.png' %}" class="card-img-top" alt="Hell's Kitchen">
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Hell's Kitchen</h5>
-                    <p class="badge badge-secondary">Food & Drink</p>
-                    <p class="card-text card-summary">Using local ingredients, our chefs are excited to surprise and delight you.</p>
+                    <h3 class="card-title">Hell's Kitchen</h3>
+                    <span class="badge bg-light border border-secondary mr-1 mb-2" style="color:black;">Food & Drink</span>
+                    <p class="card-text card-summary">Working with local ingredients our chefs’ look forward to surprising and delighting.</p>
                     <div class="card-details">
-                        <p class="card-text">Using local ingredients, our chefs are excited to surprise and delight you.</p>
+                        <p class="card-text">Working with local ingredients our chefs’ look forward to surprising and delighting.</p>
                         <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="3"
-                            aria-valuemin="0" aria-valuemax="100" style="height: 4px">
-                            <div class="progress-bar w-25"></div>
+                            aria-valuemin="0" aria-valuemax="100" style="height: 10px; background-color: #E2D9D9;">
+                            <div class="progress-bar w-25" style="background-color: #41F400;"></div>
                         </div>
                         <p></p>
-                        <p><strong>Raised:</strong> $200,000</p>
-                        <p><strong>Target:</strong> $1,000,000</p>
-                        <p><strong>Investors:</strong> 2</p>
+                        <div class="text-underline mb-3">
+                            <h5><strong>Raised:</strong> $1,600,000</h5>
+                        </div>
+                        <div class="text-underline mb-3">
+                            <h5><strong>Target:</strong> $2,000,000</h5>
+                        </div>
+                        <div>
+                            <h5><strong>Investors:</strong> 8</h5>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card">
-                <img src="{% static 'images/lake.png' %}" class="card-img-top" alt="Salmon Lake">
+            <div class="card mx-4 border border-2" onclick="location.href='#';" style="cursor: pointer;">
+                <div class="card-img">
+                    <img src="{% static 'images/Salmon_lake.png' %}" class="card-img-top" alt="Salmon Lake">
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Salmon Lake</h5>
-                    <p class="badge badge-secondary">Food & Drink</p>
+                    <h3 class="card-title">Salmon Lake</h3>
+                    <span class="badge bg-light border border-secondary mr-1 mb-2" style="color:black;">Food & Drink</span>
+                    <span class="badge bg-light border border-secondary mr-1 mb-2" style="color:black;">Farm</span>
                     <p class="card-text card-summary">Transforming sustainable seafood with top-quality from our modern, eco-friendly farming systems.</p>
                     <div class="card-details">
                         <p class="card-text">Transforming sustainable seafood with top-quality from our modern, eco-friendly farming systems.</p>
-                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="3"
-                            aria-valuemin="0" aria-valuemax="100" style="height: 4px">
-                            <div class="progress-bar w-75"></div>
+                        <div class="progress " role="progressbar" aria-label="Basic example" aria-valuenow="3"
+                            aria-valuemin="0" aria-valuemax="100" style="height: 10px; background-color: #E2D9D9;">
+                            <div class="progress-bar w-50" style="background-color: #41F400;"></div>
                         </div>
                         <p></p>
-                        <p><strong>Raised:</strong> $1,600,000</p>
-                        <p><strong>Target:</strong> $2,000,000</p>
-                        <p><strong>Investors:</strong> 8</p>
+                        <div class="text-underline mb-3">
+                            <h5><strong>Raised:</strong> $1,600,000</h5>
+                        </div>
+                        <div class="text-underline mb-3">
+                            <h5><strong>Target:</strong> $2,000,000</h5>
+                        </div>
+                        <div>
+                            <h5><strong>Investors:</strong> 8</h5>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="text-center my-4">
-        <button class="btn btn-dark">See more</button>
+    <div class="row my-4  mx-4">
+        <div class="text-center">
+            <button class="btn btn-dark col-md-4 seeMore" >See more</button>
+        </div>
     </div>
 </div>
 
