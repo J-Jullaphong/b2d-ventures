@@ -1,0 +1,62 @@
+{% extends 'b2d/base.html' %}
+{% load static %}
+
+{% block style %}
+<link href="{% static 'css/portfolio.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="portfolio-content mt-4">
+    <div class="portfolio-header">
+        <h1 class="section-title">Investment Breakdown</h1>
+    </div>
+
+    <div class="investment-breakdown">
+        <div class="investment-summary">
+            <p><strong>Salmon Lake</strong>: 60% ($6,000)</p>
+            <p><strong>Salmon Bear</strong>: 40% ($4,000)</p>
+        </div>
+    </div>
+
+    <div class="portfolio-header">
+        <h1 class="section-title">Detailed Portfolio</h1>
+    </div>
+
+    <div class="card portfolio-item mb-4">
+        <div class="card-body">
+            <div class="portfolio-item-content">
+                <div class="portfolio-details">
+                    <h3>Salmon Lake</h3>
+                    <p>Share: <strong>2.3%</strong></p>
+                    <p>Investment date: <strong>19:00 26/8/2004</strong></p>
+                </div>
+                <div class="portfolio-amount">
+                    <span>Amount: </span>
+                    <strong>$6,000</strong>
+                    <a href="#" class="btn btn-outline-primary btn-sm ms-3">Detail</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card portfolio-item mb-4">
+        <div class="card-body">
+            <div class="portfolio-item-content">
+                <div class="portfolio-details">
+                    <h3>Salmon Bear</h3>
+                    <p>Share: <strong>1.8%</strong></p>
+                    <p>Investment date: <strong>14:30 12/7/2005</strong></p>
+                </div>
+                <div class="portfolio-amount">
+                    <span>Amount: </span>
+                    <strong>$4,000</strong>
+                    <a href="#" class="btn btn-outline-primary btn-sm ms-3">Detail</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

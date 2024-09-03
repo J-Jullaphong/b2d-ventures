@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}{{ block.super }}
+    <style>
+        caption .section {
+            font-size: large;
+        }
+        td, th {
+            font-size: large;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}
+    {% if subtitle %}{{ subtitle }} | {% endif %}
+    {{ title }} | {{ site_title|default:_('B2D Ventures') }}
+{% endblock %}
+
+{% block branding %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'admin:index' %}">
+        <img src="{% static 'images/logo.png' %}" alt="B2D Ventures" style="width: 200px;">
+    </a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
