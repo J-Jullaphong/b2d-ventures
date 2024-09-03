@@ -9,17 +9,16 @@ class BusinessRegistrationForm(UserCreationForm):
     class Meta:
         model = Business
         fields = [
-            'username', 'email', 'phone_number', 'password1', 'password2',
+            'name', 'email', 'phone_number', 'password1', 'password2',
             'business_registration_certificate', 'tax_identification_number',
             'proof_of_address', 'financial_statements', 'ownership_documents',
             'director_identification', 'licenses_and_permits', 'bank_account_details'
         ]
         labels = {
-            'username': 'Company Name',
             'email': 'Email'
         }
         widgets = {
-            'username': forms.TextInput(attrs={
+            'name': forms.TextInput(attrs={
                 'placeholder': 'Company Name'
             }),
             'email': forms.EmailInput(attrs={
@@ -68,6 +67,7 @@ class BusinessRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         if commit:
-            user.is_active = False  # User needs to be manually activated upon verification.
+            user.is_active = False
+            user.username = user.email
             user.save()
         return user

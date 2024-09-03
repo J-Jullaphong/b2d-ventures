@@ -1,17 +1,11 @@
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import User
 from django.db import models
 
 
 class Business(User):
     """Business Model represents a business, containing detailed information."""
-    description = models.TextField()
+    name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=10)
-    chairman = models.CharField(max_length=100)
-    founded_year = models.IntegerField()
-    valuation = models.DecimalField(max_digits=10, decimal_places=2)
-    revenue = models.DecimalField(max_digits=10, decimal_places=2)
-    employees_count = models.IntegerField()
-
     business_registration_certificate = models.FileField(upload_to='business_docs/registration_certificates/')
     tax_identification_number = models.FileField(upload_to='business_docs/tax_ids/')
     proof_of_address = models.FileField(upload_to='business_docs/proof_of_address/')
