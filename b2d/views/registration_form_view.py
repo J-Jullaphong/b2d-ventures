@@ -28,8 +28,9 @@ class RegistrationFormView(TemplateView):
 
         if form.is_valid():
             form.save()
-            messages.success(self.request,
-                             "Registration successful. Your account will be activated once approved.")
-            return self.render_to_response(self.get_context_data())
+            messages.success(
+                self.request, "Registration successful. Your account will be activated once approved.")
+            # Re-render the same page
+            return self.render_to_response(self.get_context_data(form=form))
 
         return self.render_to_response(self.get_context_data(form=form))
