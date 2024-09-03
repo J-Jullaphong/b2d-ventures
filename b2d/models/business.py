@@ -1,9 +1,9 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import User, Group, Permission
 from django.db import models
 
 
-class Business(AbstractUser):
-    """Business Model represents a business, containing details information."""
+class Business(User):
+    """Business Model represents a business, containing detailed information."""
     description = models.TextField()
     phone_number = models.CharField(max_length=10)
     chairman = models.CharField(max_length=100)
@@ -11,9 +11,19 @@ class Business(AbstractUser):
     valuation = models.DecimalField(max_digits=10, decimal_places=2)
     revenue = models.DecimalField(max_digits=10, decimal_places=2)
     employees_count = models.IntegerField()
-    groups = models.ManyToManyField(Group, related_name='business_groups')
-    user_permissions = models.ManyToManyField(Permission,
-                                              related_name='business_user_permissions')
+
+    business_registration_certificate = models.FileField(upload_to='business_docs/registration_certificates/')
+    tax_identification_number = models.FileField(upload_to='business_docs/tax_ids/')
+    proof_of_address = models.FileField(upload_to='business_docs/proof_of_address/')
+    financial_statements = models.FileField(upload_to='business_docs/financial_statements/', null=True, blank=True)
+    ownership_documents = models.FileField(upload_to='business_docs/ownership_documents/')
+    director_identification = models.FileField(upload_to='business_docs/director_identification/')
+    licenses_and_permits = models.FileField(upload_to='business_docs/licenses_and_permits/', null=True, blank=True)
+    bank_account_details = models.FileField(upload_to='business_docs/bank_account_details/')
+
+    class Meta:
+        verbose_name = "Business"
+        verbose_name_plural = "Businesses"
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"

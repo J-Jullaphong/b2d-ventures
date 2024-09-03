@@ -21,6 +21,10 @@ class Investment(models.Model):
         default='wait',
     )
 
+    class Meta:
+        verbose_name = "Investment"
+        verbose_name_plural = "Investments"
+
     def __str__(self):
         return (f"{self.investor}: Investment of {self.amount} in "
                 f"{self.fundraise.business.first_name}")
