@@ -1,9 +1,13 @@
 from django.urls import path
+from django.contrib.auth.views import LogoutView, PasswordResetView
 from .views import *
-from . import views
 
 app_name = 'b2d'
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', home, name='home'),
+    path('register/', RegistrationFormView.as_view(), name='registration'),
+    path('login/', B2DLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('reset-password/', PasswordResetView.as_view(), name='reset-password')
 ]

@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2D Ventures - Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .background-image {
+            background-image: url('https://cdn.pixabay.com/photo/2020/02/27/17/17/building-4885295_1280.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            height: 90%;
+            overflow-y: auto;
+        }
+
+        .form-container img {
+            width: 120px;
+            margin-bottom: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .nav-tabs .nav-link {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            width: 100%;
+        }
+
+        .form-footer {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-height: 600px) {
+            .form-container {
+                padding: 1rem;
+                height: 80%;
+            }
+        }
+
+        .alert {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-image">
+    <div class="form-container">
+        <img src="{% static 'images/logo.png' %}" alt="B2D Ventures">
+        <h2 class="form-title">Registration</h2>
+
+        <ul class="nav nav-tabs justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link {% if not request.GET.form or request.GET.form == 'investor' %}active{% endif %}" href="?form=investor">Investor</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.GET.form == 'business' %}active{% endif %}" href="?form=business">Business</a>
+            </li>
+        </ul>
+
+        <form method="POST" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label text-start">{{ field.label }}</label>
+                        {{ field }}
+                        <div class="text-danger small">{{ field.errors }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+
+        <div class="form-footer">
+            <p>By signing up I agree to B2D Ventures <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
