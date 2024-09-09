@@ -1,5 +1,6 @@
 from django.views.generic import ListView
-from django.db.models import Count, Q
+from django.conf import settings
+from django.db.models import Count, Q, Min
 from ..models import Business, Category
 
 class BusinessListView(ListView):
@@ -25,7 +26,7 @@ class BusinessListView(ListView):
         if sort_by == 'recent':
             queryset = queryset.order_by('-id')
         elif sort_by == 'investors':
-            queryset = queryset.annotate(num_investors=Count('investments')).order_by('-num_investors')
+            queryset = queryset.annotate(num_investors=Count('fundraising__investment')).order_by('-num_investors')
         elif sort_by == 'alphabetical':
             queryset = queryset.order_by('name')
         elif sort_by == 'min_invest':
@@ -38,4 +39,5 @@ class BusinessListView(ListView):
         context['categories'] = Category.objects.all()
         context['current_category'] = self.request.GET.get('category', None)
         context['query'] = self.request.GET.get('q', '')
+        context['settings'] = settings
         return context

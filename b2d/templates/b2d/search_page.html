@@ -72,7 +72,8 @@
                     <select name="category" id="category" class="form-control" onchange="this.form.submit()">
                         <option value="">All Categories</option>
                         {% for category in categories %}
-                        <option value="{{ category.id }}" {% if category.id|stringformat:"s" == request.GET.category %}selected{% endif %}>
+                        <option value="{{ category.id }}"
+                                {% if category.id|stringformat:"s" == request.GET.category %}selected{% endif %}>
                             {{ category.category_name }}
                         </option>
                         {% endfor %}
@@ -81,10 +82,14 @@
                 <div class="form-group ml-3">
                     <label for="sort">Sort By:</label>
                     <select name="sort" id="sort" class="form-control" onchange="this.form.submit()">
-                        <option value="recent" {% if request.GET.sort == "recent" %}selected{% endif %}>Most Recent</option>
-                        <option value="investors" {% if request.GET.sort == "investors" %}selected{% endif %}>Most Investors</option>
-                        <option value="alphabetical" {% if request.GET.sort == "alphabetical" %}selected{% endif %}>A-Z</option>
-                        <option value="min_invest" {% if request.GET.sort == "min_invest" %}selected{% endif %}>Minimum Invest</option>
+                        <option value="recent"
+                                {% if request.GET.sort == "recent" %}selected{% endif %}>Most Recent</option>
+                        <option value="investors"
+                                {% if request.GET.sort == "investors" %}selected{% endif %}>Most Investors</option>
+                        <option value="alphabetical"
+                                {% if request.GET.sort == "alphabetical" %}selected{% endif %}>A-Z</option>
+                        <option value="min_invest"
+                                {% if request.GET.sort == "min_invest" %}selected{% endif %}>Minimum Invest</option>
                     </select>
                 </div>
             </form>
@@ -94,9 +99,9 @@
     <div class="row">
         {% for business in businesses %}
         <div class="col-md-4 mb-4">
-            <a class="text-decoration-none text-dark">
+            <a href="{% url 'b2d:business_detail' business.id %}" class="text-decoration-none text-dark">
                 <div class="card border border-2" style="cursor: pointer;">
-                    <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="{{ business.name }}">
+                    <img src="https://{{ settings.AWS_S3_CUSTOM_DOMAIN }}/business_docs/{{ business.id }}/photo1.jpg" class="card-img-top" alt="{{ business.name }}">
                     <div class="card-body">
                         <h3 class="card-title">{{ business.name }}</h3>
 
@@ -131,5 +136,6 @@
     </div>
 </div>
 {% endblock %}
+
 
 
