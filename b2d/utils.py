@@ -8,15 +8,12 @@ def get_file(key):
                       aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                       region_name=settings.AWS_S3_REGION_NAME)
     try:
-        url = s3.generate_presigned_url('get_object',
-                                        Params={
-                                            'Bucket': settings.AWS_STORAGE_BUCKET_NAME,
-                                            'Key': key},
-                                        ExpiresIn=3600)
-        return url
+        response = s3.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+                                 Key=key)
+        return response['Body'].read().decode('utf-8')
     except ClientError as e:
-        print(f"Error generating pre-signed URL: {e}")
-        return None
+        print(f"Error fetching file from S3: {e}")
+        return ''
 
 
 def upload_file(file, key):

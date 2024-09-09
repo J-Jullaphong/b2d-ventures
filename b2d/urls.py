@@ -11,4 +11,5 @@ urlpatterns = [
     path('register/', RegistrationFormView.as_view(), name='registration'),
     path('login/', B2DLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('business-profile', BusinessProfileView.as_view(), name='business-profile')
 ]
