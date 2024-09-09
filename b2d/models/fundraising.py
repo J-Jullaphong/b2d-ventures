@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import Sum
 from .business import Business
 from .investment import Investment
 
@@ -18,4 +18,4 @@ class FundRaising(models.Model):
                 f"{self.get_current_investment()}/{self.goal_amount}")
 
     def get_current_investment(self):
-        return Investment.objects.filter(fundraise__pk=self.pk).sum("amount")
+        return Investment.objects.filter(fundraise=self).aggregate(total=Sum('amount'))['total'] or 0
