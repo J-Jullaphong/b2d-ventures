@@ -13,7 +13,11 @@ class BusinessProfileView(View):
     template_name = 'b2d/business_create.html'
 
     def get(self, request):
-        business = Business.objects.get(id=request.user.id)
+        try:
+            business = Business.objects.get(id=request.user.id)
+        except Business.DoesNotExist:
+            return redirect("b2d:home")
+
         pitch_file_key = f"business_docs/{business.id}/pitches.json"
         team_file_key = f"business_docs/{business.id}/team_members.json"
 
