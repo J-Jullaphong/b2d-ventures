@@ -19,3 +19,6 @@ class FundRaising(models.Model):
 
     def get_current_investment(self):
         return Investment.objects.filter(fundraise=self).aggregate(total=Sum('amount'))['total'] or 0
+
+    def get_percentage_investment(self):
+        return (Investment.objects.filter(fundraise=self).aggregate(total=Sum('amount'))['total'] / self.goal_amount)*100

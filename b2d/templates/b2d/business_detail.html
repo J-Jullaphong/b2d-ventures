@@ -76,7 +76,7 @@
                             <h3 class="card-text">Raised: ${{ fundraise.get_current_investment|default:"0" }}</h3>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar"
-                                     style="width: 50%;"
+                                     style="width: {{ fundraise.get_percentage_investment }}%;"
                                      aria-valuenow="{{ fundraise.get_current_investment }}" aria-valuemin="0"
                                      aria-valuemax="{{ fundraise.goal_amount }}"></div>
                             </div>
