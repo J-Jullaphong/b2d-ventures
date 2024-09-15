@@ -135,4 +135,4 @@ class BusinessProfileView(View):
             youtube_video_key = f"business_docs/{business.id}/youtube_video.json"
             upload_file(youtube_video_file, youtube_video_key)
 
-        return redirect('b2d:business-profile')
+        return redirect('b2d:business_profile')

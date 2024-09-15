@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'b2d.context_processors.all_categories',
+                'b2d.context_processors.user_type'
             ],
         },
     },
