@@ -11,10 +11,12 @@ class RegistrationFormView(TemplateView):
 
         form_type = self.request.GET.get('form', 'investor')
 
-        if form_type == 'business':
-            context['form'] = BusinessRegistrationForm()
-        else:
-            context['form'] = InvestorRegistrationForm()
+        if 'form' not in context:
+            form_type = self.request.GET.get('form', 'investor')
+            if form_type == 'business':
+                context['form'] = BusinessRegistrationForm()
+            else:
+                context['form'] = InvestorRegistrationForm()
 
         return context
 
@@ -30,7 +32,6 @@ class RegistrationFormView(TemplateView):
             form.save()
             messages.success(
                 self.request, "Registration successful. Your account will be activated once approved.")
-            # Re-render the same page
             return self.render_to_response(self.get_context_data(form=form))
 
         return self.render_to_response(self.get_context_data(form=form))

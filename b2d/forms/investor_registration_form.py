@@ -38,6 +38,7 @@ class InvestorRegistrationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
 
         for field_name in self.fields:
+            self.fields[field_name].required = True
             self.fields[field_name].help_text = None
             self.fields[field_name].widget.attrs["class"] = "form-control"
 

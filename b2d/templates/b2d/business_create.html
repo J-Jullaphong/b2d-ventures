@@ -1,0 +1,328 @@
+{% extends "b2d/base.html" %}
+{% block content %}
+{% load static %}
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <div class="card m-4 p-4" style="border-style: none;">
+        <div class="mb-4" style="border-bottom: 1px solid #545454;">
+            <h2 class="card-title">Manage Your Business Profile</h2>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Business Name Section -->
+            <div class="mb-3">
+                <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                    <h4><label for="businessName" class="form-label">Business Name</label></h4>
+                </div>
+                <input type="text" class="form-control" id="businessName" name="businessName" placeholder="Name" value="{{ business_name }}">
+            </div>
+
+            <!-- Business Description Section -->
+            <div class="mb-3">
+                <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                    <h4><label for="businessDescription" class="form-label">Business Description</label></h4>
+                </div>
+                <textarea class="form-control" id="businessDescription" name="businessDescription" rows="4" placeholder="Describe your business" maxlength="200">{{ business_description }}</textarea>
+            </div>
+
+            <!-- Category Section -->
+            <div class="mb-3 row">
+                <div class="col-lg-2 pt-1">
+                    <h5><label for="category" class="form-label">Choose your category:</label></h5>
+                </div>
+                <div class="col">
+                    <select class="form-select" id="category" name="category">
+                        <option selected disabled>Choose...</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id == selected_category %}selected{% endif %}>{{ category.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Business Photos Section -->
+            <div class="mb-3">
+                <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                    <h4><label for="businessPhotos" class="form-label">Business Photos</label></h4>
+                </div>
+                <div class="card p-2 mb-3">
+                    <div class="row mb-1">
+                        <div class="col-lg-1 pt-1 m-auto">
+                            <h5 class="text-center">image1:</h5>
+                        </div>
+                        <div class="col-lg m-auto">
+                            <input type="file" class="form-control" id="photo1" name="photo1">
+                        </div>
+                        {% if photo1_url %}
+                        <div class="d-flex col-xl-2 justify-content-center">
+                            <img src="{{ photo1_url }}" class="rounded" alt="Photo 1" style="width: 150px; height: 100px;" onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-1 pt-1 m-auto">
+                            <h5 class="text-center">image2:</h5>
+                        </div>
+                        <div class="col-lg m-auto">
+                            <input type="file" class="form-control" id="photo2" name="photo2">
+                        </div>
+                        {% if photo2_url %}
+                        <div class="d-flex col-xl-2 justify-content-center">
+                            <img src="{{ photo2_url }}" class="rounded" alt="Photo 2" style="width: 150px; height: 100px;" onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1 pt-1 m-auto">
+                            <h5 class="text-center">image3:</h5>
+                        </div>
+                        <div class="col-lg m-auto">
+                            <input type="file" class="form-control" id="photo3" name="photo3">
+                        </div>
+                        {% if photo3_url %}
+                        <div class="d-flex col-xl-2 justify-content-center">
+                            <img src="{{ photo3_url }}" class="rounded" alt="Photo 3" style="width: 150px; height: 100px;" onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Video Embed Section -->
+            <div class="mb-4">
+                <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                    <h4><label for="videoEmbed" class="form-label">YouTube Video Embed</label></h4>
+                </div>
+                <input type="url" class="form-control" id="videoEmbed" name="videoEmbed" placeholder="Paste your YouTube video URL" value="{{ youtube_video_url }}">
+                {% if youtube_video_embed %}
+                <div class="mt-3 d-flex justify-content-center">
+                    <iframe width="560" height="315" src="{{ youtube_video_embed }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Pitching Section -->
+            <div id="pitchingSection">
+                <div class="row m-1 mb-3" style="border-bottom: 1px solid #545454;">
+                    <h4 class="col p-0">Pitching</h4>
+                    <button type="button" id="addPitch" class="col-sm-1 btn btn-primary mb-1">Add +</button>
+                </div>
+                {% for pitch in pitch_data %}
+                <div class="card p-2 pitching-box mb-3">
+                    <div class="mb-2 row">
+                        <div class="col-md-1 pt-1">
+                            <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="topic[]" placeholder="Topic" value="{{ pitch.topic }}">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <div class="col-md-1 pt-1">
+                            <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" name="details[]" rows="3" placeholder="Details">{{ pitch.details }}</textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger delete-pitch">Delete</button>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="card p-2 pitching-box mb-3">
+                    <div class="mb-2 row">
+                        <div class="col-md-1 pt-1">
+                            <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="topic[]" placeholder="Topic">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <div class="col-md-1 pt-1">
+                            <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" name="details[]" rows="3" placeholder="Details"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger delete-pitch">Delete</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Teams Section -->
+            <div id="teamSection">
+                <div class="m-1 row mb-3" style="border-bottom: 1px solid #545454;">
+                    <h4 class="col p-0">Teams</h4>
+                    <button type="button" id="addTeam" class="col-sm-1 btn btn-primary mb-1">Add +</button>
+                </div>
+                {% for member in team_members_data %}
+                <div class="mb-3 card team-box p-2">
+                    <div class="mb-2 row">
+                        <div class="col-md-2 pt-1">
+                            <h5 class="text-center"><label for="memberName" class="form-label">Member name:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="memberName[]" placeholder="Name" value="{{ member.name }}">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <div class="col-md-2 pt-1">
+                            <h5 class="text-center"><label for="workAs" class="form-label">Work as:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="workAs[]" placeholder="ex. ceo, vp" value="{{ member.work_as }}">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <div class="col-md-2 pt-1">
+                            <h5 class="text-center"><label for="uploadFile" class="form-label">Upload Photo:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="file" class="form-control" name="uploadFile[]">
+                        </div>
+                    </div>
+                    {% if member.photo_url %}
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ member.photo_url }}" alt="Photo" class="rounded" style="width: 200px; height: 150px;" onerror="this.onerror=null;  this.src='{% static 'images/user.png' %}';">
+                    </div>
+                    {% endif %}
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger delete-team">Delete</button>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="mb-3 card team-box p-2">
+                    <div class="mb-2 row">
+                        <div class="col-md-2 pt-1">
+                            <h5 class="text-center"><label for="memberName" class="form-label">Member name:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="memberName[]" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <div class="col-md-2 pt-1">
+                            <h5 class="text-center"><label for="workAs" class="form-label">Work as:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="workAs[]" placeholder="ex. ceo, vp">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <div class="col-md-2 pt-1">
+                            <h5 class="text-center"><label for="uploadFile" class="form-label">Upload Photo:</label></h5>
+                        </div>
+                        <div class="col">
+                            <input type="file" class="form-control" name="uploadFile[]">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger delete-team">Delete</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Agreement -->
+            <div class="mb-3 form-check d-flex justify-content-center">
+                <input type="checkbox" class="form-check-input me-2" id="agreement" onchange="toggleButton()">
+                <label class="form-check-label" for="agreement">I have read and agree to the <a href="#">agreement</a></label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mb-3 d-flex justify-content-center">
+                <button type="submit" id="submitButton" class="btn btn-dark btn-lg" disabled>Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Add new pitch section
+            $('#addPitch').on('click', function () {
+                $('#pitchingSection').append(`
+                    <div class="card p-2 pitching-box mb-3">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="topic[]" placeholder="Topic">
+                            </div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
+                            </div>
+                            <div class="col">
+                                <textarea class="form-control" name="details[]" rows="3" placeholder="Details"></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger delete-pitch">Delete</button>
+                        </div>
+                    </div>
+                `);
+            });
+
+            // Add new team section
+            $('#addTeam').on('click', function () {
+                $('#teamSection').append(`
+                    <div class="mb-3 card team-box p-2">
+                        <div class="mb-2 row">
+                            <div class="col-md-2 pt-1">
+                                <h5 class="text-center"><label for="memberName" class="form-label">Member name:</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="memberName[]" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-md-2 pt-1">
+                                <h5 class="text-center"><label for="workAs" class="form-label">Work as:</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="workAs[]" placeholder="ex. ceo, vp">
+                            </div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-md-2 pt-1">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Upload Photo:</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="file" class="form-control" name="uploadFile[]">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger delete-team">Delete</button>
+                        </div>
+                    </div>
+                `);
+            });
+
+            // Delete pitch section
+            $(document).on('click', '.delete-pitch', function () {
+                $(this).closest('.pitching-box').remove();
+            });
+
+            // Delete team section
+            $(document).on('click', '.delete-team', function () {
+                $(this).closest('.team-box').remove();
+            });
+        });
+
+        // Function to enable or disable the button based on checkbox state
+        function toggleButton() {
+            const checkbox = document.getElementById('agreement');
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = !checkbox.checked;  // Enable button if checkbox is checked
+        }
+    </script>
+</body>
+{% endblock %}
