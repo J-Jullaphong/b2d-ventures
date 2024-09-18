@@ -1,0 +1,58 @@
+{% extends "b2d/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Create a Fundraising Campaign</h2>
+    
+    <form method="POST" class="form-horizontal">
+        {% csrf_token %}
+        
+        <!-- Render form fields -->
+        <div class="mb-3">
+            <label for="goal_amount" class="form-label">{{ form.goal_amount.label }}</label>
+            {{ form.goal_amount }}
+            {% if form.goal_amount.errors %}
+                <div class="text-danger">{{ form.goal_amount.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            <label for="publish_date" class="form-label">{{ form.publish_date.label }}</label>
+            {{ form.publish_date }}
+            {% if form.publish_date.errors %}
+                <div class="text-danger">{{ form.publish_date.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="deadline_date" class="form-label">{{ form.deadline_date.label }}</label>
+            {{ form.deadline_date }}
+            {% if form.deadline_date.errors %}
+                <div class="text-danger">{{ form.deadline_date.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="minimum_investment" class="form-label">{{ form.minimum_investment.label }}</label>
+            {{ form.minimum_investment }}
+            {% if form.minimum_investment.errors %}
+                <div class="text-danger">{{ form.minimum_investment.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="shares_percentage" class="form-label">{{ form.shares_percentage.label }}</label>
+            {{ form.shares_percentage }}
+            {% if form.shares_percentage.errors %}
+                <div class="text-danger">{{ form.shares_percentage.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Submit button -->
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Create Fundraising</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}
