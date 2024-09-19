@@ -29,14 +29,19 @@ class FundRaising(models.Model):
         verbose_name = "Fundraising"
         verbose_name_plural = "Fundraisings"
 
-    def __str__(self):
-        return (f"{self.business.first_name} - "
-                f"{self.get_current_investment()}/{self.goal_amount}")
-
     def get_current_investment(self):
-        return Investment.objects.filter(fundraise=self).aggregate(
-            total=Sum('amount'))['total'] or 0
+        """Calculate the total amount of investments received for this fundraise."""
+        investment_total = Investment.objects.filter(fundraise=self).aggregate(total=Sum('amount'))['total']
+        return investment_total if investment_total is not None else 0
 
     def get_percentage_investment(self):
-        return (Investment.objects.filter(fundraise=self).aggregate(
-            total=Sum('amount'))['total'] / self.goal_amount) * 100
+        """Calculate the percentage of the investment goal that has been reached."""
+        current_investment = self.get_current_investment()
+        if self.goal_amount > 0 and current_investment > 0:
+            return (current_investment / self.goal_amount) * 100
+        return 0
+
+    def __str__(self):
+        """Create a string representation of the FundRaising instance."""
+        return (f"{self.business.first_name} - "
+                f"{self.get_current_investment()}/{self.goal_amount}")
