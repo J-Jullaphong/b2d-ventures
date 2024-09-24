@@ -43,5 +43,5 @@ class FundRaising(models.Model):
 
     def __str__(self):
         """Create a string representation of the FundRaising instance."""
-        return (f"{self.business.first_name} - "
+        return (f"{self.business.name} - "
                 f"{self.get_current_investment()}/{self.goal_amount}")

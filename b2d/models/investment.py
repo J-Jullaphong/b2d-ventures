@@ -35,4 +35,4 @@ class Investment(models.Model):
 
     def __str__(self):
         return (f"{self.investor}: Investment of {self.amount} in "
-                f"{self.fundraise.business.first_name}")
+                f"{self.fundraise.business.name}")
