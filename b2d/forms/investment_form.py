@@ -22,7 +22,6 @@ class InvestmentForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.fundraise = kwargs.pop('fundraise', None)
-        print(self.fundraise)
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].widget.attrs["class"] = "form-control"
@@ -32,9 +31,16 @@ class InvestmentForm(ModelForm):
         current_investment = self.fundraise.get_current_investment()
         remaining_amount = self.fundraise.goal_amount - current_investment
 
+        if amount < self.fundraise.minimum_investment:
+            raise ValidationError(
+                f"The investment amount is too low. Minimum investment is ${self.fundraise.minimum_investment:.2f}."
+            )
+
         if amount > remaining_amount:
             raise ValidationError(
-                f"The amount exceeds the remaining fundraising goal. You can only invest up to ${remaining_amount:.2f}.")
+                f"The amount exceeds the remaining fundraising goal. You can only invest up to ${remaining_amount:.2f}."
+            )
+
         return amount
 
     def save(self, investor, fundraise, commit=True):
@@ -45,3 +51,4 @@ class InvestmentForm(ModelForm):
         if commit:
             investment.save()
         return investment
+
