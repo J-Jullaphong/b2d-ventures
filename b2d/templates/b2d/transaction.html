@@ -2,117 +2,80 @@
 {% load static %}
 
 {% block style %}
-    <link href="{% static 'css/transaction.css' %}" rel="stylesheet">
-    <style>
-        .qr-container {
-            text-align: center;
-        }
-
-        .qr-container img {
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
-        .investment-container {
-            margin-top: 20px;
-        }
-
-        .form-label {
-            font-weight: bold;
-        }
-
-        .form-check-label a {
-            text-decoration: underline;
-            color: #007bff;
-        }
-
-        .form-check-label a:hover {
-            color: #0056b3;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .modal-content {
-            border-radius: 10px;
-            border: 1px solid #dee2e6;
-        }
-
-        .modal-header {
-            background-color: #f8d7da;
-            border-bottom: 1px solid #f5c6cb;
-        }
-
-        .modal-title {
-            color: #721c24;
-        }
-
-        .modal-body {
-            color: #856404;
-        }
-
-        .modal-footer {
-            border-top: none;
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
-    <div class="container investment-container">
-        <div class="row">
-            <div class="col-lg-12 qr-container">
-                <h5>Scan the QR Code to Make Your Transfer</h5>
-                <img src="{% static 'images/qrcode.png' %}" alt="Transaction QR" class="img-fluid mb-4">
-                {% if messages %}
-                    <h3 class="text-danger">
-                        {% for message in messages %}
-                            {{ message }}<br>
-                        {% endfor %}
-                    </h3>
-                {% endif %}
+    <div class="container">
+<!--    Show error message    -->
+        {% if messages %}
+            <div class="alert alert-danger alert-dismissible fade show m-3 shadow-sm" role="alert">
+                {% for message in messages %}
+                    <strong>Error!</strong> {{ message }}.
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
+        {% endif %}
 
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Invest in {{ fundraise.business.name }}</h1>
-
-                <form action="" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="amount" class="form-label">Investment Amount</label>
-                        <input type="number" name="amount" class="form-control" id="amount"
-                               placeholder="Min {{ fundraise.minimum_investment }}" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="investment_datetime" class="form-label">Date and Time of Transfer</label>
-                        {{ form.investment_datetime }}  <!-- Use form widget -->
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="transaction_slip" class="form-label">Upload Transaction Slip</label>
-                        <input type="file" name="transaction_slip" class="form-control" id="transaction_slip" required>
-                    </div>
-
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" value="" id="agreementCheck" required>
-                        <label class="form-check-label" for="agreementCheck">
-                            I have read and agree to the <a href="#">investment agreement</a>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Submit Investment</button>
-                </form>
+<!--    invest card content    -->
+        <div class="card m-4 p-4 shadow-sm">
+            <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                <h1 class="fw-medium">Invest in {{ fundraise.business.name }}</h1>
             </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <!--  card left-side  -->
+                    <div class="col-lg-4 text-center">
+                        <!--    QR Transfer   -->
+                        <div class="mb-3">
+                            <h5 class="fw-medium">Scan the QR Code to Make Your Transfer</h5>
+                        </div>
+                        <div>
+                            <img src="{% static 'images/qrcode.png' %}" alt="Transaction QR" class="img-thumbnail mb-4 shadow-sm"
+                            style="width:300px; height:auto;">
+                        </div>
+                    </div>
+                    <!--  card right-side   -->
+                    <div class="col-lg-8">
+                        {% csrf_token %}
+                        <!--    Investment   -->
+                        <div class="mb-3">
+                            <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                                <label for="amount" class="form-label fw-medium fs-4">Investment Amount</label>
+                            </div>
+                            <input type="number" name="amount" class="form-control" id="amount"
+                                   placeholder="Min {{ fundraise.minimum_investment }}" required>
+                        </div>
+
+                        <!--    Date and time  -->
+                        <div class="mb-3">
+                            <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                                <label for="investment_datetime" class="form-label fw-medium fs-4">Date and Time of Transfer</label>
+                            </div>
+                            {{ form.investment_datetime }}  <!-- Use form widget -->
+                        </div>
+
+                        <!--    File upload  -->
+                        <div class="mb-3">
+                            <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                                <label for="transaction_slip" class="form-label fw-medium fs-4">Upload Transaction Slip</label>
+                            </div>
+                            <input type="file" name="transaction_slip" class="form-control" id="transaction_slip" required>
+                        </div>
+                    </div>
+                </div>
+                <!--  Checkbox   -->
+                <div class="form-check mb-4 d-flex justify-content-center">
+                    <input class="form-check-input mx-2 mt-2" type="checkbox" value="" id="agreementCheck" required>
+                    <label class="form-check-label fs-5" for="agreementCheck">
+                        I have read and agree to the <a href="#">investment agreement</a>
+                    </label>
+                </div>
+                <!--  button   -->
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-dark btn-lg fw-light fs-3 w-75 shadow-sm">Submit Investment</button>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
-
 
