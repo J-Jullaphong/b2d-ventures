@@ -110,6 +110,7 @@
                                 <li><a class="dropdown-item" href="#">Portfolio</a></li>
                             {% elif user_is_business %}
                                 <li><a class="dropdown-item" href={% url 'b2d:business_profile' %}>Profile</a></li>
+                                <li><a class="dropdown-item" href={% url 'b2d:fundraising' %}>Fundraising</a></li>
                             {% endif %}
                             <li><hr class="dropdown-divider"></li>
                             <form method="POST" action="{% url 'b2d:logout' %}?next=/" class="d-inline">

@@ -5,3 +5,4 @@ from .search_page import BusinessListView
 from .business_detail import BusinessDetailView
 from .home import HomeView
 from .investment_view import InvestmentView
+from .fundraising_dashboard_view import FundRaisingDashboardView

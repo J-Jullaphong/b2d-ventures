@@ -2,57 +2,164 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Create a Fundraising Campaign</h2>
-    
-    <form method="POST" class="form-horizontal">
-        {% csrf_token %}
-        
-        <!-- Render form fields -->
-        <div class="mb-3">
-            <label for="goal_amount" class="form-label">{{ form.goal_amount.label }}</label>
-            {{ form.goal_amount }}
-            {% if form.goal_amount.errors %}
-                <div class="text-danger">{{ form.goal_amount.errors }}</div>
-            {% endif %}
-        </div>
-        
-        <div class="mb-3">
-            <label for="publish_date" class="form-label">{{ form.publish_date.label }}</label>
-            {{ form.publish_date }}
-            {% if form.publish_date.errors %}
-                <div class="text-danger">{{ form.publish_date.errors }}</div>
-            {% endif %}
+    {% if active_fundraising %}
+        <div class="row">
+            <div class="col-md-8">
+                <h3>Investment History</h3>
+                <canvas id="investmentChart"></canvas>
+            </div>
+
+            <div class="col-md-4">
+                <h2>Current Fundraising Details</h2>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>Goal Amount:</th>
+                            <td>{{ active_fundraising.goal_amount }}</td>
+                        </tr>
+                        <tr>
+                            <th>Start Date:</th>
+                            <td>{{ active_fundraising.publish_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Deadline Date:</th>
+                            <td>{{ active_fundraising.deadline_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Current Investment:</th>
+                            <td>{{ active_fundraising.get_current_investment }}</td>
+                        </tr>
+                        <tr>
+                            <th>Shares Percentage:</th>
+                            <td>{{ active_fundraising.shares_percentage }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="deadline_date" class="form-label">{{ form.deadline_date.label }}</label>
-            {{ form.deadline_date }}
-            {% if form.deadline_date.errors %}
-                <div class="text-danger">{{ form.deadline_date.errors }}</div>
-            {% endif %}
+        <h3 class="mt-5">Investments in this Fundraising</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Investor</th>
+                    <th>Investment Amount</th>
+                    <th>Shares Percentage</th>
+                    <th>Investment Date/Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for investment in investments %}
+                    <tr>
+                        <td>{{ investment.investor.first_name }} {{ investment.investor.last_name }}</td>
+                        <td>{{ investment.amount }}</td>
+                        <td>{{ investment.shares_percentage }}%</td>
+                        <td>{{ investment.investment_datetime }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% elif pending_fundraising %}
+        <div class="alert alert-info">
+            <strong>Notice:</strong> Your fundraising request is pending approval. Please wait for it to be approved.
         </div>
 
-        <div class="mb-3">
-            <label for="minimum_investment" class="form-label">{{ form.minimum_investment.label }}</label>
-            {{ form.minimum_investment }}
-            {% if form.minimum_investment.errors %}
-                <div class="text-danger">{{ form.minimum_investment.errors }}</div>
-            {% endif %}
-        </div>
+    {% else %}
+        <h2>Create a Fundraising Campaign</h2>
+        <form method="POST" class="form-horizontal">
+            {% csrf_token %}
 
-        <div class="mb-3">
-            <label for="shares_percentage" class="form-label">{{ form.shares_percentage.label }}</label>
-            {{ form.shares_percentage }}
-            {% if form.shares_percentage.errors %}
-                <div class="text-danger">{{ form.shares_percentage.errors }}</div>
-            {% endif %}
-        </div>
+            <div class="mb-3">
+                <label for="goal_amount" class="form-label">{{ form.goal_amount.label }}</label>
+                {{ form.goal_amount }}
+                {% if form.goal_amount.errors %}
+                    <div class="text-danger">{{ form.goal_amount.errors }}</div>
+                {% endif %}
+            </div>
 
-        <!-- Submit button -->
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Create Fundraising</button>
-        </div>
+            <div class="mb-3">
+                <label for="publish_date" class="form-label">{{ form.publish_date.label }}</label>
+                {{ form.publish_date }}
+                {% if form.publish_date.errors %}
+                    <div class="text-danger">{{ form.publish_date.errors }}</div>
+                {% endif %}
+            </div>
 
-    </form>
+            <div class="mb-3">
+                <label for="deadline_date" class="form-label">{{ form.deadline_date.label }}</label>
+                {{ form.deadline_date }}
+                {% if form.deadline_date.errors %}
+                    <div class="text-danger">{{ form.deadline_date.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="minimum_investment" class="form-label">{{ form.minimum_investment.label }}</label>
+                {{ form.minimum_investment }}
+                {% if form.minimum_investment.errors %}
+                    <div class="text-danger">{{ form.minimum_investment.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="shares_percentage" class="form-label">{{ form.shares_percentage.label }}</label>
+                {{ form.shares_percentage }}
+                {% if form.shares_percentage.errors %}
+                    <div class="text-danger">{{ form.shares_percentage.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create Fundraising</button>
+            </div>
+        </form>
+
+        {% if finished_fundraising %}
+        <h3>Details of Previous Fundraising</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Goal Amount</th>
+                    <th>Raised Amount</th>
+                    <th>Start Date:</th>
+                    <th>Deadline Date</th>
+                    <th>Shares Percentage:</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fundraising in finished_fundraising %}
+                    <tr>
+                        <td>{{ fundraising.goal_amount }}</td>
+                        <td>{{ fundraising.get_current_investment }}</td>
+                        <td>{{ fundraising.publish_date }}</td>
+                        <td>{{ fundraising.deadline_date }}</td>
+                        <td>{{ fundraising.shares_percentage }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    {% endif %}
 </div>
+
+{% if show_chart %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('investmentChart').getContext('2d');
+    const investmentChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_labels|safe }},
+            datasets: [{
+                label: 'Cumulative Investment Amount',
+                data: {{ chart_data|safe }},
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true,
+            }]
+        }
+    });
+</script>
+{% endif %}
 {% endblock %}
