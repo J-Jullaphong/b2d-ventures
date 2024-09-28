@@ -13,6 +13,7 @@ urlpatterns = [
     path('business-profile', BusinessProfileView.as_view(), name='business_profile'),
     path('fundraise/', FundRaisingDashboardView.as_view(), name='fundraising'),
     path('fundraise/<int:fundraise_id>/invest/', InvestmentView.as_view(), name='invest_fundraise'),
+    path('portfolio/', PortfolioView.as_view(), name='portfolio'),
     path('register/', RegistrationFormView.as_view(), name='registration'),
     path('login/', B2DLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

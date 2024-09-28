@@ -2,61 +2,104 @@
 {% load static %}
 
 {% block style %}
-<link href="{% static 'css/portfolio.css' %}" rel="stylesheet">
+    <link href="{% static 'css/portfolio.css' %}" rel="stylesheet">
+    <style>
+        .portfolio-table {
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .portfolio-header {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .portfolio-table th, .portfolio-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .portfolio-table th {
+            background-color: #f8f9fa;
+        }
+
+        .no-investments {
+            text-align: center;
+            font-size: 20px;
+            color: #999;
+            margin-top: 30px;
+        }
+
+        .portfolio-chart {
+            width: 400px;
+            height: 400px;
+            margin: 30px auto;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
+    <div class="container mt-4">
+        <h1 class="portfolio-header">My Portfolio</h1>
 
-<div class="portfolio-content mt-4">
-    <div class="portfolio-header">
-        <h1 class="section-title">Investment Breakdown</h1>
-    </div>
-
-    <div class="investment-breakdown">
-        <div class="investment-summary">
-            <p><strong>Salmon Lake</strong>: 60% ($6,000)</p>
-            <p><strong>Salmon Bear</strong>: 40% ($4,000)</p>
+        <div class="portfolio-chart">
+            <canvas id="investmentPieChart"></canvas>
         </div>
+
+        <h3>Total Investment: ${{ total_investment }}</h3>
+
+        {% if investments %}
+            <table class="portfolio-table">
+                <thead>
+                    <tr>
+                        <th>Business</th>
+                        <th>Total Invested</th>
+                        <th>Total Shares (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for investment in investments %}
+                        <tr onclick="location.href='{% url 'b2d:business_detail' investment.fundraise__business %}'" style="cursor: pointer;">
+                            <td>{{ investment.business_name }}</td>
+                            <td>${{ investment.total_invested }}</td>
+                            <td>{{ investment.total_shares }}%</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-investments">You have no investments in your portfolio.</p>
+        {% endif %}
     </div>
+{% endblock %}
 
-    <div class="portfolio-header">
-        <h1 class="section-title">Detailed Portfolio</h1>
-    </div>
-
-    <div class="card portfolio-item mb-4">
-        <div class="card-body">
-            <div class="portfolio-item-content">
-                <div class="portfolio-details">
-                    <h3>Salmon Lake</h3>
-                    <p>Share: <strong>2.3%</strong></p>
-                    <p>Investment date: <strong>19:00 26/8/2004</strong></p>
-                </div>
-                <div class="portfolio-amount">
-                    <span>Amount: </span>
-                    <strong>$6,000</strong>
-                    <a href="#" class="btn btn-outline-primary btn-sm ms-3">Detail</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card portfolio-item mb-4">
-        <div class="card-body">
-            <div class="portfolio-item-content">
-                <div class="portfolio-details">
-                    <h3>Salmon Bear</h3>
-                    <p>Share: <strong>1.8%</strong></p>
-                    <p>Investment date: <strong>14:30 12/7/2005</strong></p>
-                </div>
-                <div class="portfolio-amount">
-                    <span>Amount: </span>
-                    <strong>$4,000</strong>
-                    <a href="#" class="btn btn-outline-primary btn-sm ms-3">Detail</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        {% if investment_data %}
+            const investmentData = JSON.parse('{{ investment_data|escapejs }}');
+            const ctx = document.getElementById('investmentPieChart').getContext('2d');
+            const investmentPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: investmentData.labels,
+                    datasets: [{
+                        data: investmentData.data,
+                        backgroundColor: ['#FF6384', '#FFCE56', '#36A2EB', '#4BC0C0', '#9966FF', '#FF9F40'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    }
+                }
+            });
+        {% else %}
+            console.log("No investment data available for chart.");
+        {% endif %}
+    </script>
 {% endblock %}
