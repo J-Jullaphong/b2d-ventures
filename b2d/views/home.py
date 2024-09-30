@@ -18,7 +18,11 @@ class HomeView(ListView):
             fundraising__deadline_date__gt=timezone.now()
         ).order_by('fundraising__publish_date')[:3]
 
-        card_businesses = Business.objects.annotate(
+        card_businesses = Business.objects.filter(
+            fundraising__fundraising_status='approve',
+            fundraising__publish_date__lte=timezone.now(),
+            fundraising__deadline_date__gt=timezone.now()
+        ).annotate(
             num_investors=Count('fundraising__investment')
         ).order_by('-num_investors')[:3]
 

@@ -135,7 +135,7 @@ class BaseCase(TestCase):
             business=self.business1,
             goal_amount=10000.00,
             publish_date=timezone.now().date(),
-            deadline_date=timezone.now().date() + timezone.timedelta(days=0),
+            deadline_date=timezone.now().date() + timezone.timedelta(days=10),
             minimum_investment=500.00,
             shares_percentage=10.00,
             fundraising_status='approve'
@@ -224,3 +224,7 @@ class BaseCase(TestCase):
             shares_percentage=self.fundraising1.shares_percentage,
             investment_status='approve'
         )
+
+    def tearDown(self):
+        """Clean up data after each test case."""
+        super().tearDown()
