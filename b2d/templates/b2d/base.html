@@ -107,7 +107,7 @@
                         <a href="#" id="userDropdown" class="username dropdown-toggle" data-bs-toggle="dropdown">{{ user.email }}</a>
                         <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="userDropdown">
                             {% if user_is_investor %}
-                                <li><a class="dropdown-item" href="#">Portfolio</a></li>
+                                <li><a class="dropdown-item" href="{% url 'b2d:portfolio' %}">Portfolio</a></li>
                             {% elif user_is_business %}
                                 <li><a class="dropdown-item" href={% url 'b2d:business_profile' %}>Profile</a></li>
                                 <li><a class="dropdown-item" href={% url 'b2d:fundraising' %}>Fundraising</a></li>
