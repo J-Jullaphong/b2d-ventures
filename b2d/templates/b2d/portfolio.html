@@ -1,62 +1,144 @@
 {% extends 'b2d/base.html' %}
 {% load static %}
 
-{% block style %}
-<link href="{% static 'css/portfolio.css' %}" rel="stylesheet">
-{% endblock %}
-
 {% block content %}
-
-<div class="portfolio-content mt-4">
-    <div class="portfolio-header">
-        <h1 class="section-title">Investment Breakdown</h1>
-    </div>
-
-    <div class="investment-breakdown">
-        <div class="investment-summary">
-            <p><strong>Salmon Lake</strong>: 60% ($6,000)</p>
-            <p><strong>Salmon Bear</strong>: 40% ($4,000)</p>
+    <div class="container mt-4">
+        <div class="mb-4" style="border-bottom: 1px solid #545454;">
+            <h1>My Portfolio</h1>
         </div>
-    </div>
-
-    <div class="portfolio-header">
-        <h1 class="section-title">Detailed Portfolio</h1>
-    </div>
-
-    <div class="card portfolio-item mb-4">
-        <div class="card-body">
-            <div class="portfolio-item-content">
-                <div class="portfolio-details">
-                    <h3>Salmon Lake</h3>
-                    <p>Share: <strong>2.3%</strong></p>
-                    <p>Investment date: <strong>19:00 26/8/2004</strong></p>
+        <!-- Left side table -->
+        <div class="row">
+            <div class="card col-md-8">
+                <!--   Total Investment  -->
+                <div class="my-2 mb-3" style="border-bottom: 1px solid #545454;">
+                    <h2>Total Investment:<span class="fw-light h3"> ${{ total_investment|default:0 }}</span></h2>
                 </div>
-                <div class="portfolio-amount">
-                    <span>Amount: </span>
-                    <strong>$6,000</strong>
-                    <a href="#" class="btn btn-outline-primary btn-sm ms-3">Detail</a>
+                <!--   Investment table -->
+                {% if investments %}
+                    <table class="table table-bordered  table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col"></th>
+                                <th>Business</th>
+                                <th>Total Invested</th>
+                                <th>Total Shares (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for investment in investments %}
+                                <tr onclick="location.href='{% url 'b2d:business_detail' investment.fundraise__business %}'" style="cursor: pointer;">
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td class="fw-bolder">{{ investment.business_name }}</td>
+                                    <td class="fw-light">${{ investment.total_invested }}</td>
+                                    <td class="fw-light">{{ investment.total_shares }}%</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="d-flex justify-content-center ">
+                        <div class="card alert alert-info text-center">
+                            <p class="fs-3">You have no investments in your portfolio.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Pie chart on the right -->
+            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                <div class="mt-4" style="width: 100%; max-width: 400px;">
+                    <canvas id="investmentPieChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card portfolio-item mb-4">
-        <div class="card-body">
-            <div class="portfolio-item-content">
-                <div class="portfolio-details">
-                    <h3>Salmon Bear</h3>
-                    <p>Share: <strong>1.8%</strong></p>
-                    <p>Investment date: <strong>14:30 12/7/2005</strong></p>
-                </div>
-                <div class="portfolio-amount">
-                    <span>Amount: </span>
-                    <strong>$4,000</strong>
-                    <a href="#" class="btn btn-outline-primary btn-sm ms-3">Detail</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% if investment_data %}
+        const investmentData = JSON.parse('{{ investment_data|escapejs }}');
+        const ctx = document.getElementById('investmentPieChart').getContext('2d');
 
-</div>
+        // Create 10 gradient colors
+        const gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient1.addColorStop(0, '#FF6384');
+        gradient1.addColorStop(1, '#FFCE56');
+
+        const gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient2.addColorStop(0, '#36A2EB');
+        gradient2.addColorStop(1, '#4BC0C0');
+
+        const gradient3 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient3.addColorStop(0, '#9966FF');
+        gradient3.addColorStop(1, '#FF9F40');
+
+        const gradient4 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient4.addColorStop(0, '#FF5733');
+        gradient4.addColorStop(1, '#C70039');
+
+        const gradient5 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient5.addColorStop(0, '#DAF7A6');
+        gradient5.addColorStop(1, '#FFC300');
+
+        const gradient6 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient6.addColorStop(0, '#581845');
+        gradient6.addColorStop(1, '#900C3F');
+
+        const gradient7 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient7.addColorStop(0, '#1F618D');
+        gradient7.addColorStop(1, '#85C1E9');
+
+        const gradient8 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient8.addColorStop(0, '#28B463');
+        gradient8.addColorStop(1, '#82E0AA');
+
+        const gradient9 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient9.addColorStop(0, '#E74C3C');
+        gradient9.addColorStop(1, '#F1948A');
+
+        const gradient10 = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient10.addColorStop(0, '#8E44AD');
+        gradient10.addColorStop(1, '#D2B4DE');
+
+        const investmentPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: investmentData.labels,
+                datasets: [{
+                    data: investmentData.data,
+                    backgroundColor: [
+                        gradient1, gradient2, gradient3, gradient4, gradient5,
+                        gradient6, gradient7, gradient8, gradient9, gradient10
+                    ],  // 10 gradient colors
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 18, // label size
+                                family: "'Arial', sans-serif",
+                                weight: 'bold',
+                            },
+                            color: '#333',  // color labels
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return `${parseFloat(tooltipItem.raw).toFixed(2)}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    {% else %}
+        console.log("No investment data available for chart.");
+    {% endif %}
+</script>
 
 {% endblock %}

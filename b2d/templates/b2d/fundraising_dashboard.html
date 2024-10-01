@@ -1,0 +1,254 @@
+{% extends "b2d/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if active_fundraising %}
+        <!--    Check status page    -->
+        <div class="mb-3" style="border-bottom: 1px solid #545454;">
+            <h2>Investment History</h2>
+        </div>
+        <div class="row p-3">
+            <!--    Right Line chart    -->
+            <div class="col-lg-8" style="display: block; height:400;">
+                <canvas id="investmentChart"></canvas>
+            </div>
+            <!--    Left side Details   -->
+            <div class="col-lg-4 card shadow-sm">
+                <div class="text-center my-4" style="border-bottom: 1px solid #545454;">
+                    <h2>Fundraising Details</h2>
+                </div>
+                <div class="row text-center">
+                    <div class="col-sm-6 my-2">
+                        <p class="fs-3">Investment</p>
+                        <p class="lead">${{ active_fundraising.get_current_investment|floatformat:"0" }}</p>
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <p class="fs-3">Goal Amount</p>
+                        <p class="lead">${{ active_fundraising.goal_amount|floatformat:"0" }}</p>
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <p class="fs-3">Start Date</p>
+                        <p class="lead">{{ active_fundraising.publish_date }}</p>
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <p class="fs-3">Deadline Date</p>
+                        <p class="lead">{{ active_fundraising.deadline_date }}</p>
+                    </div>
+                    <div class="col-sm-12 mt-2">
+                        <p class="fs-3">Shares Percentage</p>
+                        <p>{{ active_fundraising.shares_percentage }}%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card p-3 table-responsive shadow-sm">
+            <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                <h2>Investments in this Fundraising</h2>
+            </div>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Investor</th>
+                        <th>Investment Amount</th>
+                        <th>Shares Percentage</th>
+                        <th>Investment Date/Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for investment in investments %}
+                        <tr>
+                            <td>{{ investment.investor.first_name }} {{ investment.investor.last_name }}</td>
+                            <td>{{ investment.amount }}</td>
+                            <td>{{ investment.shares_percentage }}%</td>
+                            <td>{{ investment.investment_datetime }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% elif pending_fundraising %}
+    <!--    Wait for approval page    -->
+        <div class="d-flex justify-content-center " style="margin:150px 0px;">
+            <div class="card alert alert-info text-center">
+                <p class="fs-1 fw-bolder text-decoration-underline">NOTICE</p>
+                <p class="fs-3">Your fundraising request is pending approval.</p>
+                <p class="fs-3 fw-light">Please wait for it to be approved.</p>
+            </div>
+        </div>
+
+    {% else %}
+    <!--    Create Fundraising page   -->
+        <div class="mb-3" style="border-bottom: 1px solid #545454;">
+            <h2>Create a Fundraising Campaign</h2>
+        </div>
+            <form method="POST" class="form-horizontal">
+                {% csrf_token %}
+                <div class="card p-3">
+                    <div class="mb-3">
+                        <label for="goal_amount" class="form-label fs-3">{{ form.goal_amount.label }}</label>
+                        {{ form.goal_amount }}
+                        {% if form.goal_amount.errors %}
+                            <div class="text-danger">{{ form.goal_amount.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="publish_date" class="form-label fs-3">{{ form.publish_date.label }}</label>
+                        {{ form.publish_date }}
+                        {% if form.publish_date.errors %}
+                            <div class="text-danger">{{ form.publish_date.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="deadline_date" class="form-label fs-3">{{ form.deadline_date.label }}</label>
+                        {{ form.deadline_date }}
+                        {% if form.deadline_date.errors %}
+                            <div class="text-danger">{{ form.deadline_date.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="minimum_investment" class="form-label fs-3">{{ form.minimum_investment.label }}</label>
+                        {{ form.minimum_investment }}
+                        {% if form.minimum_investment.errors %}
+                            <div class="text-danger">{{ form.minimum_investment.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="shares_percentage" class="form-label fs-3">{{ form.shares_percentage.label }}</label>
+                        {{ form.shares_percentage }}
+                        {% if form.shares_percentage.errors %}
+                            <div class="text-danger">{{ form.shares_percentage.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="my-3 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-lg btn-dark fs-3 w-50">Create Fundraising</button>
+                </div>
+            </form>
+
+        {% if finished_fundraising %}
+        <h3>Details of Previous Fundraising</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Goal Amount</th>
+                    <th>Raised Amount</th>
+                    <th>Start Date:</th>
+                    <th>Deadline Date</th>
+                    <th>Shares Percentage:</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fundraising in finished_fundraising %}
+                    <tr>
+                        <td>{{ fundraising.goal_amount }}</td>
+                        <td>{{ fundraising.get_current_investment }}</td>
+                        <td>{{ fundraising.publish_date }}</td>
+                        <td>{{ fundraising.deadline_date }}</td>
+                        <td>{{ fundraising.shares_percentage }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% if show_chart %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('investmentChart').getContext('2d');
+
+    const gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientFill.addColorStop(0, 'rgba(75, 192, 192, 1)'); // Light at the top
+    gradientFill.addColorStop(1, 'rgba(75, 192, 192, 0)'); // Transparent at the bottom
+
+    const investmentChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_labels|safe }},
+            datasets: [{
+                label: 'Cumulative Investment Amount',
+                data: {{ chart_data|safe }},
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: gradientFill, // Use gradient fill for the line
+                fill: true,  // Enable filling below the line
+                tension: 0.5,  // Smooth the line even more
+                borderWidth: 3,  // Make the line slightly thicker
+                pointBackgroundColor: '#fff',
+                pointBorderColor: 'rgba(75, 192, 192, 1)',
+                pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
+                pointHoverBorderColor: '#fff',
+                pointRadius: 5,  // Larger points
+                pointHoverRadius: 8,  // Even larger on hover
+                shadowOffsetX: 3,  // Custom shadow for line effect
+                shadowOffsetY: 3,
+                shadowBlur: 6,
+                shadowColor: 'rgba(0, 0, 0, 0.2)' // Soft shadow effect
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Fundraising Investment Over Time',
+                    font: {
+                        size: 18,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 30
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `Investment: $${tooltipItem.raw}`;
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Investment Amount ($)',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value;
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.db.models import Sum
 
@@ -15,7 +16,7 @@ class FundRaising(models.Model):
     """FundRaising Model represents a fundraising of a business, containing details information."""
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
     goal_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    publish_date = models.DateField(auto_now_add=True)
+    publish_date = models.DateField()
     deadline_date = models.DateField()
     minimum_investment = models.DecimalField(max_digits=10, decimal_places=2)
     shares_percentage = models.DecimalField(max_digits=4, decimal_places=2)
@@ -29,14 +30,19 @@ class FundRaising(models.Model):
         verbose_name = "Fundraising"
         verbose_name_plural = "Fundraisings"
 
-    def __str__(self):
-        return (f"{self.business.first_name} - "
-                f"{self.get_current_investment()}/{self.goal_amount}")
-
     def get_current_investment(self):
-        return Investment.objects.filter(fundraise=self).aggregate(
-            total=Sum('amount'))['total'] or 0
+        """Calculate the total amount of investments received for this fundraise."""
+        investment_total = Investment.objects.filter(fundraise=self).aggregate(total=Sum('amount'))['total']
+        return investment_total if investment_total is not None else Decimal('0.00')
 
     def get_percentage_investment(self):
-        return (Investment.objects.filter(fundraise=self).aggregate(
-            total=Sum('amount'))['total'] / self.goal_amount) * 100
+        """Calculate the percentage of the investment goal that has been reached."""
+        current_investment = self.get_current_investment()
+        if self.goal_amount > Decimal('0.00') and current_investment > Decimal('0.00'):
+            return (current_investment / self.goal_amount) * Decimal('100.00')
+        return Decimal('0.00')
+
+    def __str__(self):
+        """Create a string representation of the FundRaising instance."""
+        return (f"{self.business.name} - "
+                f"{self.get_current_investment()}/{self.goal_amount}")
