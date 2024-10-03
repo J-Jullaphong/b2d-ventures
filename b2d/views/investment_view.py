@@ -29,4 +29,6 @@ class InvestmentView(FormView):
         investor = Investor.objects.get(id=self.request.user.id)
         fundraise = get_object_or_404(FundRaising, id=self.kwargs['fundraise_id'])
         form.save(investor=investor, fundraise=fundraise)
+        messages.success(self.request,
+                         "Your investment has been submitted and is pending admin approval.")
         return redirect(reverse('b2d:business_detail', kwargs={'pk': fundraise.business_id}))

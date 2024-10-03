@@ -24,7 +24,7 @@ class HomeView(ListView):
             fundraising__deadline_date__gt=timezone.now()
         ).annotate(
             num_investors=Count('fundraising__investment')
-        ).order_by('-num_investors')[:3]
+        ).order_by('-num_investors')[:6]
 
         context['carousel_businesses'] = carousel_businesses
         context['card_businesses'] = card_businesses

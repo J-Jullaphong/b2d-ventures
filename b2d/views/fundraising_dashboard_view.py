@@ -72,12 +72,12 @@ class FundRaisingDashboardView(View):
         form = FundRaisingForm(request.POST)
 
         if form.is_valid():
-            new_fundraising = form.save(commit=False)
+            new_fundraising = form.save(commit=False, business=business)
             new_fundraising.business = business
             new_fundraising.save()
             messages.success(request,
                              'Your fundraising event has been created and is awaiting approval.')
-            return redirect('b2d:fundraising_dashboard')
+            return redirect('b2d:fundraising')
 
         return render(request, self.template_name,
                       {'form': form, 'show_form': True})

@@ -1,6 +1,20 @@
 {% extends "b2d/base.html" %}
 {% block content %}
     {% load static %}
+
+    {% if messages %}
+        <div class="container mt-3">
+            <div class="alert-box">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     <div class="container mt-4">
         <div class="card" style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
             <div class="row g-0">
@@ -83,7 +97,7 @@
                                      aria-valuemax="{{ fundraise.goal_amount }}"></div>
                             </div>
                         <div class="d-flex justify-content-center">
-                            <a class="btn btn-dark btn-lg invest-buttonbtn-block w-100 py-2" href="{% url 'b2d:invest_fundraise' business.id %}">Invest in {{ business.name }}</a>
+                            <a class="btn btn-dark btn-lg invest-buttonbtn-block w-100 py-2" href="{% url 'b2d:invest_fundraise' fundraise.id %}">Invest in {{ business.name }}</a>
                         </div>
                         {% endwith %}
                     </div>
@@ -93,7 +107,7 @@
             <div class="row text-center card-content-text p-0 m-0">
                 {% with fundraisings.last as fundraise %}
                     <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
-                        <h4>{{ fundraise.investment_set.count|default:"0" }}</h4>
+                        <h4>{{ fundraise.get_current_investors|default:"0" }}</h4>
                         <p>Investors</p>
                     </div>
                     <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
