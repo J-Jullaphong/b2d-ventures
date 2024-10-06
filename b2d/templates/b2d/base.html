@@ -120,9 +120,12 @@
                 <!-- Search Bar -->
                 <form class="search-form d-flex ms-auto me-5 my-lg-0"
                       method="get" action="{% url 'b2d:search_page' %}">
+                    <input type="hidden" name="category" value="{{ request.GET.category }}">
+                    <input type="hidden" name="sort" value="{{ request.GET.sort }}">
                     <input type="text" name="q" class="search-input"
                            placeholder="Search Businesses"
                            value="{{ request.GET.q }}">
+
                     <button type="submit" class="search-icon btn btn-link">
                         <i class="fas fa-search"></i>
                     </button>

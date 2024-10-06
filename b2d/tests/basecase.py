@@ -1,4 +1,5 @@
 import uuid
+from decimal import Decimal
 
 from django.test import TestCase
 from django.utils import timezone
@@ -133,51 +134,51 @@ class BaseCase(TestCase):
 
         self.fundraising1 = FundRaising.objects.create(
             business=self.business1,
-            goal_amount=10000.00,
+            goal_amount=Decimal("10000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=10),
-            minimum_investment=500.00,
-            shares_percentage=10.00,
+            minimum_investment=Decimal("500.00"),
+            shares_percentage=Decimal("10.00"),
             fundraising_status='approve'
         )
 
         self.fundraising2 = FundRaising.objects.create(
             business=self.business2,
-            goal_amount='20000.00',
+            goal_amount=Decimal("20000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment='1000.00',
-            shares_percentage='15.00',
+            minimum_investment=Decimal("1000.00"),
+            shares_percentage=Decimal("15.00"),
             fundraising_status='approve'
         )
 
         self.fundraising3 = FundRaising.objects.create(
             business=self.business3,
-            goal_amount='15000.00',
+            goal_amount=Decimal("15000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=-15),
-            minimum_investment='750.00',
-            shares_percentage='12.50',
+            minimum_investment=Decimal("750.00"),
+            shares_percentage=Decimal("12.50"),
             fundraising_status='approve'
         )
 
         self.fundraising4 = FundRaising.objects.create(
             business=self.business4,
-            goal_amount='15000.00',
+            goal_amount=Decimal("5000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment='750.00',
-            shares_percentage='12.50',
+            minimum_investment=Decimal("750.00"),
+            shares_percentage=Decimal("12.50"),
             fundraising_status='rejects'
         )
 
         self.fundraising5 = FundRaising.objects.create(
             business=self.business4,
-            goal_amount='15000.00',
+            goal_amount=Decimal("15000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment='750.00',
-            shares_percentage='12.50',
+            minimum_investment=Decimal("750.00"),
+            shares_percentage=Decimal("12.50"),
             fundraising_status='wait'
         )
 
@@ -204,7 +205,7 @@ class BaseCase(TestCase):
         self.investment1 = Investment.objects.create(
             investor=self.investor1,
             fundraise=self.fundraising1,
-            amount=5000.00,
+            amount=Decimal("5000.00"),
             shares_percentage=self.fundraising1.shares_percentage,
             investment_status='approve'
         )
@@ -212,7 +213,7 @@ class BaseCase(TestCase):
         self.investment2 = Investment.objects.create(
             investor=self.investor1,
             fundraise=self.fundraising2,
-            amount=2500.00,
+            amount=Decimal("2500.00"),
             shares_percentage=self.fundraising2.shares_percentage,
             investment_status='approve'
         )
@@ -220,7 +221,7 @@ class BaseCase(TestCase):
         self.investment3 = Investment.objects.create(
             investor=self.investor2,
             fundraise=self.fundraising1,
-            amount=2500.00,
+            amount=Decimal("2500.00"),
             shares_percentage=self.fundraising1.shares_percentage,
             investment_status='approve'
         )

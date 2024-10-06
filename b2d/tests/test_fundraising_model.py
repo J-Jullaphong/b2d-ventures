@@ -54,15 +54,17 @@ class FundRaisingModelTest(TestCase):
         """
         Investment.objects.create(
             fundraise=self.fundraise,
-            investor=self.investor,  # Adding investor
+            investor=self.investor,
             amount=Decimal('1000.00'),
-            shares_percentage=Decimal('5.00')
+            shares_percentage=Decimal('5.00'),
+            investment_status = 'approve'
         )
         Investment.objects.create(
             fundraise=self.fundraise,
-            investor=self.investor,  # Adding investor
+            investor=self.investor,
             amount=Decimal('500.00'),
-            shares_percentage=Decimal('2.50')
+            shares_percentage=Decimal('2.50'),
+            investment_status = 'approve'
         )
         self.assertEqual(self.fundraise.get_current_investment(), Decimal('1500.00'))
 
@@ -80,7 +82,8 @@ class FundRaisingModelTest(TestCase):
             fundraise=self.fundraise,
             investor=self.investor,
             amount=Decimal('2500.00'),
-            shares_percentage=Decimal('5.00')
+            shares_percentage=Decimal('5.00'),
+            investment_status = 'approve'
         )
         self.assertEqual(self.fundraise.get_percentage_investment(), Decimal('25.00'))
 
@@ -92,7 +95,8 @@ class FundRaisingModelTest(TestCase):
             fundraise=self.fundraise,
             investor=self.investor,
             amount=Decimal('1000.25'),
-            shares_percentage=Decimal('2.50')
+            shares_percentage=Decimal('2.50'),
+            investment_status='approve'
         )
         expected_str = f"Test Business - 1000.25/10000.00"
         self.assertEqual(str(self.fundraise), expected_str)
