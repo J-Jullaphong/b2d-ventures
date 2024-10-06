@@ -7,7 +7,7 @@
             background-color: #fff;
             color: #333;
             overflow: hidden;
-            transition: transform 0.3s ease, height 0.3s ease;
+            transition: all 0.5s;
             height: 500px;
         }
 
@@ -19,7 +19,6 @@
         .card-img-top {
             height: 200px;
             object-fit: cover;
-            transition: transform 0.3s ease;
         }
 
         .card-body {
@@ -34,7 +33,7 @@
         }
 
         .card:hover .card-img-top {
-            height: 200px;
+            height: 150px;
         }
 
         .card:hover .card-body {
@@ -121,7 +120,7 @@
 
         <div class="row">
             {% for business in businesses %}
-                <div class="col-md-4">
+                <div class="col-md-4 mb-5">
                     <div class="card mx-4 border border-2"
                          onclick="location.href='{% url 'b2d:business_detail' business.id %}';"
                          style="cursor: pointer;">

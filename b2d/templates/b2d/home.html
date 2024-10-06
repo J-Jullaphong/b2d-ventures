@@ -148,7 +148,7 @@
         <p class="text-left" style="color:#585757;">The deals attracting the most interest right now</p>
         <div class="row">
             {% for business in card_businesses %}
-                <div class="col-md-4">
+                <div class="col-md-4 mb-5">
                     <div class="card mx-4 border border-2"
                          onclick="location.href='{% url 'b2d:business_detail' business.id %}';"
                          style="cursor: pointer;">
