@@ -1,7 +1,7 @@
 import uuid
 from decimal import Decimal
 
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.utils import timezone
 from b2d.models import Business, Category, FundRaising, Investment, Investor
 
@@ -14,6 +14,8 @@ def generate_file_path(suffix):
 class BaseCase(TestCase):
 
     def setUp(self):
+        self.client = Client()
+
         # Create categories
         self.category_tech = Category.objects.create(category_name="Tech")
         self.category_food = Category.objects.create(category_name="Food")
@@ -30,9 +32,11 @@ class BaseCase(TestCase):
         self.user2_uid = uuid.uuid4().hex
 
         # Create businesses with dynamic file paths and unique identifiers
-        self.business1 = Business.objects.create(
+        self.business1 = Business.objects.create_user(
             username=f"username_{self.business1_uid}",
             email=f"user{self.business1_uid}@example.com",
+            password="password123",
+            is_active = True,
             name="Tech Innovate",
             phone_number="1234567890",
             description="Innovative tech solutions.",
@@ -47,9 +51,11 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank1')
         )
 
-        self.business2 = Business.objects.create(
+        self.business2 = Business.objects.create_user(
             username=f"username_{self.business2_uid}",
             email=f"user{self.business2_uid}@example.com",
+            password="password123",
+            is_active=True,
             name="Foodies Unite",
             phone_number="0987654321",
             description="A delightful culinary journey.",
@@ -64,9 +70,11 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank2')
         )
 
-        self.business3 = Business.objects.create(
+        self.business3 = Business.objects.create_user(
             username=f"username_{self.business3_uid}",
             email=f"user{self.business3_uid}@example.com",
+            password="password123",
+            is_active=True,
             name="Retail Giants",
             phone_number="1928374650",
             description="Revolutionizing retail shopping.",
@@ -81,9 +89,11 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank3')
         )
 
-        self.business4 = Business.objects.create(
+        self.business4 = Business.objects.create_user(
             username=f"username_{self.business4_uid}",
             email=f"user{self.business4_uid}@example.com",
+            password="password123",
+            is_active=True,
             name="Retail Giants",
             phone_number="1928374650",
             description="Revolutionizing retail shopping.",
@@ -98,9 +108,11 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank4')
         )
 
-        self.business5 = Business.objects.create(
+        self.business5 = Business.objects.create_user(
             username=f"username_{self.business5_uid}",
             email=f"user{self.business5_uid}@example.com",
+            password="password123",
+            is_active=True,
             name="Retail Giants",
             phone_number="1928374650",
             description="Revolutionizing retail shopping.",
@@ -115,9 +127,11 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank5')
         )
 
-        self.business6 = Business.objects.create(
+        self.business6 = Business.objects.create_user(
             username=f"username_{self.business6_uid}",
             email=f"user{self.business6_uid}@example.com",
+            password="password123",
+            is_active=True,
             name="Retail Giants",
             phone_number="1928374650",
             description="Revolutionizing retail shopping.",
@@ -187,15 +201,18 @@ class BaseCase(TestCase):
             username=f"investor_{self.user1_uid}",
             email=f"investor1@example.com",
             password="password123",
+            is_active=True,
             first_name="Investor",
             last_name="One",
             financial_statements=generate_file_path('investor1')
+
         )
 
         self.investor2 = Investor.objects.create_user(
             username=f"investor_{self.user2_uid}",
             email=f"investor2@example.com",
             password="password123",
+            is_active=True,
             first_name="Investor",
             last_name="Two",
             financial_statements=generate_file_path('investor2')
