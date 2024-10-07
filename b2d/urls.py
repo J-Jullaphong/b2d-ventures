@@ -3,6 +3,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from .views import *
+from . import views
 
 app_name = 'b2d'
 
@@ -17,5 +18,7 @@ urlpatterns = [
     path('register/', RegistrationFormView.as_view(), name='registration'),
     path('login/', B2DLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('learn-more/', LearnMoreView.as_view(), name='learn_more'),
+    path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy_policy'),
 ]
 

@@ -1,0 +1,292 @@
+{% extends 'b2d/base.html' %}
+{% load static %}
+{% block style %}
+<style>
+    /* Sticky Left Navigation */
+    .col-lg-3 {
+        position: sticky;
+        top: 30px;
+        height: fit-content;
+    }
+
+    @media only screen and (max-width: 991px) {
+        .col-lg-3 {
+            position: static;
+        }
+    }
+
+    .container_content ul li {
+        padding: 10px 0;
+    }
+
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="container mt-2">
+    <div class="mb-2" style="border-bottom: 1px solid #545454;">
+        <h1>Learn More</h1>
+    </div>
+    <div class="row">
+
+        <!-- Left Navigation -->
+        <div class="col-lg-3 ">
+            <div id="list-example" class="list-group">
+                <a class="lead list-group-item list-group-item-action"
+                   href="#investors">Investors FAQs</a>
+                <a class="lead list-group-item list-group-item-action"
+                   href="#business_owners">Business Owners FAQs</a>
+                <a class="lead list-group-item list-group-item-action"
+                   href="#terms">Terms & Conditions</a>
+                <a class="lead list-group-item list-group-item-action"
+                   href="#risks">Investment Risks</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="bg-light p-3">
+
+                <!-- FAQs Section -->
+                <h2 class="mb-2" style="border-bottom: 1px solid #545454;">
+                    FAQs</h2>
+                <h4 id="investors">For Investors:</h4>
+                <ul>
+                    <li><strong>How do I sign up as an investor?</strong> You
+                        can sign up by clicking the "Sign Up" button on the
+                        homepage and selecting the "Investor" option. Fill in
+                        your details, upload the required documents (such as
+                        financial statements), and submit your request. Once
+                        approved by the admin, you’ll be able to log in and
+                        start browsing business.
+                    </li>
+                    <li><strong>How do I find businesses to invest in?</strong>
+                        After logging in, you can use the Business Browsing
+                        System to search for businesses based on various
+                        filters, including industry, business size, and
+                        investor interest.
+                    </li>
+                    <li><strong>What type of information can I expect to see in
+                        a business profile?</strong> Business profiles include
+                        detailed information such as market analysis, financial
+                        health, growth potential, team, and other key metrics
+                        that will help you evaluate investment opportunities.
+                    </li>
+                    <li><strong>How do I invest in a business?</strong> After
+                        viewing the business details, you can click on the
+                        “Invest in Business” button. Follow the steps,
+                        including specifying your investment amount and
+                        completing the transaction via QR code.
+                    </li>
+                    <li><strong>Is my investment guaranteed?</strong> No,
+                        investments carry inherent risks, and there is no
+                        guarantee of returns. Be sure to thoroughly evaluate
+                        each business before investing.
+                    </li>
+                    <li><strong>Can I track the progress of my
+                        investments?</strong> Yes, you can access your
+                        portfolio through your dashboard, where you can track
+                        all your current investments, including the amount
+                        invested and the progress of each business.
+                    </li>
+                    <li><strong>How do I withdraw my investment?</strong>
+                        Depending on the business agreement and the stage of
+                        the business, withdrawals or returns on your investment
+                        may vary. Contact the business owner or refer to the
+                        investment terms for details.
+                    </li>
+                    <li><strong>Who approves my investment?</strong> All
+                        investments are reviewed and approved by the admin to
+                        ensure compliance with platform regulations.
+                    </li>
+                    <li><strong>What happens if a business fails?</strong> If a
+                        business fails, you may lose your investment. It is
+                        important to review the business thoroughly and
+                        understand the risks involved.
+                    </li>
+                    <li><strong>How is my data secured?</strong> B2D Ventures
+                        uses secure encryption and other security measures to
+                        protect your personal and financial data.
+                    </li>
+                </ul>
+
+                <h4 id="business_owners">For Business Owners:</h4>
+                <ul>
+                    <li><strong>How do I sign up as a business owner?</strong>
+                        You can sign up by selecting the "Business" tab during
+                        the registration process. Provide your business details
+                        and upload the required documents (such as tax ID,
+                        business registration certificates). Once approved by
+                        the admin, you can access your account.
+                    </li>
+                    <li><strong>How do I create a business profile?</strong>
+                        After logging in, go to the “Profile” section, where
+                        you can enter details about your business, including
+                        description, category, and financial data. You can also
+                        upload images, videos, and other promotional material.
+                    </li>
+                    <li><strong>How do I start a fundraising campaign?</strong>
+                        Once your business profile is complete, you can create
+                        a fundraising campaign by specifying your funding goal,
+                        minimum investment, share percentage, and deadline.
+                        Your campaign will be subject to admin approval.
+                    </li>
+                    <li><strong>Can I update my business profile after
+                        launching a campaign?</strong>
+                        Yes, you can make updates to your business profile at
+                        any time, though certain changes to your campaign may
+                        require admin approval.
+                    </li>
+                    <li><strong>How do I track the progress of my
+                        fundraising?</strong> You can view the progress of your
+                        campaign on your dashboard, including details like
+                        total funds raised, number of investors, and the status
+                        of individual investments.
+                    </li>
+                    <li><strong>What happens if I don’t reach my fundraising
+                        goal?</strong> Depending on the terms you set for your
+                        campaign, if the goal is not met, you may either extend
+                        the deadline or refund the investments.
+                    </li>
+                    <li><strong>How do I communicate with potential
+                        investors?</strong> Investors may reach out to you via
+                        the platform, and you can share further information or
+                        updates about your business.
+                    </li>
+                    <li><strong>What documents do I need to submit during
+                        sign-up?</strong> You will need to upload
+                        business-related documents such as your business
+                        registration certificate, tax identification number,
+                        proof of address, financial statements, ownership
+                        documents, and licenses or permits.
+                    </li>
+                    <li><strong>Can I raise funds more than once?</strong> Yes,
+                        you can launch multiple fundraising campaigns, provided
+                        that previous campaigns meet the terms and conditions
+                        set by the platform.
+                    </li>
+                    <li><strong>How secure is the platform for my business
+                        information?</strong> B2D Ventures takes data security
+                        seriously, using encryption and industry-standard
+                        security measures to protect your business information.
+                    </li>
+                </ul>
+
+                <!-- Terms & Conditions Section -->
+                <h2 id="terms" class="mb-2"
+                    style="border-bottom: 1px solid #545454;">Terms &
+                    Conditions</h2>
+                <h4>For Investors:</h4>
+                <ul>
+                    <li><strong>Eligibility</strong> Investors must meet
+                        platform requirements, including the submission of
+                        necessary financial documents, to ensure compliance
+                        with local laws and regulations.
+                    </li>
+                    <li><strong>Risk Awareness</strong> All investments carry
+                        risks, and by using the platform, you acknowledge that
+                        you may lose your investment.
+                    </li>
+                    <li><strong>No Guarantee of Returns</strong> The platform
+                        does not guarantee any financial returns or business
+                        success.
+                    </li>
+                    <li><strong>Investment Approval</strong> All investments
+                        are subject to admin review and approval for compliance
+                        with platform rules.
+                    </li>
+                    <li><strong>Non-Liquidity</strong> Investments made via the
+                        platform are not liquid, and you may not be able to
+                        sell or transfer your shares without approval.
+                    </li>
+                    <li><strong>Data Privacy</strong> The platform will
+                        securely handle all personal and financial data in
+                        compliance with privacy laws.
+                    </li>
+                    <li><strong>Fees</strong> Certain transactions may incur
+                        fees, which will be clearly disclosed before any
+                        investment is made.
+                    </li>
+                </ul>
+                <h4>For Business Owners:</h4>
+                <ul>
+                    <li><strong>Eligibility</strong> Businesses must meet all
+                        platform requirements, including document verification,
+                        to launch campaigns or solicit investments.
+                    </li>
+                    <li><strong>Compliance</strong> Businesses must comply with
+                        local regulations, tax laws, and any applicable
+                        licensing requirements.
+                    </li>
+                    <li><strong>Transparency</strong> Business owners are
+                        responsible for providing accurate and complete
+                        information about their business and must disclose any
+                        material changes promptly.
+                    </li>
+                    <li><strong>Fundraising Terms</strong> All fundraising
+                        campaigns are subject to admin approval, and funds
+                        raised will be held until the campaign is reviewed and
+                        confirmed.
+                    </li>
+                    <li><strong>Fees:</strong> The platform may charge fees for
+                        launching fundraising campaigns or for processing
+                        certain transactions, which will be disclosed upfront.
+                    </li>
+                    <li><strong>Responsibility</strong> Business owners are
+                        responsible for managing investor relations, delivering
+                        promised returns (if applicable), and ensuring the
+                        proper use of raised funds.
+                    </li>
+                    <li><strong>Data Privacy</strong> The platform will handle
+                        business data securely and in compliance with
+                        applicable privacy laws.
+                    </li>
+                </ul>
+
+                <!-- Risks Section -->
+                <h2 class="mb-2" style="border-bottom: 1px solid #545454;"
+                    id="risks">Investment Risks</h2>
+                <p><span class="note"><strong>Note:</strong></span> Investing
+                    in startups and
+                    early-stage businesses carries significant risks. You
+                    should carefully evaluate the following risks before
+                    investing.</p>
+                <ul>
+                    <li><strong>Loss of Capital</strong> The business may fail,
+                        leading to a complete or partial loss of your
+                        investment.
+                    </li>
+                    <li><strong>Illiquidity</strong> Investments in startups
+                        are generally illiquid, meaning you might not be able
+                        to withdraw or sell your shares quickly or at all.
+                    </li>
+                    <li><strong>Dilution</strong> Future funding rounds may
+                        dilute your equity, which can reduce the percentage of
+                        the business you own.
+                    </li>
+                    <li><strong>Business Risk</strong> Each business faces
+                        unique risks related to its operations, market
+                        competition, and external factors.
+                    </li>
+                    <li><strong>No Guarantee of Returns</strong> There is no
+                        guarantee of receiving dividends or that the business
+                        will succeed in generating returns.
+                    </li>
+                    <li><strong>Long-Term Horizon</strong> Investments in
+                        startups are typically long-term and may take years to
+                        mature before you see any returns, if any.
+                    </li>
+                    <li><strong>Regulatory and Legal Risks</strong> Changes in
+                        regulations or laws could negatively affect the
+                        business or its ability to succeed.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

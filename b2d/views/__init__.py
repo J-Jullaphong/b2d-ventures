@@ -7,3 +7,5 @@ from .home import HomeView
 from .investment_view import InvestmentView
 from .fundraising_dashboard_view import FundRaisingDashboardView
 from .portfolio import PortfolioView
+from .learn_more_view import LearnMoreView
+from .privacy_policy_view import PrivacyPolicyView
