@@ -7,9 +7,13 @@ from ..forms import FundRaisingForm
 
 
 class FundRaisingDashboardView(View):
+    """
+    View for handling the fundraising dashboard, allowing businesses to manage their fundraising events.
+    """
     template_name = 'b2d/fundraising_dashboard.html'
 
     def get(self, request, *args, **kwargs):
+        """Handles GET requests for the fundraising dashboard."""
         try:
             business = Business.objects.get(id=request.user.id)
         except Business.DoesNotExist:
@@ -68,6 +72,7 @@ class FundRaisingDashboardView(View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        """Handles POST requests for creating a new fundraising event."""
         business = request.user.business
         form = FundRaisingForm(request.POST)
 
