@@ -1,9 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+
 from ..models import Business
 
 
 class BusinessRegistrationForm(UserCreationForm):
+    """Form for registering a new business."""
     usable_password = None
 
     class Meta:
@@ -12,7 +14,8 @@ class BusinessRegistrationForm(UserCreationForm):
             'name', 'email', 'phone_number', 'password1', 'password2',
             'business_registration_certificate', 'tax_identification_number',
             'proof_of_address', 'financial_statements', 'ownership_documents',
-            'director_identification', 'licenses_and_permits', 'bank_account_details'
+            'director_identification', 'licenses_and_permits',
+            'bank_account_details'
         ]
         labels = {
             'email': 'Email'
@@ -27,9 +30,10 @@ class BusinessRegistrationForm(UserCreationForm):
             'phone_number': forms.TextInput(attrs={
                 'placeholder': 'Phone number'
             }),
-            'business_registration_certificate': forms.ClearableFileInput(attrs={
-                'accept': 'application/pdf',
-            }),
+            'business_registration_certificate': forms.ClearableFileInput(
+                attrs={
+                    'accept': 'application/pdf',
+                }),
             'tax_identification_number': forms.ClearableFileInput(attrs={
                 'accept': 'application/pdf',
             }),
@@ -62,10 +66,12 @@ class BusinessRegistrationForm(UserCreationForm):
             self.fields[field_name].widget.attrs["class"] = "form-control"
 
         self.fields['password1'].widget.attrs["placeholder"] = "Password"
-        self.fields['password2'].widget.attrs["placeholder"] = "Confirm Password"
+        self.fields['password2'].widget.attrs[
+            "placeholder"] = "Confirm Password"
         self.fields['password2'].label = "Confirm Password"
 
     def save(self, commit=True):
+        """Saves the business with inactive status until approval and sets username to email."""
         user = super().save(commit=False)
         if commit:
             user.is_active = False
