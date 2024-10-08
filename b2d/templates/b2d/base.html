@@ -123,9 +123,9 @@
                 <!-- Search Bar -->
                 <form class="search-form d-flex ms-auto me-5 my-lg-0"
                       method="get" action="{% url 'b2d:search_page' %}">
-                    <input type="hidden" name="category"
+                    <input type="hidden" name="category-base"
                            value="{{ request.GET.category }}">
-                    <input type="hidden" name="sort"
+                    <input type="hidden" name="sort-base"
                            value="{{ request.GET.sort }}">
                     <input type="text" name="q" class="search-input"
                            placeholder="Search Businesses"

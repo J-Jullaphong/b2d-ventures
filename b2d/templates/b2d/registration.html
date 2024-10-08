@@ -124,8 +124,7 @@
                 {% for field in form %}
                 <div class="mb-3">
                     <label for="{{ field.id_for_label }}"
-                           class="form-label text-start">{{ field.label
-                        }}</label>
+                           class="form-label text-start">{{ field.label }}</label>
                     {{ field }}
                     <div class="text-danger small">{{ field.errors }}</div>
                 </div>
