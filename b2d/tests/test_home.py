@@ -5,7 +5,8 @@ from .basecase import BaseCase
 class HomePageTest(BaseCase):
     def test_home_view(self):
         """Test the home view and ensure correct content is rendered."""
-        response = self.client.get(reverse('b2d:home'))
+        url = reverse('b2d:home')
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse('b2d:home'))
         self.assertTemplateUsed(response, 'b2d/home.html')

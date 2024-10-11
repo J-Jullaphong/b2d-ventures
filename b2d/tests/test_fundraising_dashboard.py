@@ -1,18 +1,29 @@
 from django.urls import reverse
 from .basecase import BaseCase
 
-from django.utils import timezone
 
 class FundRaisingDashboardViewTest(BaseCase):
 
-    def test_fundraising_dashboard_view(self):
-        """Test the fundraising dashboard view and ensure correct content is rendered."""
+    def test_fundraising_dashboard_view_with_business_user(self):
+        """Test the fundraising dashboard view which login as business user is rendered."""
+        # login as business 1
         login_successful = self.client.login(username=self.business1.username, password="password123")
-        self.assertTrue(login_successful, "Login failed for business1")
+        self.assertTrue(login_successful)
         url = reverse('b2d:fundraising')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'b2d/fundraising_dashboard.html')
+
+    def test_fundraising_dashboard_view_without_business_user(self):
+        """Test the fundraising dashboard view which login as business user is redirect."""
+        url = reverse('b2d:fundraising')
+        response = self.client.get(url)
+        # Not authentication should redirect
+        self.assertEqual(response.status_code, 302)
+        # Investor user should redirect
+        login_successful = self.client.login(username=self.investor1.username, password="password123")
+        self.assertTrue(login_successful)
+        self.assertEqual(response.status_code, 302)
 
     def test_fundraising_dashboard_view_context_with_active_fundraising(self):
         """Test fundraising dashboard view with active fundraising context."""
@@ -39,7 +50,6 @@ class FundRaisingDashboardViewTest(BaseCase):
         self.assertEqual(response.context['chart_data'], expected_amount)
         self.assertIn('form', response.context)
 
-
     def test_fundraising_dashboard_view_context_with_pending_fundraising(self):
         """Test fundraising dashboard view with pending fundraising context."""
         self.client.login(username=self.business5.username, password="password123")
@@ -56,7 +66,6 @@ class FundRaisingDashboardViewTest(BaseCase):
         self.assertIn('chart_data', response.context)
         self.assertEqual(response.context['chart_data'], [])
         self.assertIn('form', response.context)
-
 
     def test_fundraising_dashboard_view_context_with_finished_fundraising(self):
         """Test fundraising dashboard view with finished fundraising context."""
