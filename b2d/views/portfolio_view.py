@@ -2,20 +2,24 @@ import json
 
 from django.db.models import Sum, F
 from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
 
-from ..models import Investment
+from ..models import Investment, Investor
 
 
 class PortfolioView(TemplateView):
     """View for displaying the user's investment portfolio."""
     template_name = 'b2d/portfolio.html'
 
-    def get_context_data(self, **kwargs):
+    def get(self, request):
         """
         Provides context data to the portfolio template including total investment,
         business names, and percentages for each business in the portfolio.
         """
-        context = super().get_context_data(**kwargs)
+        try:
+            investor = Investor.objects.get(id=request.user.id)
+        except Investor.DoesNotExist:
+            return redirect("b2d:home")
 
         # Aggregate investments by business and calculate total invested and shares percentage
         investments = (
@@ -39,11 +43,13 @@ class PortfolioView(TemplateView):
             for investment in investments
         ]
 
-        context['investments'] = investments
-        context['total_investment'] = total_investment
-        context['investment_data'] = json.dumps({
-            'labels': labels,
-            'data': data,
-        })
+        context = {
+            'investments': investments,
+            'total_investment': total_investment,
+            'investment_data': json.dumps({
+                'labels': labels,
+                'data': data,
+            })
+        }
 
-        return context
+        return render(request, self.template_name, context)

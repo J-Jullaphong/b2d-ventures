@@ -2,7 +2,7 @@ from django.urls import reverse
 from .basecase import BaseCase
 
 
-class HomePageTest(BaseCase):
+class HomeViewTest(BaseCase):
     def test_home_view(self):
         """Test the home view and ensure correct content is rendered."""
         url = reverse('b2d:home')

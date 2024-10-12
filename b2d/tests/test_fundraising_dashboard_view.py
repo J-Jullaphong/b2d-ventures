@@ -15,7 +15,7 @@ class FundRaisingDashboardViewTest(BaseCase):
         self.assertTemplateUsed(response, 'b2d/fundraising_dashboard.html')
 
     def test_fundraising_dashboard_view_without_business_user(self):
-        """Test the fundraising dashboard view which login as business user is redirect."""
+        """Test the fundraising dashboard view which not login as business user is redirect."""
         url = reverse('b2d:fundraising')
         response = self.client.get(url)
         # Not authentication should redirect
