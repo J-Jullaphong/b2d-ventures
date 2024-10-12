@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views.generic.edit import FormView
 
@@ -12,11 +12,17 @@ class InvestmentView(FormView):
     template_name = 'b2d/transaction.html'
     form_class = InvestmentForm
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
         """Provides context data to the investment template including the current fundraising campaign."""
-        context = super().get_context_data(**kwargs)
-        context['fundraise'] = get_object_or_404(FundRaising, id=self.kwargs['fundraise_id'])
-        return context
+        try:
+            investor = Investor.objects.get(id=request.user.id)
+        except Investor.DoesNotExist:
+            return redirect("b2d:home")
+
+        context = {
+            'fundraise': get_object_or_404(FundRaising, id=self.kwargs['fundraise_id'])
+        }
+        return render(request, self.template_name, context)
 
     def get_form_kwargs(self):
         """Passes additional keyword arguments to the form including the current fundraising campaign."""
