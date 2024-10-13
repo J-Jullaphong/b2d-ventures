@@ -3,108 +3,10 @@
 
 {% block style %}
     <link href="{% static 'css/home.css' %}" rel="stylesheet">
-    <style>
-        .carousel-item {
-            background-color: black;
-        }
-
-        .img_slide {
-            background-position: center;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            background-size: cover;
-            -o-background-size: cover;
-            opacity: 0.5;
-        }
-
-        /**
-         * Button
-         */
-        .btn-transparent {
-            background: transparent;
-            color: #fff;
-            border: 2px solid #fff;
-        }
-
-        .btn-transparent:hover {
-            background-color: black;
-        }
-
-        .btn-rounded {
-            border-radius: 70px;
-        }
-
-        .btn-large {
-            padding: 11px 45px;
-            font-size: 18px;
-        }
-
-        /**
-         * Change animation duration
-         */
-        .animated {
-            -webkit-animation-duration: 1.5s;
-            animation-duration: 1.5s;
-        }
-
-        @-webkit-keyframes fadeInRight {
-            from {
-                opacity: 0;
-                -webkit-transform: translate3d(100px, 0, 0);
-                transform: translate3d(100px, 0, 0);
-            }
-
-            to {
-                opacity: 1;
-                -webkit-transform: none;
-                transform: none;
-            }
-        }
-
-        @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                -webkit-transform: translate3d(100px, 0, 0);
-                transform: translate3d(100px, 0, 0);
-            }
-
-            to {
-                opacity: 1;
-                -webkit-transform: none;
-                transform: none;
-            }
-        }
-
-        .fadeInRight {
-            -webkit-animation-name: fadeInRight;
-            animation-name: fadeInRight;
-        }
-
-        .seeMore {
-            font-size: 22px;
-        }
-
-        .card-img-top {
-            height: 250px;
-        }
-
-        .card:hover .card-img-top {
-            height: 200px;
-            transition: all 0.5s;
-        }
-
-        .card:hover .card-body {
-            transition: all 0.5s;
-        }
-
-        .text-underline {
-            border-bottom: 1px solid #C5C5C5;
-        }
-
-    </style>
 {% endblock %}
 
 {% block content %}
+    <!-- image slide -->
     <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-indicators">
             {% for item in carousel_businesses %}
@@ -142,7 +44,7 @@
         </a>
     </div>
 
-
+    <!--  Top deals sections  -->
     <div class="container my-5">
         <h2 class="text-left" style="font-style:bold;">TOP DEAL</h2>
         <p class="text-left" style="color:#585757;">The deals attracting the most interest right now</p>
@@ -202,7 +104,6 @@
                 <a href="{% url 'b2d:search_page' %}" class="btn btn-dark col-md-4 seeMore">See more</a>
             </div>
         </div>
-
     </div>
 
 {% endblock %}

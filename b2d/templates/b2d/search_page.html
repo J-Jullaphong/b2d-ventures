@@ -2,71 +2,13 @@
 {% load static %}
 
 {% block style %}
-    <style>
-        .card {
-            background-color: #fff;
-            color: #333;
-            overflow: hidden;
-            transition: all 0.5s;
-            height: 500px;
-        }
-
-        .card-title,
-        .card-text {
-            color: #333;
-        }
-
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card-body {
-            transition: transform 0.3s ease;
-            position: relative;
-            top: 0;
-        }
-
-        .card-img-top {
-            height: 250px;
-            transition: all 0.5s;
-        }
-
-        .card:hover .card-img-top {
-            height: 150px;
-        }
-
-        .card:hover .card-body {
-            transition: all 0.5s;
-        }
-
-        .card-details {
-            display: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .card:hover .card-summary {
-            display: none;
-        }
-
-        .card:hover .card-details {
-            display: block;
-        }
-
-        .progress-bar {
-            background-color: #41F400;
-        }
-
-        .text-underline {
-            border-bottom: 1px solid #C5C5C5;
-        }
-    </style>
+    <link href="{% static 'css/search_page.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
     <div class="container mt-4">
         <h1>Investment Opportunities</h1>
-
+        <!--   Filter Option   -->
         <div class="row mb-4">
             <div class="col pb-2" style="border-bottom: 1px solid #545454;">
                 <form method="get" action="" class="form-inline">
@@ -119,6 +61,7 @@
         </div>
 
         <div class="row">
+            <!--   Business card   -->
             {% for business in businesses %}
                 <div class="col-md-4 mb-5">
                     <div class="card mx-4 border border-2"

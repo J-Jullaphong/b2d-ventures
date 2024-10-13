@@ -1,7 +1,6 @@
 {% extends "b2d/base.html" %}
+{% load static %}
 {% block content %}
-    {% load static %}
-
     {% if messages %}
         <div class="container mt-3">
             <div class="alert-box">
@@ -16,6 +15,7 @@
     {% endif %}
 
     <div class="container mt-4">
+        <!--   left image slide   -->
         <div class="card" style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
             <div class="row g-0">
                 <div class="col-md-7">
@@ -81,7 +81,7 @@
                         {% endif %}
                     </div>
                 </div>
-
+                <!--   Right business details  -->
                 <div class="col-md-5">
                     <div class="card-body pt-3">
                         <h1 class="card-title display-4 font-weight-bold">{{ business.name }}</h1>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
             </div>
-
+            <!--  Middle business details  -->
             <div class="row text-center card-content-text p-0 m-0">
                 {% with fundraisings.last as fundraise %}
                     <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
@@ -128,6 +128,7 @@
         <div class="card p-0 m-0" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
             <div class="row">
                 <div class="col-md-8">
+                    <!--  left pitch details  -->
                     <div class="card-body">
                         {% for pitch in pitch_data %}
                             <div class="my-2">
@@ -138,6 +139,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
+                    <!--  team member -->
                     <div class="team-content rounded pt-4 pb-4 m-4 shadow border border-secondary" style="background: rgba(128, 123, 123, .3); border">
                         <div style="text-align: center;">
                             <h3><u>Team</u></h3>
