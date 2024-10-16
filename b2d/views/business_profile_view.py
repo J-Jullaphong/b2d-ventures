@@ -10,9 +10,11 @@ from ..utils import upload_file, get_file
 
 
 class BusinessProfileView(View):
+    """View to manage business profile creation and updates."""
     template_name = 'b2d/business_create.html'
 
     def get(self, request):
+        """Handles the GET request to display the business profile form."""
         try:
             business = Business.objects.get(id=request.user.id)
         except Business.DoesNotExist:
@@ -61,6 +63,7 @@ class BusinessProfileView(View):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        """Handles the POST request to update business profile information."""
         business = Business.objects.get(id=request.user.id)
         business_name = request.POST.get('businessName')
         business_description = request.POST.get('businessDescription')

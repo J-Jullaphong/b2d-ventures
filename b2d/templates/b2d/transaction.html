@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="container">
-<!--    Show error message    -->
+        <!--    Show error message    -->
         {% if messages %}
             <div class="alert alert-danger alert-dismissible fade show m-3 shadow-sm" role="alert">
                 {% for message in messages %}
@@ -16,7 +16,7 @@
             </div>
         {% endif %}
 
-<!--    invest card content    -->
+        <!--    invest card content    -->
         <div class="card m-4 p-4 shadow-sm">
             <div class="mb-3" style="border-bottom: 1px solid #545454;">
                 <h1 class="fw-medium">Invest in {{ fundraise.business.name }}</h1>
@@ -67,7 +67,7 @@
                 <div class="form-check mb-4 d-flex justify-content-center">
                     <input class="form-check-input mx-2 mt-2" type="checkbox" value="" id="agreementCheck" required>
                     <label class="form-check-label fs-5" for="agreementCheck">
-                        I have read and agree to the <a href="#">investment agreement</a>
+                        I have read and agree to the <a href="/learn-more/">investment agreement</a>
                     </label>
                 </div>
                 <!--  button   -->

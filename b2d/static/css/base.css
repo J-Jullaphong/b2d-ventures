@@ -1,26 +1,60 @@
-body {
-    font-family: Arial, sans-serif;
+.container-fluid {
+    border-bottom: 2px solid #D9D9D9;
 }
 
-.navbar-custom {
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    border-radius: 50px;
+    border: 1px solid #000;
+    padding: 1px 10px;
+    box-sizing: border-box;
 }
 
-.form-control {
-    max-width: 350px;
+.search-input {
+    flex-grow: 1;
+    border: none;
+    background-color: transparent;
+    padding-left: 10px;
+    font-size: 20px;
+    color: #333;
+    outline: none;
 }
 
-.carousel .carousel-inner {
-    width: 100%;
-    max-height: 500px;
-    /* Control the maximum height */
+.search-icon {
+    color: #333;
+    padding-right: 10px;
 }
 
-.carousel .carousel-inner img {
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-    height: 100%;
+@media only screen and (max-width: 1000px) {
+    .search-form {
+        width: 100%;
+    }
+}
+
+.search-icon i {
+    font-size: 18px;
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.businessesDropdown {
+    margin-left:20px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .businessesDropdown {
+        margin-left:0px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .login-btn{
+        width:30%;
+        margin-top:10px;
+        margin-bottom:10px;
+    }
 }

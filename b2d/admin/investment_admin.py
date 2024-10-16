@@ -1,9 +1,14 @@
 from django.contrib import admin
+
 from ..models import Investment
 
 
 @admin.register(Investment)
 class InvestmentAdmin(admin.ModelAdmin):
+    """
+        Customizes the admin interface for the Investment model, enabling the
+        management and approval of investments made by investors in fundraising events.
+    """
     list_display = ('investor', 'fundraise', 'amount', 'shares_percentage',
                     'investment_status', 'investment_datetime')
     actions = ['approve_investments']
@@ -16,6 +21,7 @@ class InvestmentAdmin(admin.ModelAdmin):
     )
 
     def approve_investments(self, request, queryset):
+        """Custom action to approve selected investments."""
         for investment in queryset:
             if investment.investment_status != 'approve':
                 investment.investment_status = 'approve'

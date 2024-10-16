@@ -71,7 +71,7 @@ def bank_account_details_path(instance, filename):
 class Business(User):
     """Business Model represents a business, containing detailed information."""
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=200, blank=True, null=True)
+    description = models.CharField(max_length=100, blank=True, null=True)
     category = models.ForeignKey(Category, blank=True, null=True,
                                  on_delete=models.SET_NULL)
     phone_number = models.CharField(max_length=10)

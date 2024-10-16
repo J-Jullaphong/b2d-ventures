@@ -1,15 +1,17 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+
 from ..models import Investor
 
 
 class InvestorRegistrationForm(UserCreationForm):
+    """Form for registering new investors."""
     usable_password = None
 
     class Meta:
         model = Investor
         fields = ['first_name', 'last_name', 'email', 'phone_number',
-                  'password1', 'password2',  'financial_statements']
+                  'password1', 'password2', 'financial_statements']
         labels = {
             'first_name': 'First Name',
             'last_name': 'Last Name',
@@ -43,10 +45,12 @@ class InvestorRegistrationForm(UserCreationForm):
             self.fields[field_name].widget.attrs["class"] = "form-control"
 
         self.fields['password1'].widget.attrs["placeholder"] = "Password"
-        self.fields['password2'].widget.attrs["placeholder"] = "Confirm Password"
+        self.fields['password2'].widget.attrs[
+            "placeholder"] = "Confirm Password"
         self.fields['password2'].label = "Confirm Password"
 
     def save(self, commit=True):
+        """Saves the investor instance with inactive status until approved."""
         user = super().save(commit=False)
         if commit:
             user.is_active = False

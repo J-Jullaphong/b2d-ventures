@@ -1,10 +1,13 @@
 from django import forms
-from django.forms import ModelForm
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm
+
 from ..models import Investment
 
 
 class InvestmentForm(ModelForm):
+    """Form for creating investments."""
+
     class Meta:
         model = Investment
         fields = ['amount', 'investment_datetime', 'transaction_slip']
@@ -27,6 +30,7 @@ class InvestmentForm(ModelForm):
             self.fields[field_name].widget.attrs["class"] = "form-control"
 
     def clean_amount(self):
+        """Validates the investment amount against the fundraising limits."""
         amount = self.cleaned_data.get('amount')
         current_investment = self.fundraise.get_current_investment()
         remaining_amount = self.fundraise.goal_amount - current_investment
@@ -44,11 +48,12 @@ class InvestmentForm(ModelForm):
         return amount
 
     def save(self, investor, fundraise, commit=True):
+        """Saves the investment instance linked to the investor and fundraising campaign."""
         investment = super().save(commit=False)
         investment.investor = investor
         investment.fundraise = fundraise
-        investment.shares_percentage = (investment.amount / fundraise.goal_amount) * fundraise.shares_percentage
+        investment.shares_percentage = (
+                                               investment.amount / fundraise.goal_amount) * fundraise.shares_percentage
         if commit:
             investment.save()
         return investment
-

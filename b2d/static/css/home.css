@@ -64,3 +64,100 @@ body {
 .card:hover .card-details {
     display: block;
 }
+
+.carousel-item {
+    background-color: black;
+}
+
+.img_slide {
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    opacity: 0.5;
+}
+
+/**
+ * Button
+ */
+.btn-transparent {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.btn-transparent:hover {
+    background-color: black;
+}
+
+.btn-rounded {
+    border-radius: 70px;
+}
+
+.btn-large {
+    padding: 11px 45px;
+    font-size: 18px;
+}
+
+/**
+ * Change animation duration
+ */
+.animated {
+    -webkit-animation-duration: 1.5s;
+    animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fadeInRight {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(100px, 0, 0);
+        transform: translate3d(100px, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(100px, 0, 0);
+        transform: translate3d(100px, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.fadeInRight {
+    -webkit-animation-name: fadeInRight;
+    animation-name: fadeInRight;
+}
+
+.seeMore {
+    font-size: 22px;
+}
+
+.card-img-top {
+    height: 250px;
+}
+
+.card:hover .card-img-top {
+    height: 200px;
+    transition: all 0.5s;
+}
+
+.card:hover .card-body {
+    transition: all 0.5s;
+}
+
+.text-underline {
+    border-bottom: 1px solid #C5C5C5;
+}

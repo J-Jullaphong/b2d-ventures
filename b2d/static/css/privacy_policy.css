@@ -1,0 +1,16 @@
+/* Sticky Left Navigation */
+.col-lg-3 {
+    position: sticky;
+    top: 30px;
+    height: fit-content;
+}
+
+@media only screen and (max-width: 991px) {
+    .col-lg-3 {
+        position: static;
+    }
+}
+
+.container_content ul li {
+    padding: 10px 0;
+}

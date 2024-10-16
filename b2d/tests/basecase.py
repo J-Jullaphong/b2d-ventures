@@ -1,6 +1,7 @@
 import uuid
+from decimal import Decimal
 
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.utils import timezone
 from b2d.models import Business, Category, FundRaising, Investment, Investor
 
@@ -13,6 +14,8 @@ def generate_file_path(suffix):
 class BaseCase(TestCase):
 
     def setUp(self):
+        self.client = Client()
+
         # Create categories
         self.category_tech = Category.objects.create(category_name="Tech")
         self.category_food = Category.objects.create(category_name="Food")
@@ -29,12 +32,14 @@ class BaseCase(TestCase):
         self.user2_uid = uuid.uuid4().hex
 
         # Create businesses with dynamic file paths and unique identifiers
-        self.business1 = Business.objects.create(
+        self.business1 = Business.objects.create_user(
             username=f"username_{self.business1_uid}",
             email=f"user{self.business1_uid}@example.com",
-            name="Tech Innovate",
+            password="password123",
+            is_active = True,
+            name="business_tech_1",
             phone_number="1234567890",
-            description="Innovative tech solutions.",
+            description="description_tech_1",
             category=self.category_tech,
             business_registration_certificate=generate_file_path('certificate1'),
             tax_identification_number=generate_file_path('tin1'),
@@ -46,13 +51,15 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank1')
         )
 
-        self.business2 = Business.objects.create(
+        self.business2 = Business.objects.create_user(
             username=f"username_{self.business2_uid}",
             email=f"user{self.business2_uid}@example.com",
-            name="Foodies Unite",
+            password="password123",
+            is_active=True,
+            name="business_tech_2",
             phone_number="0987654321",
-            description="A delightful culinary journey.",
-            category=self.category_food,
+            description="description_tech_2",
+            category=self.category_tech,
             business_registration_certificate=generate_file_path('certificate2'),
             tax_identification_number=generate_file_path('tin2'),
             proof_of_address=generate_file_path('address2'),
@@ -63,13 +70,15 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank2')
         )
 
-        self.business3 = Business.objects.create(
+        self.business3 = Business.objects.create_user(
             username=f"username_{self.business3_uid}",
             email=f"user{self.business3_uid}@example.com",
-            name="Retail Giants",
+            password="password123",
+            is_active=True,
+            name="business_food_1",
             phone_number="1928374650",
-            description="Revolutionizing retail shopping.",
-            category=self.category_retail,
+            description="description_food_1",
+            category=self.category_food,
             business_registration_certificate=generate_file_path('certificate3'),
             tax_identification_number=generate_file_path('tin3'),
             proof_of_address=generate_file_path('address3'),
@@ -80,13 +89,15 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank3')
         )
 
-        self.business4 = Business.objects.create(
+        self.business4 = Business.objects.create_user(
             username=f"username_{self.business4_uid}",
             email=f"user{self.business4_uid}@example.com",
-            name="Retail Giants",
+            password="password123",
+            is_active=True,
+            name="business_food_2",
             phone_number="1928374650",
-            description="Revolutionizing retail shopping.",
-            category=self.category_retail,
+            description="description_food_2",
+            category=self.category_food,
             business_registration_certificate=generate_file_path('certificate4'),
             tax_identification_number=generate_file_path('tin4'),
             proof_of_address=generate_file_path('address4'),
@@ -97,12 +108,14 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank4')
         )
 
-        self.business5 = Business.objects.create(
+        self.business5 = Business.objects.create_user(
             username=f"username_{self.business5_uid}",
             email=f"user{self.business5_uid}@example.com",
-            name="Retail Giants",
+            password="password123",
+            is_active=True,
+            name="business_retail_1",
             phone_number="1928374650",
-            description="Revolutionizing retail shopping.",
+            description="description_retail_1",
             category=self.category_retail,
             business_registration_certificate=generate_file_path('certificate5'),
             tax_identification_number=generate_file_path('tin5'),
@@ -114,12 +127,14 @@ class BaseCase(TestCase):
             bank_account_details=generate_file_path('bank5')
         )
 
-        self.business6 = Business.objects.create(
+        self.business6 = Business.objects.create_user(
             username=f"username_{self.business6_uid}",
             email=f"user{self.business6_uid}@example.com",
-            name="Retail Giants",
+            password="password123",
+            is_active=True,
+            name="business_retail_2",
             phone_number="1928374650",
-            description="Revolutionizing retail shopping.",
+            description="description_retail_2",
             category=self.category_retail,
             business_registration_certificate=generate_file_path('certificate6'),
             tax_identification_number=generate_file_path('tin6'),
@@ -133,51 +148,51 @@ class BaseCase(TestCase):
 
         self.fundraising1 = FundRaising.objects.create(
             business=self.business1,
-            goal_amount=10000.00,
+            goal_amount=Decimal("10000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=10),
-            minimum_investment=500.00,
-            shares_percentage=10.00,
+            minimum_investment=Decimal("500.00"),
+            shares_percentage=Decimal("10.00"),
             fundraising_status='approve'
         )
 
         self.fundraising2 = FundRaising.objects.create(
             business=self.business2,
-            goal_amount='20000.00',
+            goal_amount=Decimal("20000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment='1000.00',
-            shares_percentage='15.00',
+            minimum_investment=Decimal("1000.00"),
+            shares_percentage=Decimal("15.00"),
             fundraising_status='approve'
         )
 
         self.fundraising3 = FundRaising.objects.create(
             business=self.business3,
-            goal_amount='15000.00',
+            goal_amount=Decimal("15000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=-15),
-            minimum_investment='750.00',
-            shares_percentage='12.50',
+            minimum_investment=Decimal("750.00"),
+            shares_percentage=Decimal("12.50"),
             fundraising_status='approve'
         )
 
         self.fundraising4 = FundRaising.objects.create(
             business=self.business4,
-            goal_amount='15000.00',
+            goal_amount=Decimal("5000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment='750.00',
-            shares_percentage='12.50',
+            minimum_investment=Decimal("750.00"),
+            shares_percentage=Decimal("12.50"),
             fundraising_status='rejects'
         )
 
         self.fundraising5 = FundRaising.objects.create(
             business=self.business4,
-            goal_amount='15000.00',
+            goal_amount=Decimal("15000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment='750.00',
-            shares_percentage='12.50',
+            minimum_investment=Decimal("750.00"),
+            shares_percentage=Decimal("12.50"),
             fundraising_status='wait'
         )
 
@@ -186,15 +201,18 @@ class BaseCase(TestCase):
             username=f"investor_{self.user1_uid}",
             email=f"investor1@example.com",
             password="password123",
+            is_active=True,
             first_name="Investor",
             last_name="One",
             financial_statements=generate_file_path('investor1')
+
         )
 
         self.investor2 = Investor.objects.create_user(
             username=f"investor_{self.user2_uid}",
             email=f"investor2@example.com",
             password="password123",
+            is_active=True,
             first_name="Investor",
             last_name="Two",
             financial_statements=generate_file_path('investor2')
@@ -204,7 +222,7 @@ class BaseCase(TestCase):
         self.investment1 = Investment.objects.create(
             investor=self.investor1,
             fundraise=self.fundraising1,
-            amount=5000.00,
+            amount=Decimal("5000.00"),
             shares_percentage=self.fundraising1.shares_percentage,
             investment_status='approve'
         )
@@ -212,7 +230,7 @@ class BaseCase(TestCase):
         self.investment2 = Investment.objects.create(
             investor=self.investor1,
             fundraise=self.fundraising2,
-            amount=2500.00,
+            amount=Decimal("2500.00"),
             shares_percentage=self.fundraising2.shares_percentage,
             investment_status='approve'
         )
@@ -220,7 +238,7 @@ class BaseCase(TestCase):
         self.investment3 = Investment.objects.create(
             investor=self.investor2,
             fundraise=self.fundraising1,
-            amount=2500.00,
+            amount=Decimal("2500.00"),
             shares_percentage=self.fundraising1.shares_percentage,
             investment_status='approve'
         )

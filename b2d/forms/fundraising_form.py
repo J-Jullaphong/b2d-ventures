@@ -5,6 +5,8 @@ from ..models import FundRaising
 
 
 class FundRaisingForm(ModelForm):
+    """Form for creating fundraising campaigns."""
+
     class Meta:
         model = FundRaising
         fields = ['goal_amount', 'publish_date', 'deadline_date',
@@ -30,6 +32,7 @@ class FundRaisingForm(ModelForm):
             self.fields[field_name].widget.attrs["class"] = "form-control"
 
     def save(self, business, commit=True):
+        """Saves the fundraising instance, linking it to the specified business."""
         fundraising = super().save(commit=False)
         fundraising.business = business
         if commit:
