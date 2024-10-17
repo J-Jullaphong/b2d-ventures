@@ -98,7 +98,7 @@
                                         <h5><strong>Target:</strong> ${{ fundraise.goal_amount|default:"0" }}</h5>
                                     </div>
                                     <div>
-                                        <h5><strong>Investors:</strong> {{ fundraise.investment_set.count|default:"0" }}
+                                        <h5><strong>Investors:</strong> {{ fundraise.get_current_investors|default:"0" }}
                                         </h5>
                                     </div>
                                 {% endwith %}

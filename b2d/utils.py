@@ -13,7 +13,6 @@ def get_file(key):
                                  Key=key)
         return response['Body'].read().decode('utf-8')
     except ClientError as e:
-        print(f"Error fetching file from S3: {e}")
         return ''
 
 
@@ -26,7 +25,6 @@ def upload_file(file, key):
         s3.upload_fileobj(file, settings.AWS_STORAGE_BUCKET_NAME, key)
         return True
     except ClientError as e:
-        print(f"Error uploading file to S3: {e}")
         return False
 
 

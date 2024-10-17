@@ -11,7 +11,7 @@ class BusinessListView(ListView):
     model = Business
     template_name = 'b2d/search_page.html'
     context_object_name = 'businesses'
-    paginate_by = 10
+    paginate_by = 45
 
     def get_queryset(self):
         """Returns the filtered and sorted queryset of businesses."""

@@ -112,15 +112,15 @@
                     </div>
                     <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
                         <h4>{{ fundraise.deadline_date|date:"d M Y"|default:"d M Y" }}</h4>
-                        <p>left to invest</p>
+                        <p>Days Left</p>
                     </div>
                     <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
                         <h4>${{ fundraise.goal_amount|default:"0" }}</h4>
-                        <p>Funding goal</p>
+                        <p>Funding Goal</p>
                     </div>
                     <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
                         <h4>${{ fundraise.minimum_investment|default:"0" }}</h4>
-                        <p>Minimum invest</p>
+                        <p>Minimum Invest</p>
                     </div>
                 {% endwith %}
             </div>
@@ -140,15 +140,15 @@
                 </div>
                 <div class="col-md-4">
                     <!--  team member -->
-                    <div class="team-content rounded pt-4 pb-4 m-4 shadow border border-secondary" style="background: rgba(128, 123, 123, .3); border">
-                        <div style="text-align: center;">
-                            <h3><u>Team</u></h3>
+                    <div class="team-content rounded pt-4 pb-4 m-4 border-0">
+                        <div class="mb-4" style="border-bottom: 1px solid #545454; text-align: center;">
+                            <h3 >Team</h3>
                         </div>
                         {% for member in team_members_data %}
                             <div class="team-card bg-light text-dark rounded-3 p-2 mx-5 mb-3 shadow-sm border border-secondary">
                                 <div class="d-flex justify-content-center m-2">
                                     <img src="{{ member.photo_url }}" class="img-fluid rounded" alt="{{ member.name }}"  onerror="this.onerror=null;  this.src='{% static 'images/user.png' %}';"
-                                         style="width: 100%; height:150px; object-fit: cover;">
+                                         style="width: 100%; height:225px; object-fit: cover;">
                                 </div>
                                 <div class="d-flex justify-content-center">
                                    <h5>{{ member.name }}</h5>
