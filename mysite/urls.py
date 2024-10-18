@@ -10,7 +10,8 @@ urlpatterns = [
     path('', include('b2d.urls')),
     path('reset-password/',
          PasswordResetView.as_view(
-             template_name='registration/password_reset.html'),
+             template_name='registration/password_reset.html',
+             email_template_name='registration/password_reset_email.html'),
          name='password_reset'),
     path('reset-password/done/',
          PasswordResetDoneView.as_view(
