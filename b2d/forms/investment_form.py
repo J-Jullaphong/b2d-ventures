@@ -1,12 +1,14 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
+from django_recaptcha.fields import ReCaptchaField
 
 from ..models import Investment
 
 
 class InvestmentForm(ModelForm):
     """Form for creating investments."""
+    captcha = ReCaptchaField()
 
     class Meta:
         model = Investment
@@ -27,7 +29,8 @@ class InvestmentForm(ModelForm):
         self.fundraise = kwargs.pop('fundraise', None)
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
-            self.fields[field_name].widget.attrs["class"] = "form-control"
+            if self.fields[field_name] != self.fields['captcha']:
+                self.fields[field_name].widget.attrs["class"] = "form-control"
 
     def clean_amount(self):
         """Validates the investment amount against the fundraising limits."""

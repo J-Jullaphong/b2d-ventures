@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="container">
-        <!--    Show error message    -->
+        <!--  Show error message    -->
         {% if messages %}
             <div class="alert alert-danger alert-dismissible fade show m-3 shadow-sm" role="alert">
                 {% for message in messages %}
@@ -16,16 +16,16 @@
             </div>
         {% endif %}
 
-        <!--    invest card content    -->
+        <!-- Invest card content    -->
         <div class="card m-4 p-4 shadow-sm">
             <div class="mb-3" style="border-bottom: 1px solid #545454;">
                 <h1 class="fw-medium">Invest in {{ fundraise.business.name }}</h1>
             </div>
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="row">
-                    <!--  card left-side  -->
+                    <!-- Card left-side  -->
                     <div class="col-lg-4 text-center">
-                        <!--    QR Transfer   -->
+                        <!-- QR Transfer   -->
                         <div class="mb-3">
                             <h5 class="fw-medium">Scan the QR Code to Make Your Transfer</h5>
                         </div>
@@ -34,10 +34,11 @@
                             style="width:300px; height:auto;">
                         </div>
                     </div>
-                    <!--  card right-side   -->
+                    <!-- Card right-side   -->
                     <div class="col-lg-8">
                         {% csrf_token %}
-                        <!--    Investment   -->
+
+                        <!-- Investment   -->
                         <div class="mb-3">
                             <div class="mb-3" style="border-bottom: 1px solid #545454;">
                                 <label for="amount" class="form-label fw-medium fs-4">Investment Amount</label>
@@ -46,7 +47,7 @@
                                    placeholder="Min {{ fundraise.minimum_investment }}" required>
                         </div>
 
-                        <!--    Date and time  -->
+                        <!-- Date and time  -->
                         <div class="mb-3">
                             <div class="mb-3" style="border-bottom: 1px solid #545454;">
                                 <label for="investment_datetime" class="form-label fw-medium fs-4">Date and Time of Transfer</label>
@@ -54,13 +55,22 @@
                             {{ form.investment_datetime }}  <!-- Use form widget -->
                         </div>
 
-                        <!--    File upload  -->
+                        <!-- File upload  -->
                         <div class="mb-3">
                             <div class="mb-3" style="border-bottom: 1px solid #545454;">
                                 <label for="transaction_slip" class="form-label fw-medium fs-4">Upload Transaction Slip</label>
                             </div>
                             <input type="file" name="transaction_slip" class="form-control" id="transaction_slip" required>
                         </div>
+
+                        <!-- Captcha -->
+                        <div class="mb-3">
+                            <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                                <label for="captcha" class="form-label fw-medium fs-4">Captcha</label>
+                            </div>
+                            {{ form.captcha }}
+                        </div>
+
                     </div>
                 </div>
                 <!--  Checkbox   -->
@@ -70,7 +80,7 @@
                         I have read and agree to the <a href="/learn-more/">investment agreement</a>
                     </label>
                 </div>
-                <!--  button   -->
+                <!--  Button   -->
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-dark btn-lg fw-light fs-3 w-75 shadow-sm">Submit Investment</button>
                 </div>

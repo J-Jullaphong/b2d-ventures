@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'b2d.apps.B2DConfig',
     'storages',
+    'django_recaptcha'
 ]
 
 MIDDLEWARE = [
@@ -180,3 +181,6 @@ AWS_S3_USE_SSL = True
 AWS_S3_VERIFY = True
 
 MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')

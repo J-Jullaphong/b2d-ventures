@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django_recaptcha.fields import ReCaptchaField
 
 from ..models import Business
 
@@ -7,6 +8,7 @@ from ..models import Business
 class BusinessRegistrationForm(UserCreationForm):
     """Form for registering a new business."""
     usable_password = None
+    captcha = ReCaptchaField()
 
     class Meta:
         model = Business
@@ -63,7 +65,8 @@ class BusinessRegistrationForm(UserCreationForm):
         for field_name in self.fields:
             self.fields[field_name].required = True
             self.fields[field_name].help_text = None
-            self.fields[field_name].widget.attrs["class"] = "form-control"
+            if self.fields[field_name] != self.fields['captcha']:
+                self.fields[field_name].widget.attrs["class"] = "form-control"
 
         self.fields['password1'].widget.attrs["placeholder"] = "Password"
         self.fields['password2'].widget.attrs[

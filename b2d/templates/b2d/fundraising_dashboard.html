@@ -124,6 +124,15 @@
                             <div class="text-danger">{{ form.shares_percentage.errors }}</div>
                         {% endif %}
                     </div>
+
+                    <div class="mb-3">
+                        <label for="captcha" class="form-label fs-3">{{ form.captcha.label }}</label>
+                        {{ form.captcha }}
+                        {% if form.captcha.errors %}
+                            <div class="text-danger">{{ form.captcha.errors }}</div>
+                        {% endif %}
+                    </div>
+
                 </div>
                 <div class="my-3 d-flex justify-content-center">
                     <button type="submit" class="btn btn-lg btn-dark fs-3 w-50">Create Fundraising</button>

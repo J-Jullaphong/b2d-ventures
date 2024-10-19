@@ -3,6 +3,7 @@ Django
 python-decouple
 psycopg2-binary
 django-storages
+django-recaptcha
 boto3
 gunicorn
 selenium
