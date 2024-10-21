@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'b2d.apps.B2DConfig',
     'storages',
-    'django_recaptcha'
+    'django_recaptcha',
+    'django_otp',
+    'django_otp.plugins.otp_email',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -184,3 +187,6 @@ MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
+
+OTP_EMAIL_SUBJECT = 'B2D Ventures - One-Time Passcode (OTP) Verification'
+OTP_EMAIL_BODY_HTML_TEMPLATE_PATH = 'otp/email/token.html'

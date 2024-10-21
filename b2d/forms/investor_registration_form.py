@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django_recaptcha.fields import ReCaptchaField
+from django_otp.plugins.otp_email.models import EmailDevice
 
 from ..models import Investor
 
@@ -59,4 +60,6 @@ class InvestorRegistrationForm(UserCreationForm):
             user.is_active = False
             user.username = user.email
             user.save()
+            EmailDevice.objects.create(user=user, email=user.email,
+                                       name="Email")
         return user

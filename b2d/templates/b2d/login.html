@@ -19,15 +19,14 @@
         <img src="{% static 'images/logo.png' %}" alt="B2D Ventures">
         <h2 class="form-title">Login</h2>
 
-        <form method="POST" class="mt-4">
+        <form method="POST" class="mt-4" id="loginForm">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="id_username" class="form-label">Email</label>
-                {{ form.username|addclass:"form-control|Email"}}
-                <div class="text-danger small">{{ form.username.errors }}</div>
-            </div>
 
-            <div class="mb-3">
+            {% if form.get_user %}
+            <div class="d-none">
+                <label for="id_username" class="form-label">Email</label>
+                {{ form.username|addclass:"form-control|Email" }}
+                <div class="text-danger small">{{ form.username.errors }}</div>
                 <label for="id_password" class="form-label">Password</label>
                 <div class="input-group">
                     {{ form.password|addclass:"form-control|Password" }}
@@ -37,8 +36,44 @@
                 </div>
                 <div class="text-danger small">{{ form.password.errors }}</div>
             </div>
+            <div class="d-none">
+                <label for="id_otp_device" class="form-label">OTP Device</label>
+                {{ form.otp_device|addclass:"form-control|Select OTP Device" }}
+                <div class="text-danger small">{{ form.otp_device.errors }}</div>
+            </div>
 
-            <button type="submit" class="btn btn-primary">Log In</button>
+            {% if request.POST.otp_challenge %}
+            <div class="mb-3">
+                <label for="id_otp_token" class="form-label">OTP Token</label>
+                {{ form.otp_token|addclass:"form-control|Enter OTP Token" }}
+                <div class="text-danger small">{{ form.otp_token.errors }}</div>
+            </div>
+            {% endif %}
+
+            <input type="hidden" name="otp_challenge" id="otpChallenge" value="{% if not request.POST.otp_challenge %}{{ form.username.value }}{% else %}{% endif %}">
+
+            <button type="submit" class="btn btn-primary">
+                {% if not request.POST.otp_challenge %}Get OTP{% else %}Verify OTP{% endif %}
+            </button>
+            {% else %}
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Email</label>
+                    {{ form.username|addclass:"form-control|Email" }}
+                    <div class="text-danger small">{{ form.username.errors }}</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_password" class="form-label">Password</label>
+                    <div class="input-group">
+                        {{ form.password|addclass:"form-control|Password" }}
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                            <i class="bi bi-eye-slash" id="passwordIcon"></i>
+                        </button>
+                    </div>
+                    <div class="text-danger small">{{ form.password.errors }}</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Log In</button>
+            {% endif %}
         </form>
 
         <div class="form-footer">

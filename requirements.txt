@@ -7,3 +7,4 @@ django-recaptcha
 boto3
 gunicorn
 selenium
+django_otp
