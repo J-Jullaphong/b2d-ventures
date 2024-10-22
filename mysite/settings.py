@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_recaptcha',
     'django_otp',
     'django_otp.plugins.otp_email',
+    'django_session_timeout',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_otp.middleware.OTPMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -190,3 +192,7 @@ RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
 
 OTP_EMAIL_SUBJECT = 'B2D Ventures - One-Time Passcode (OTP) Verification'
 OTP_EMAIL_BODY_HTML_TEMPLATE_PATH = 'otp/email/token.html'
+
+SESSION_EXPIRE_SECONDS = 1800
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_TIMEOUT_REDIRECT = '/'

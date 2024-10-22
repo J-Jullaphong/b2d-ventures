@@ -4,7 +4,8 @@ python-decouple
 psycopg2-binary
 django-storages
 django-recaptcha
+django_otp
+django-session-timeout
 boto3
 gunicorn
 selenium
-django_otp
