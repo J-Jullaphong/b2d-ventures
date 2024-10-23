@@ -1,9 +1,14 @@
+import logging
+
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 from django.utils import timezone
+
 from ..models import FundRaising, Investment, Business
 from ..forms import FundRaisingForm
+
+db_logger = logging.getLogger('db')
 
 
 class FundRaisingDashboardView(View):
@@ -80,6 +85,7 @@ class FundRaisingDashboardView(View):
             new_fundraising = form.save(commit=False, business=business)
             new_fundraising.business = business
             new_fundraising.save()
+            db_logger.info(f"Business {business.id} successful create new fundraising {new_fundraising.id}")
             messages.success(request,
                              'Your fundraising event has been created and is awaiting approval.')
             return redirect('b2d:fundraising')

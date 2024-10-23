@@ -2,6 +2,7 @@
 Django
 python-decouple
 psycopg2-binary
+django-db-logger
 django-storages
 django-recaptcha
 django_otp

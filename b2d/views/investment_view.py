@@ -1,3 +1,4 @@
+import logging
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -5,6 +6,8 @@ from django.views.generic.edit import FormView
 
 from ..models import FundRaising, Investor
 from ..forms import InvestmentForm
+
+db_logger = logging.getLogger('db')
 
 
 class InvestmentView(FormView):
@@ -47,8 +50,9 @@ class InvestmentView(FormView):
 
         if form.is_valid():
             investment = form.save(investor=investor, fundraise=fundraise)
+            db_logger.info(f"Investor {investor.id} invest in fundraising {fundraise.id} for {investment.amount}$.")
             messages.success(self.request, "Your investment has been submitted and is pending admin approval.")
             return redirect(reverse('b2d:business_detail', kwargs={'pk': fundraise.business_id}))
 
-        messages.error(self.request, "There was an error with your submission.")
+        messages.error(self.request, "There was an error processing your investment.")
         return render(self.request, self.template_name, context)
