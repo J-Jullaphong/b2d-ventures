@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.shortcuts import render
 from django.views.generic import DetailView
 
 from ..models import Business, FundRaising
@@ -9,17 +10,18 @@ from ..utils import check_file_exist, get_file
 
 class BusinessDetailView(DetailView):
     """View for displaying detailed information about a specific business."""
-    model = Business
     template_name = 'b2d/business_detail.html'
     context_object_name = 'business'
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
         """
         Provides context data to the business detail template including pitch data, team members, photos,
         embedded YouTube videos, and the business's fundraising campaigns.
         """
-        context = super().get_context_data(**kwargs)
-        business = self.object
+        try:
+            business = Business.objects.get(id=self.kwargs['pk'])
+        except Business.DoesNotExist:
+            return render(request, "b2d/404.html", status=404)
 
         # Paths to pitch and team members JSON files
         pitch_file_key = f"business_docs/{business.id}/pitches.json"
@@ -55,7 +57,8 @@ class BusinessDetailView(DetailView):
             video_id = youtube_video_url.split('/')[-1]
             youtube_video_embed = f"https://www.youtube.com/embed/{video_id}"
 
-        context.update({
+        context = {
+            'business': business,
             'pitch_data': pitch_data,
             'team_members_data': team_members_data,
             'photo1_url': photo1_url,
@@ -63,6 +66,6 @@ class BusinessDetailView(DetailView):
             'photo3_url': photo3_url,
             'youtube_video_embed': youtube_video_embed,
             'fundraisings': FundRaising.objects.filter(business=business)
-        })
+        }
 
-        return context
+        return render(request, self.template_name, context)

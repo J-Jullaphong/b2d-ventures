@@ -5,6 +5,8 @@ from django.contrib.auth.views import (PasswordResetView,
                                        PasswordResetCompleteView)
 from django.urls import include, path
 
+from b2d.views import UnavailableView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('b2d.urls')),
@@ -25,4 +27,5 @@ urlpatterns = [
          PasswordResetCompleteView.as_view(
              template_name='registration/password_reset_complete.html'),
          name='password_reset_complete'),
+    path('<path:undefined_path>/', UnavailableView.as_view(), name="404"),
 ]

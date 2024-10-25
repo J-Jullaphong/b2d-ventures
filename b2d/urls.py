@@ -3,7 +3,6 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from .views import *
-from . import views
 
 app_name = 'b2d'
 

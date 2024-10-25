@@ -29,9 +29,12 @@ class InvestmentView(FormView):
         except Investor.DoesNotExist:
             return redirect("b2d:home")
 
-        fundraise = get_object_or_404(FundRaising, id=self.kwargs['fundraise_id'])
-        form = self.get_form(self.form_class)
+        try:
+            fundraise = FundRaising.objects.get(id=self.kwargs['fundraise_id'])
+        except FundRaising.DoesNotExist:
+            return render(request, "b2d/404.html", status=404)
 
+        form = self.get_form(self.form_class)
         context = {
             'fundraise': fundraise,
             'form': form
