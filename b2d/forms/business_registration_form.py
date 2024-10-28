@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django_recaptcha.fields import ReCaptchaField
 from django_otp.plugins.otp_email.models import EmailDevice
 
-from ..models import Business
+from ..models import Business, UserConsent
 
 
 class BusinessRegistrationForm(UserCreationForm):
@@ -83,4 +83,5 @@ class BusinessRegistrationForm(UserCreationForm):
             user.save()
             EmailDevice.objects.create(user=user, email=user.email,
                                        name="Email")
+            UserConsent.objects.create(user=user, consent=True)
         return user
