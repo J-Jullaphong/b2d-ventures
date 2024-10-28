@@ -13,6 +13,9 @@
 </head>
 <body>
 <div class="background-image">
+    <a href="/login" class="btn btn-dark position-fixed top-0 start-0 m-3">
+        <i class="bi bi-arrow-left"></i> Return
+    </a>
     <div class="form-container">
         <img src="{% static 'images/logo.png' %}" alt="B2D Ventures">
         <h2 class="form-title">Registration</h2>
@@ -50,20 +53,30 @@
                             <i class="bi bi-eye-slash" id="passwordIcon_{{ field.name }}"></i>
                         </button>
                     </div>
+                    {% elif field.name == "captcha" %}
+                    <div class="d-flex justify-content-center">
+                        {{ field }}
+                    </div>
                     {% else %}
                     {{ field }}
                     {% endif %}
+
 
                     <div class="text-danger small">{{ field.errors }}</div>
                 </div>
                 {% endfor %}
 
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <div class="form-footer d-flex align-items-start mb-2">
+                <input class="form-check-input me-2" type="checkbox" value="" id="termsCheckbox" style="width: 30px; height: 20px;">
+                <p class="mb-0">
+                    By signing up, I agree to B2D Ventures
+                    <a href="/learn-more/#terms" class="text-decoration-underline">Terms of Service</a>
+                    and <a href="/privacy-policy/" class="text-decoration-underline">Privacy Policy</a>.
+                </p>
+            </div>
+            <button type="submit" class="btn btn-primary" id="signUpButton" disabled>Sign Up</button>
         </form>
-        <div class="form-footer">
-            <p>By signing up I agree to B2D Ventures <a href="/learn-more/#terms">Terms of Service</a> and <a href="/privacy-policy/">Privacy Policy</a>.</p>
-        </div>
     </div>
 </div>
 
@@ -83,6 +96,13 @@
             passwordIcon.classList.toggle('bi-eye');
             passwordIcon.classList.toggle('bi-eye-slash');
         });
+    });
+
+    const termsCheckbox = document.getElementById('termsCheckbox');
+    const signUpButton = document.getElementById('signUpButton');
+
+    termsCheckbox.addEventListener('change', function() {
+        signUpButton.disabled = !termsCheckbox.checked;
     });
 </script>
 </body>
