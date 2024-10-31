@@ -1,6 +1,5 @@
 import time
 import unittest
-import os
 import boto3
 from botocore.exceptions import ClientError
 from django.conf import settings
@@ -11,6 +10,7 @@ from selenium.webdriver.support.ui import Select
 
 from mysite.wsgi import *
 from ..models import Business
+from django_otp.plugins.otp_email.models import EmailDevice
 
 
 class TestBusinessDetails(unittest.TestCase):
@@ -22,8 +22,8 @@ class TestBusinessDetails(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/login/')
+        self.device = EmailDevice.objects.get(user_id=16)
         time.sleep(3)
-
         self.login()
 
     def login(self):
@@ -43,6 +43,27 @@ class TestBusinessDetails(unittest.TestCase):
         login_button = driver.find_element(By.XPATH,
                                            '/html/body/div/div/form/button')
         login_button.click()
+        time.sleep(3)
+
+        get_otp_button = driver.find_element(By.XPATH,
+                                             '/html/body/div/div/form/button')
+        self.assertIsNotNone(get_otp_button, "Get OTP button not found!")
+        get_otp_button.click()
+        time.sleep(5)
+
+        self.device.refresh_from_db()
+
+        otp_token_input = driver.find_element(By.XPATH,
+                                              '//*[@id="id_otp_token"]')
+        self.assertIsNotNone(otp_token_input,
+                             "OTP Token input field not found!")
+        otp_token_input.send_keys(self.device.token)
+        time.sleep(1)
+
+        verify_otp_button = driver.find_element(By.XPATH,
+                                                '/html/body/div/div/form/button')
+        self.assertIsNotNone(verify_otp_button, "Verify OTP button not found!")
+        verify_otp_button.click()
         time.sleep(3)
 
     def test_add_business_details(self):
