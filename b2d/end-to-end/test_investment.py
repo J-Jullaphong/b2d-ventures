@@ -92,6 +92,17 @@ class TestInvestment(unittest.TestCase):
             f'{os.path.abspath(os.getcwd())}/transaction_slip.png')
         time.sleep(1)
 
+        iframe = driver.find_element(By.CSS_SELECTOR, "iframe[title='reCAPTCHA']")
+        driver.switch_to.frame(iframe)
+        time.sleep(2)
+
+        captcha_checkbox = driver.find_element(By.ID, "recaptcha-anchor")
+        captcha_checkbox.click()
+        time.sleep(1)
+
+        driver.switch_to.default_content()
+        time.sleep(2)
+
         terms_checkbox = driver.find_element(By.ID, 'agreementCheck')
         terms_checkbox.click()
         time.sleep(1)

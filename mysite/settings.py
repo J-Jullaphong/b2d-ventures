@@ -130,6 +130,7 @@ TEST_DATABASES = {
 if 'test' in sys.argv:
     # Override the DATABASES setting with the TEST_DATABASES configuration
     DATABASES = TEST_DATABASES
+
 else:
     # Define the production database configuration for MySQL
     DATABASES = {
@@ -220,6 +221,7 @@ MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
+SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
 OTP_EMAIL_SUBJECT = 'B2D Ventures - One-Time Passcode (OTP) Verification'
 OTP_EMAIL_BODY_HTML_TEMPLATE_PATH = 'otp/email/token.html'

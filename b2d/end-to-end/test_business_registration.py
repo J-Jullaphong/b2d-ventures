@@ -72,6 +72,23 @@ class TestBusinessRegistration(unittest.TestCase):
         self.upload_file(driver, 'bank_account_details',
                          'Financial_Statement.pdf')
 
+        iframe = driver.find_element(By.CSS_SELECTOR, "iframe[title='reCAPTCHA']")
+        time.sleep(1)
+
+        driver.switch_to.frame(iframe)
+        time.sleep(2)
+
+        captcha_checkbox = driver.find_element(By.ID, "recaptcha-anchor")
+        captcha_checkbox.click()
+        time.sleep(1)
+
+        driver.switch_to.default_content()
+        time.sleep(2)
+
+        terms_checkbox = driver.find_element(By.ID, 'termsCheckbox')
+        terms_checkbox.click()
+        time.sleep(1)
+
         sign_up_button = driver.find_element(By.XPATH,
                                              '/html/body/div/div/form/button')
         self.assertIsNotNone(sign_up_button, "Sign Up button not found!")

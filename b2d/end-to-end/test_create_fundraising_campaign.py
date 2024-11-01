@@ -107,6 +107,19 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
         shares_input.send_keys('10')
         time.sleep(1)
 
+        iframe = driver.find_element(By.CSS_SELECTOR, "iframe[title='reCAPTCHA']")
+        time.sleep(1)
+
+        driver.switch_to.frame(iframe)
+        time.sleep(2)
+
+        captcha_checkbox = driver.find_element(By.ID, "recaptcha-anchor")
+        captcha_checkbox.click()
+        time.sleep(1)
+
+        driver.switch_to.default_content()
+        time.sleep(2)
+
         create_button = driver.find_element(By.XPATH,
                                             '/html/body/div/form/div[2]/button')
         self.assertIsNotNone(create_button,
@@ -124,7 +137,7 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
 
     def tearDown(self):
         """Close the browser and clear fundraising campaign after each test."""
-        self.clear_fundraising_campaign(user_id=8)
+        self.clear_fundraising_campaign(user_id=16)
         self.driver.quit()
 
     def clear_fundraising_campaign(self, user_id):
