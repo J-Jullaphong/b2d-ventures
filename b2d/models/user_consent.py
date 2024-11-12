@@ -1,11 +1,12 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+
+from .custom_user import CustomUser
 
 
 class UserConsent(models.Model):
     """UserConsent Model represents a consent of a user regarding the terms of service and the privacy policy."""
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     consent = models.BooleanField(default=False)
     consent_date = models.DateTimeField(default=timezone.now,
                                         help_text="Date and time when consent was given")

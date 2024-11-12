@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
 from django.db import models
 
 from .category import Category
+from .custom_user import CustomUser
 
 
 def business_registration_certificate_path(instance, filename):
@@ -68,13 +68,12 @@ def bank_account_details_path(instance, filename):
     return f'business_docs/{instance.id}/bank_account_details.{ext}'
 
 
-class Business(User):
+class Business(CustomUser):
     """Business Model represents a business, containing detailed information."""
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100, blank=True, null=True)
     category = models.ForeignKey(Category, blank=True, null=True,
                                  on_delete=models.SET_NULL)
-    phone_number = models.CharField(max_length=10)
     business_registration_certificate = models.FileField(
         upload_to=business_registration_certificate_path)
     tax_identification_number = models.FileField(

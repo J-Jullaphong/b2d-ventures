@@ -1,3 +1,5 @@
+import uuid
+
 from decimal import Decimal
 
 from django.db import models
@@ -15,6 +17,7 @@ STATUS_CHOICES = [
 
 class FundRaising(models.Model):
     """FundRaising Model represents a fundraising of a business, containing details information."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
     goal_amount = models.DecimalField(max_digits=10, decimal_places=2)
     publish_date = models.DateField()

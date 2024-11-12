@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.utils import timezone
 
@@ -17,11 +19,12 @@ def transaction_slip_upload_path(instance, filename):
 
 class Investment(models.Model):
     """Investment Model represents an investment of an investor, containing details information."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     investor = models.ForeignKey(Investor, on_delete=models.CASCADE)
     fundraise = models.ForeignKey("b2d.FundRaising", on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     shares_percentage = models.DecimalField(max_digits=4, decimal_places=2)
-    transaction_slip = models.FileField(upload_to=transaction_slip_upload_path, null=True)
+    transaction_slip = models.FileField(upload_to=transaction_slip_upload_path, null=True, max_length=1024)
     investment_datetime = models.DateTimeField(default=timezone.now)
     investment_status = models.CharField(
         max_length=10,
