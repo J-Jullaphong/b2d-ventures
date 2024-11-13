@@ -1,4 +1,5 @@
 {% load static %}
+{% load email_filters %}
 {% load addclass %}
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +22,7 @@
     <div class="form-container">
         <img src="{% static 'images/logo.png' %}" alt="B2D Ventures">
         <h2 class="form-title">Login</h2>
+        <hr>
         <form method="POST" class="mt-4" id="loginForm">
             {% csrf_token %}
 
@@ -45,24 +47,29 @@
             </div>
 
             {% if request.POST.otp_challenge %}
-            <div class="mb-3">
-                <label for="id_otp_token" class="form-label">OTP Token</label>
+            <div class="mb-3 text-center">
+                <p>We've sent a one-time password (OTP) to your registered email address:<br> <strong>{{ user_email|mask_email }}</strong> <br>Please enter the code below to proceed.</p>
                 {{ form.otp_token|addclass:"form-control|Enter OTP Token" }}
                 <div class="text-danger small">{{ form.otp_token.errors }}</div>
+            </div>
+            {% else %}
+            <div class="mb-3 text-center">
+                <p>We will send a one-time password (OTP) to your email: <strong>{{ user_email|mask_email }}</strong>.</p>
             </div>
             {% endif %}
 
             <input type="hidden" name="otp_challenge" id="otpChallenge" value="{% if not request.POST.otp_challenge %}{{ form.username.value }}{% else %}{% endif %}">
-
             <button type="submit" class="btn btn-primary">
                 {% if not request.POST.otp_challenge %}Get OTP{% else %}Verify OTP{% endif %}
             </button>
             {% else %}
                 {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         {{ message }}
                     </div>
+
                 {% endfor %}
                 {% endif %}
                 <div class="mb-3">

@@ -22,7 +22,8 @@
 
         {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             {{ message }}
         </div>
         {% endfor %}
@@ -84,6 +85,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            {% if not request.GET.form == 'business' %}
                             <h4>For Investors:</h4>
                             <ul>
                                 <li><strong>Eligibility</strong> Investors must meet
@@ -116,7 +118,7 @@
                                     investment is made.
                                 </li>
                             </ul>
-                            <hr>
+                            {% else %}
                             <h4>For Business Owners:</h4>
                             <ul>
                                 <li><strong>Eligibility</strong> Businesses must meet all
@@ -151,6 +153,7 @@
                                     applicable privacy laws.
                                 </li>
                             </ul>
+                            {% endif %}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -179,8 +182,8 @@
                             <h4 id="information_collect" class="mt-4"
                                 style="border-bottom: 1px solid #545454;">1. Information We
                                 Collect</h4>
-
-                            <h5 class="mt-3">1.1. Information for Investors:</h5>
+                            {% if not request.GET.form == 'business' %}
+                            <h5 class="mt-3">Information for Investors:</h5>
                             <ul>
                                 <li><strong>Personal Information:</strong> Name, email
                                     address, phone number, date of birth, residential
@@ -200,8 +203,8 @@
                                     investment-related documents.
                                 </li>
                             </ul>
-
-                            <h5 class="mt-3">1.2. Information for Business Owners:</h5>
+                            {% else %}
+                            <h5 class="mt-3">Information for Business Owners:</h5>
                             <ul>
                                 <li><strong>Business Information:</strong> Business name,
                                     business registration number, tax identification
@@ -220,12 +223,12 @@
                                     related to fundraising campaigns.
                                 </li>
                             </ul>
-
+                            {% endif %}
                             <h4 id="how_we_use" class="mt-4"
                                 style="border-bottom: 1px solid #545454;">2. How We Use
                                 Your
                                 Information</h4>
-
+                            {% if not request.GET.form == 'business' %}
                             <h5 class="mt-3">For Investors:</h5>
                             <ul>
                                 <li>Process and review your investment applications.</li>
@@ -239,7 +242,7 @@
                                 <li>Conduct identity and financial verification.</li>
                                 <li>Ensure compliance with laws and regulations.</li>
                             </ul>
-
+                            {% else %}
                             <h5 class="mt-3">For Business Owners:</h5>
                             <ul>
                                 <li>Review and approve your business profile and
@@ -253,7 +256,7 @@
                                     financial reporting and data protection.
                                 </li>
                             </ul>
-
+                            {% endif %}
                             <h4 id="data_sharing" class="mt-4"
                                 style="border-bottom: 1px solid #545454;">3. Data Sharing
                                 and
