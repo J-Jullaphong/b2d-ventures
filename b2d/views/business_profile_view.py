@@ -54,7 +54,7 @@ class BusinessProfileView(View):
             'pitch_data': pitch_data,
             'team_members_data': team_members_data,
             'categories': Category.objects.all(),
-            'selected_category': business.category.id if business.category else None,
+            'selected_category': business.category.values_list('id', flat=True),
             'photo1_url': photo1_url,
             'photo2_url': photo2_url,
             'photo3_url': photo3_url,
@@ -69,14 +69,15 @@ class BusinessProfileView(View):
         business = Business.objects.get(id=request.user.id)
         business_name = request.POST.get('businessName')
         business_description = request.POST.get('businessDescription')
-        category_id = request.POST.get('category')
+        category_ids = request.POST.getlist('category[]')
 
         if business_name:
             business.name = business_name
         if business_description:
             business.description = business_description
-        if category_id:
-            business.category = Category.objects.get(id=category_id)
+        if category_ids:
+            business.category.set(Category.objects.filter(id__in=category_ids))  # Set multiple categories
+        business.save()
 
         business.save()
 

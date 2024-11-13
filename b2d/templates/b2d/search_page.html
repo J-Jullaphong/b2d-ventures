@@ -40,18 +40,22 @@
                             </div>
                             <div class="col px-1">
                                 <select name="sort" id="sort" class="form-control" onchange="this.form.submit()">
-                                    <option value="alphabetical"
-                                            {% if request.GET.sort == "alphabetical" %}selected{% endif %}>A-Z
+                                    <option value="trending"
+                                            {% if request.GET.sort == "trending" %}selected{% endif %}>Trending
                                     </option>
-                                    <option value="recent"
-                                            {% if request.GET.sort == "recent" %}selected{% endif %}>Most Recent
+                                    <option value="most_recent"
+                                            {% if request.GET.sort == "most_recent" %}selected{% endif %}>Most Recent
                                     </option>
-                                    <option value="investors"
-                                            {% if request.GET.sort == "investors" %}selected{% endif %}>Most Investors
+                                    <option value="most_investors"
+                                            {% if request.GET.sort == "most_investors" %}selected{% endif %}>Most Investors
                                     </option>
                                     <option value="min_invest"
                                             {% if request.GET.sort == "min_invest" %}selected{% endif %}>Minimum Invest
                                     </option>
+                                    <option value="coming_close"
+                                            {% if request.GET.sort == "coming_close" %}selected{% endif %}>Coming Close
+                                    </option>
+
                                 </select>
                             </div>
                         </div>
@@ -73,9 +77,13 @@
                         </div>
                         <div class="card-body">
                             <h3 class="card-title">{{ business.name }}</h3>
-                            {% if business.category %}
-                                <span class="badge bg-light border border-secondary mr-1 mb-2"
-                                      style="color:black;">{{ business.category.category_name }}</span>
+                            {% if business.category.exists %}
+                                <div class="mb-2">
+                                    {% for category in business.category.all %}
+                                        <span class="badge bg-light border border-secondary mr-1 mb-1"
+                                              style="color:black;">{{ category.category_name }}</span>
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                             <div class="card-body-info">
                                 <p class="card-text card-summary">{{ business.description|slice:":80" }}...</p>

@@ -1,9 +1,11 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.db.models import Count, Q, Min
 from django.utils import timezone
 from django.views.generic import ListView
 
-from ..models import Business, Category
+from ..models import Business, Category, Investment
 
 
 class BusinessListView(ListView):
@@ -17,7 +19,7 @@ class BusinessListView(ListView):
         """Returns the filtered and sorted queryset of businesses."""
         queryset = Business.objects.all()
         category_id = self.request.GET.get('category')
-        sort_by = self.request.GET.get('sort', 'alphabetical')
+        sort_by = self.request.GET.get('sort', 'trending')
         query = self.request.GET.get('q', '')
 
         # Filter by approved and active fundraising campaigns
@@ -36,14 +38,23 @@ class BusinessListView(ListView):
             queryset = queryset.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
         # Apply sorting based on the selected option
-        if sort_by == 'recent':
+        if sort_by == 'most_recent':
             queryset = queryset.order_by('-id')
-        elif sort_by == 'investors':
+        elif sort_by == 'most_investors':
             queryset = queryset.annotate(num_investors=Count('fundraising__investment')).order_by('-num_investors')
-        elif sort_by == 'alphabetical':
-            queryset = queryset.order_by('name')
         elif sort_by == 'min_invest':
             queryset = queryset.annotate(min_invest=Min('fundraising__minimum_investment')).order_by('min_invest')
+        elif sort_by == 'trending':
+            two_weeks_ago = timezone.now() - timezone.timedelta(weeks=5)
+            queryset = queryset.annotate(
+                num_recent_investors=Count(
+                    'fundraising__investment',
+                    filter=Q(fundraising__investment__investment_datetime__gte=two_weeks_ago) &
+                           Q(fundraising__investment__investment_status='approve')
+                )
+            ).order_by('-num_recent_investors')
+        elif sort_by == 'coming_close':
+            queryset = queryset.order_by('fundraising__deadline_date')
         return queryset
 
     def get_context_data(self, **kwargs):

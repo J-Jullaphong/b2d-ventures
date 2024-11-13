@@ -72,8 +72,7 @@ class Business(CustomUser):
     """Business Model represents a business, containing detailed information."""
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100, blank=True, null=True)
-    category = models.ForeignKey(Category, blank=True, null=True,
-                                 on_delete=models.SET_NULL)
+    category = models.ManyToManyField(Category, blank=True, null=True)
     business_registration_certificate = models.FileField(
         upload_to=business_registration_certificate_path)
     tax_identification_number = models.FileField(
