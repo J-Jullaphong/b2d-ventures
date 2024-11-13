@@ -2,6 +2,7 @@ import json
 
 from django.db.models import Sum, F
 from django.views.generic import TemplateView
+from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from ..models import Investment, Investor
@@ -19,6 +20,7 @@ class PortfolioView(TemplateView):
         try:
             investor = Investor.objects.get(id=request.user.id)
         except Investor.DoesNotExist:
+            messages.error(self.request, "Access restricted, portfolio page is for investor only.")
             return redirect("b2d:home")
 
         # Aggregate investments by business and calculate total invested and shares percentage

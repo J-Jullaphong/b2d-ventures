@@ -21,7 +21,6 @@
     <div class="form-container">
         <img src="{% static 'images/logo.png' %}" alt="B2D Ventures">
         <h2 class="form-title">Login</h2>
-
         <form method="POST" class="mt-4" id="loginForm">
             {% csrf_token %}
 
@@ -59,6 +58,13 @@
                 {% if not request.POST.otp_challenge %}Get OTP{% else %}Verify OTP{% endif %}
             </button>
             {% else %}
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% endif %}
                 <div class="mb-3">
                     <label for="id_username" class="form-label">Email</label>
                     {{ form.username|addclass:"form-control|Email" }}

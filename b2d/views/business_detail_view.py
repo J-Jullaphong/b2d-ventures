@@ -1,7 +1,8 @@
 import json
 
 from django.conf import settings
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 
 from ..models import Business, FundRaising
@@ -21,7 +22,8 @@ class BusinessDetailView(DetailView):
         try:
             business = Business.objects.get(id=self.kwargs['pk'])
         except Business.DoesNotExist:
-            return render(request, "b2d/404.html", status=404)
+            messages.error(self.request, "Access restricted, business detail page is for business owner only.")
+            return redirect("b2d:home")
 
         # Paths to pitch and team members JSON files
         pitch_file_key = f"business_docs/{business.id}/pitches.json"

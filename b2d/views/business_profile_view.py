@@ -2,6 +2,7 @@ import json
 
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -18,6 +19,7 @@ class BusinessProfileView(View):
         try:
             business = Business.objects.get(id=request.user.id)
         except Business.DoesNotExist:
+            messages.error(self.request, "Access restricted, business profile page is for business owner only.")
             return redirect("b2d:home")
 
         pitch_file_key = f"business_docs/{business.id}/pitches.json"

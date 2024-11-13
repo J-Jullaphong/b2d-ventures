@@ -27,6 +27,7 @@ class InvestmentView(FormView):
         try:
             investor = Investor.objects.get(id=request.user.id)
         except Investor.DoesNotExist:
+            messages.error(self.request, "Access restricted, investment page is for investor only.")
             return redirect("b2d:home")
 
         try:

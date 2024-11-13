@@ -18,3 +18,10 @@ class B2DLoginView(LoginView):
         db_logger.info(f"User {user.id} successful login")
         messages.success(self.request, f"Login successful. Welcome {user.username}.")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Handle unsuccessful login attempts"""
+        error_messages = form.errors.as_json()
+        db_logger.warning(f"Unsuccessful login attempt: {error_messages}")
+        messages.error(self.request, "Login failed. Please check your credentials and try again.")
+        return self.render_to_response(self.get_context_data(form=form))

@@ -22,6 +22,7 @@ class FundRaisingDashboardView(View):
         try:
             business = Business.objects.get(id=request.user.id)
         except Business.DoesNotExist:
+            messages.error(self.request, "Access restricted, fund raising dashboard page is for business owner only.")
             return redirect("b2d:home")
 
         active_fundraising = FundRaising.objects.filter(
