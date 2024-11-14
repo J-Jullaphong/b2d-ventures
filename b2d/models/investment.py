@@ -18,12 +18,11 @@ def transaction_slip_upload_path(instance, filename):
 
 
 class Investment(models.Model):
-    """Investment Model represents an investment of an investor, containing details information."""
+    """Investment Model represents an investment of an investor, containing detailed information."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     investor = models.ForeignKey(Investor, on_delete=models.CASCADE)
     fundraise = models.ForeignKey("b2d.FundRaising", on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    shares_percentage = models.DecimalField(max_digits=4, decimal_places=2)
     transaction_slip = models.FileField(upload_to=transaction_slip_upload_path, null=True, max_length=1024)
     investment_datetime = models.DateTimeField(default=timezone.now)
     investment_status = models.CharField(
@@ -33,9 +32,16 @@ class Investment(models.Model):
     )
 
     class Meta:
-        verbose_name = "Investment"
-        verbose_name_plural = "Investments"
+        verbose_name = "Investment Request"
+        verbose_name_plural = "Investment Requests"
 
     def __str__(self):
         return (f"{self.investor}: Investment of {self.amount} in "
-                f"{self.fundraise.business.name}")
+                f"{self.fundraise.business.name} ({self.get_shares()} shares)")
+
+    def get_shares(self):
+        """Calculate the number of shares based on the investment amount and the price per share."""
+        price_per_share = self.fundraise.get_price_per_share()
+        if price_per_share > 0:
+            return int(self.amount / price_per_share)
+        return 0

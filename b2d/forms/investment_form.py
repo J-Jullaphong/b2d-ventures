@@ -22,15 +22,24 @@ class InvestmentForm(ModelForm):
             'investment_datetime': forms.DateTimeInput(
                 format=('%d-%m-%Y %H:%M'),
                 attrs={
-                    'type': 'datetime-local'}),
+                    'type': 'datetime-local',
+                    'class': 'form-control',
+                }),
         }
 
     def __init__(self, *args, **kwargs):
         self.fundraise = kwargs.pop('fundraise', None)
         super().__init__(*args, **kwargs)
-        for field_name in self.fields:
-            if self.fields[field_name] != self.fields['captcha']:
-                self.fields[field_name].widget.attrs["class"] = "form-control"
+
+        # Add Bootstrap styling
+        for field_name, field in self.fields.items():
+            if field != self.fields['captcha']:
+                field.widget.attrs["class"] = "form-control"
+
+        # Validate that fundraise context is provided
+        if not self.fundraise:
+            raise ValueError(
+                "The 'fundraise' argument is required for InvestmentForm.")
 
     def clean_amount(self):
         """Validates the investment amount against the fundraising limits."""
@@ -55,8 +64,10 @@ class InvestmentForm(ModelForm):
         investment = super().save(commit=False)
         investment.investor = investor
         investment.fundraise = fundraise
-        investment.shares_percentage = (
-                                               investment.amount / fundraise.goal_amount) * fundraise.shares_percentage
+
+        price_per_share = fundraise.get_price_per_share()
+        investment.shares = int(investment.amount / price_per_share)
+
         if commit:
             investment.save()
         return investment

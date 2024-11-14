@@ -14,12 +14,11 @@ class InvestorRegistrationForm(UserCreationForm):
     class Meta:
         model = Investor
         fields = ['first_name', 'last_name', 'email', 'phone_number',
-                  'password1', 'password2', 'financial_statements']
+                  'password1', 'password2']
         labels = {
             'first_name': 'First Name',
             'last_name': 'Last Name',
             'email': 'Email',
-            'financial_statements': 'Financial Statements',
         }
         widgets = {
             'first_name': forms.TextInput(attrs={
@@ -33,10 +32,7 @@ class InvestorRegistrationForm(UserCreationForm):
             }),
             'phone_number': forms.TextInput(attrs={
                 'placeholder': 'Phone number'
-            }),
-            'financial_statements': forms.ClearableFileInput(attrs={
-                'accept': 'application/pdf',
-            }),
+            })
         }
 
     def __init__(self, *args, **kwargs):
