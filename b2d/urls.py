@@ -8,6 +8,7 @@ app_name = 'b2d'
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('profile/', InvestorProfileView.as_view(), name='investor_profile'),
     path('businesses/', BusinessListView.as_view(), name='search_page'),
     path('business/<uuid:pk>/', BusinessDetailView.as_view(), name='business_detail'),
     path('business-profile/', BusinessProfileView.as_view(), name='business_profile'),

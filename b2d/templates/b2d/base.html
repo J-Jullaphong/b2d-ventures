@@ -86,6 +86,9 @@
                             aria-labelledby="dropdownUser">
                             {% if user_is_investor %}
                             <li><a class="dropdown-item"
+                               href="{% url 'b2d:investor_profile' %}">Profile</a>
+                            </li>
+                            <li><a class="dropdown-item"
                                    href="{% url 'b2d:portfolio' %}">Portfolio</a>
                             </li>
                             {% elif user_is_business %}

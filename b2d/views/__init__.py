@@ -10,3 +10,4 @@ from .portfolio_view import PortfolioView
 from .learn_more_view import LearnMoreView
 from .privacy_policy_view import PrivacyPolicyView
 from .unavailable_view import UnavailableView
+from .investor_profile_view import InvestorProfileView

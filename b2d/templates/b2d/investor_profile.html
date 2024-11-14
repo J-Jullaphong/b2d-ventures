@@ -1,0 +1,185 @@
+{% extends "b2d/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-black text-white">
+                    <h4 class="mb-0">Your Profile</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label">{{ form.first_name.label }}</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="invalid-feedback text-danger">
+                                    {{ form.first_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label">{{ form.last_name.label }}</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="invalid-feedback text-danger">
+                                    {{ form.last_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback text-danger">
+                                    {{ form.email.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                                <div class="invalid-feedback text-danger">
+                                    {{ form.phone_number.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.financial_statements.id_for_label }}" class="form-label">{{ form.financial_statements.label }}</label>
+                            </br>
+                            {{ form.financial_statements }}
+                            <button type="button" class="btn btn-link text-black" data-bs-toggle="modal" data-bs-target="#financialStatementModal">
+                                Why do we need this?
+                            </button>
+                            {% if form.financial_statements.errors %}
+                                <div class="invalid-feedback text-danger">
+                                    {{ form.financial_statements.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <button type="button" class="btn btn-outline-secondary w-100 mb-3" id="togglePasswordFields">
+                            Change Password
+                        </button>
+
+                        <div id="passwordFields" style="display: none;">
+                            <div class="mb-3" id="currentPasswordField" style="display: none;">
+                                <label for="{{ form.current_password.id_for_label }}" class="form-label">{{ form.current_password.label }}</label>
+                                <div class="input-group">
+                                    {{ form.current_password }}
+                                    <button type="button" class="btn btn-outline-secondary" id="toggleCurrentPassword">
+                                        <i class="bi bi-eye-slash" id="currentPasswordIcon"></i>
+                                    </button>
+                                </div>
+                                <div class="text-danger small">{{ form.current_password.errors }}</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.new_password1.id_for_label }}" class="form-label">{{ form.new_password1.label }}</label>
+                                <div class="input-group">
+                                    {{ form.new_password1 }}
+                                    <button type="button" class="btn btn-outline-secondary" id="toggleNewPassword1">
+                                        <i class="bi bi-eye-slash" id="passwordIcon1"></i>
+                                    </button>
+                                </div>
+                                {% if form.new_password1.errors %}
+                                    <div class="invalid-feedback text-danger">
+                                        {{ form.new_password1.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.new_password2.id_for_label }}" class="form-label">{{ form.new_password2.label }}</label>
+                                <div class="input-group">
+                                    {{ form.new_password2 }}
+                                    <button type="button" class="btn btn-outline-secondary" id="toggleNewPassword2">
+                                        <i class="bi bi-eye-slash" id="passwordIcon2"></i>
+                                    </button>
+                                </div>
+                                {% if form.new_password2.errors %}
+                                    <div class="invalid-feedback text-danger">
+                                        {{ form.new_password2.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-light w-100">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="financialStatementModal" tabindex="-1" aria-labelledby="financialStatementModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="financialStatementModalLabel">Why We Need Your Financial Statements</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>We collect financial statements from investors to ensure we have accurate information for processing investments and complying with financial regulations. This information is crucial for evaluating your investment potential and making informed decisions.</p>
+                <p>Your financial data is securely handled and stored, adhering to strict privacy guidelines.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const togglePasswordFields = document.querySelector('#togglePasswordFields');
+    const passwordFields = document.querySelector('#passwordFields');
+    const currentPasswordField = document.querySelector('#currentPasswordField');
+
+    togglePasswordFields.addEventListener('click', function () {
+        passwordFields.style.display = passwordFields.style.display === 'none' ? 'block' : 'none';
+        currentPasswordField.style.display = currentPasswordField.style.display === 'none' ? 'block' : 'none';
+    });
+
+    const toggleCurrentPassword = document.querySelector('#toggleCurrentPassword');
+    const currentPasswordFieldInput = document.querySelector('#id_current_password');
+    const currentPasswordIcon = document.querySelector('#currentPasswordIcon');
+
+    toggleCurrentPassword.addEventListener('click', function () {
+        const type = currentPasswordFieldInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        currentPasswordFieldInput.setAttribute('type', type);
+        currentPasswordIcon.classList.toggle('bi-eye');
+        currentPasswordIcon.classList.toggle('bi-eye-slash');
+    });
+
+    const toggleNewPassword1 = document.querySelector('#toggleNewPassword1');
+    const newPasswordField1 = document.querySelector('#id_new_password1');
+    const passwordIcon1 = document.querySelector('#passwordIcon1');
+
+    toggleNewPassword1.addEventListener('click', function () {
+        const type = newPasswordField1.getAttribute('type') === 'password' ? 'text' : 'password';
+        newPasswordField1.setAttribute('type', type);
+        passwordIcon1.classList.toggle('bi-eye');
+        passwordIcon1.classList.toggle('bi-eye-slash');
+    });
+
+    const toggleNewPassword2 = document.querySelector('#toggleNewPassword2');
+    const newPasswordField2 = document.querySelector('#id_new_password2');
+    const passwordIcon2 = document.querySelector('#passwordIcon2');
+
+    toggleNewPassword2.addEventListener('click', function () {
+        const type = newPasswordField2.getAttribute('type') === 'password' ? 'text' : 'password';
+        newPasswordField2.setAttribute('type', type);
+        passwordIcon2.classList.toggle('bi-eye');
+        passwordIcon2.classList.toggle('bi-eye-slash');
+    });
+</script>
+{% endblock %}
