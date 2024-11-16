@@ -21,7 +21,8 @@
                                 <th scope="col"></th>
                                 <th>Business</th>
                                 <th>Total Invested</th>
-                                <th>Total Shares (%)</th>
+                                <th>Total Shares</th>
+                                <th>Share Type</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,7 +31,8 @@
                                     <td class="text-center">{{ forloop.counter }}</td>
                                     <td class="fw-bolder">{{ investment.business_name }}</td>
                                     <td class="fw-light">${{ investment.total_invested }}</td>
-                                    <td class="fw-light">{{ investment.total_shares }}%</td>
+                                    <td class="fw-light">{{ investment.total_shares }}</td>
+                                    <td class="fw-light">{% if investment.fundraise__share_type == 'common' %}Common Stock{% else %}Preferred Stock{% endif %}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

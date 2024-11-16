@@ -32,7 +32,7 @@ class FundRaising(models.Model):
         default='common',
     )
     minimum_investment = models.DecimalField(max_digits=10, decimal_places=2)
-    shares = models.IntegerField()
+    shares = models.PositiveIntegerField()
     fundraising_status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,

@@ -27,12 +27,14 @@ class PortfolioView(TemplateView):
         investments = (
             Investment.objects
             .filter(investor=self.request.user)
-            .values('fundraise__business')
+            .values('fundraise__business', 'fundraise__share_type')
             .annotate(
                 business_name=F('fundraise__business__name'),
+                share_type=F('fundraise__share_type'),
                 total_invested=Sum('amount'),
-                total_shares=Sum('shares_percentage')
+                total_shares=Sum('shares')
             )
+            .order_by('fundraise__business')
         )
 
         # Calculate the total investment made by the user
