@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
 from django_otp.plugins.otp_email.models import EmailDevice
 from ..models import Investor
 
@@ -23,7 +24,8 @@ class InvestorProfileForm(forms.ModelForm):
             'placeholder': 'New Password',
             'class': 'form-control'
         }),
-        required=False
+        required=False,
+        validators=[validate_password]
     )
 
     new_password2 = forms.CharField(
@@ -32,7 +34,8 @@ class InvestorProfileForm(forms.ModelForm):
             'placeholder': 'Confirm New Password',
             'class': 'form-control'
         }),
-        required=False
+        required=False,
+        validators=[validate_password]
     )
 
     class Meta:

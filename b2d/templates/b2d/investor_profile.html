@@ -90,11 +90,7 @@
                                         <i class="bi bi-eye-slash" id="passwordIcon1"></i>
                                     </button>
                                 </div>
-                                {% if form.new_password1.errors %}
-                                    <div class="invalid-feedback text-danger">
-                                        {{ form.new_password1.errors.0 }}
-                                    </div>
-                                {% endif %}
+                                <div class="text-danger small">{{ form.new_password1.errors }}</div>
                             </div>
 
                             <div class="mb-3">
@@ -105,11 +101,7 @@
                                         <i class="bi bi-eye-slash" id="passwordIcon2"></i>
                                     </button>
                                 </div>
-                                {% if form.new_password2.errors %}
-                                    <div class="invalid-feedback text-danger">
-                                        {{ form.new_password2.errors.0 }}
-                                    </div>
-                                {% endif %}
+                                <div class="text-danger small">{{ form.new_password2.errors }}</div>
                             </div>
                         </div>
 

@@ -1,5 +1,4 @@
 {% extends "b2d/base.html" %}
-
 {% block content %}
 <div class="container mt-4">
     {% if active_fundraising %}
@@ -15,15 +14,15 @@
             <!--    Right side Details   -->
             <div class="col-lg-4 card shadow-sm">
                 <div class="text-center my-4" style="border-bottom: 1px solid #545454;">
-                    <h2>Fundraising Details</h2>
+                    <h2>Fundraising Campaign</h2>
                 </div>
                 <div class="row text-center">
                     <div class="col-sm-6 my-2">
-                        <p class="fs-3">Investment</p>
+                        <p class="fs-3">Invested</p>
                         <p class="lead">${{ active_fundraising.get_current_investment|floatformat:"0" }}</p>
                     </div>
                     <div class="col-sm-6 my-2">
-                        <p class="fs-3">Goal Amount</p>
+                        <p class="fs-3">Goal</p>
                         <p class="lead">${{ active_fundraising.goal_amount|floatformat:"0" }}</p>
                     </div>
                     <div class="col-sm-6 my-2">
@@ -34,9 +33,13 @@
                         <p class="fs-3">Deadline Date</p>
                         <p class="lead">{{ active_fundraising.deadline_date }}</p>
                     </div>
-                    <div class="col-sm-12 mt-2">
-                        <p class="fs-3">Shares Percentage</p>
-                        <p>{{ active_fundraising.shares_percentage }}%</p>
+                    <div class="col-sm-6 mt-2">
+                        <p class="fs-3">Shares</p>
+                        <p class="lead">{{ active_fundraising.shares }}</p>
+                    </div>
+                    <div class="col-sm-6 mt-2">
+                        <p class="fs-3">Share Type</p>
+                        <p class="lead">{% if active_fundraising.share_type == 'common' %}Common Stock{% else %}Preferred Stock{% endif %}</p>
                     </div>
                 </div>
             </div>
@@ -44,35 +47,87 @@
         <!--    Table Details   -->
         <div class="card p-3 table-responsive shadow-sm">
             <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                <h2>Investments in this Fundraising</h2>
+                <h2>Investments from this Fundraising Campaign</h2>
             </div>
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
                         <th>Investor</th>
                         <th>Investment Amount</th>
-                        <th>Shares Percentage</th>
+                        <th>Shares</th>
                         <th>Investment Date/Time</th>
+                        <th>Approval</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for investment in investments %}
                         <tr>
-                            <td>{{ investment.investor.first_name }} {{ investment.investor.last_name }}</td>
-                            <td>{{ investment.amount }}</td>
-                            <td>{{ investment.shares_percentage }}%</td>
+                            <td>
+                                <a href="" class="investor-link" data-bs-toggle="modal" data-bs-target="#investorModal-{{ investment.investor.id }}">
+                                    {{ investment.investor.first_name }} {{ investment.investor.last_name }}
+                                </a>
+                                <div class="modal fade" id="investorModal-{{ investment.investor.id }}" tabindex="-1" aria-labelledby="investorModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="investorModalLabel">Investor Information</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><strong>Name:</strong> <span id="investorName">{{ investment.investor.first_name }} {{ investment.investor.last_name }}</span></p>
+                                                <p><strong>Email:</strong> <span id="investorEmail">{{ investment.investor.email }}</span></p>
+                                                <p><strong>Phone Number:</strong> <span id="investorPhone">{{ investment.investor.phone_number }}</span></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${{ investment.amount }}</td>
+                            <td>{{ investment.shares }}</td>
                             <td>{{ investment.investment_datetime }}</td>
+                            <td>
+                                {% if investment.investment_status != 'wait' %}
+                                     {% if investment.investment_status == 'approve' %}Approved{% else %}Rejected{% endif %}
+                                {% else %}
+                                    <form method="post" action="{% url 'b2d:fundraising' %}" class="d-flex align-items-center gap-2 mb-2" onsubmit="return confirmUpdate(this)">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="investment_id" value="{{ investment.id }}">
+
+                                        <div class="form-group mb-0">
+                                            <select name="investment_status" id="investment_status_{{ investment.id }}" class="form-select form-select-sm">
+                                                <option value="wait" {% if investment.investment_status == 'wait' %}selected{% endif %}>Pending</option>
+                                                <option value="approve" {% if investment.investment_status == 'approve' %}selected{% endif %}>Approve</option>
+                                                <option value="reject" {% if investment.investment_status == 'reject' %}selected{% endif %}>Reject</option>
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                    </form>
+
+                                    <script>
+                                        function confirmUpdate(form) {
+                                            var status = form.querySelector('select[name="investment_status"]').value;
+                                            status = status === "approve" ? "Approved" : "Rejected";
+                                            return confirm(`Are you sure you want to update the status to "${status}"?`);
+                                        }
+                                    </script>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+
     {% elif pending_fundraising %}
     <!--    Wait for approval page    -->
         <div class="d-flex justify-content-center " style="margin:150px 0px;">
             <div class="card alert alert-info text-center">
                 <p class="fs-1 fw-bolder text-decoration-underline">NOTICE</p>
-                <p class="fs-3">Your fundraising request is pending approval.</p>
+                <p class="fs-3">Your fundraising campaign request is pending approval.</p>
                 <p class="fs-3 fw-light">Please wait for it to be approved.</p>
             </div>
         </div>
@@ -118,10 +173,18 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="shares_percentage" class="form-label fs-3">{{ form.shares_percentage.label }}</label>
-                        {{ form.shares_percentage }}
-                        {% if form.shares_percentage.errors %}
-                            <div class="text-danger">{{ form.shares_percentage.errors }}</div>
+                        <label for="share_type" class="form-label fs-3">{{ form.share_type.label }}</label>
+                        {{ form.share_type }}
+                        {% if form.share_type.errors %}
+                            <div class="text-danger">{{ form.share_type.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="shares" class="form-label fs-3">{{ form.shares.label }}</label>
+                        {{ form.shares }}
+                        {% if form.shares.errors %}
+                            <div class="text-danger">{{ form.shares.errors }}</div>
                         {% endif %}
                     </div>
 
@@ -133,37 +196,41 @@
                         {% endif %}
                     </div>
 
-                </div>
-                <div class="my-3 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-lg btn-dark fs-3 w-50">Create Fundraising</button>
+                    <div class="my-3 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-lg btn-dark fs-3 w-50">Create Fundraising Campaign</button>
+                    </div>
                 </div>
             </form>
+    {% endif %}
 
-        {% if finished_fundraising %}
-        <h3>Details of Previous Fundraising</h3>
+    {% if finished_fundraising %}
+    <div class="card my-3 p-3">
+        <h3>Previous Fundraising Campaigns</h3>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Goal Amount</th>
                     <th>Raised Amount</th>
-                    <th>Start Date:</th>
+                    <th>Start Date</th>
                     <th>Deadline Date</th>
-                    <th>Shares Percentage:</th>
+                    <th>Shares</th>
+                    <th>Share Type</th>
                 </tr>
             </thead>
             <tbody>
                 {% for fundraising in finished_fundraising %}
                     <tr>
-                        <td>{{ fundraising.goal_amount }}</td>
-                        <td>{{ fundraising.get_current_investment }}</td>
+                        <td>${{ fundraising.goal_amount }}</td>
+                        <td>${{ fundraising.get_current_investment }}</td>
                         <td>{{ fundraising.publish_date }}</td>
                         <td>{{ fundraising.deadline_date }}</td>
-                        <td>{{ fundraising.shares_percentage }}%</td>
+                        <td>{{ fundraising.shares }}</td>
+                        <td>{% if fundraising.share_type == 'common' %}Common Stock{% else %}Preferred Stock{% endif %}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        {% endif %}
+    </div>
     {% endif %}
 </div>
 
@@ -206,7 +273,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Fundraising Investment Over Time',
+                    text: 'Fundraising Campaign Investment Over Time',
                     font: {
                         size: 18,
                         weight: 'bold'
