@@ -1,9 +1,9 @@
 from django.conf import settings
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils import timezone
 from django.views.generic import ListView
 
-from ..models import Business
+from ..models import Business, TopDeal
 
 
 class HomeView(ListView):
@@ -19,24 +19,26 @@ class HomeView(ListView):
         """
         context = super().get_context_data(**kwargs)
 
-        # Fetch top 3 recent businesses for the carousel.
-        carousel_businesses = Business.objects.filter(
-            fundraising__fundraising_status='approve',
-            fundraising__publish_date__lte=timezone.now(),
-            fundraising__deadline_date__gt=timezone.now()
-        ).order_by('fundraising__publish_date')[:3]
-
-        # Fetch top 6 most investor businesses for cards.
-        card_businesses = Business.objects.filter(
-            fundraising__fundraising_status='approve',
+        # Fetch top 3 trending businesses for the carousel.
+        two_weeks_ago = timezone.now() - timezone.timedelta(weeks=5)
+        trending_fundraising = Business.objects.filter(
             fundraising__publish_date__lte=timezone.now(),
             fundraising__deadline_date__gt=timezone.now()
         ).annotate(
-            num_investors=Count('fundraising__investment')
-        ).order_by('-num_investors')[:6]
+            num_recent_investors=Count(
+                'fundraising__investment',
+                filter=Q(fundraising__investment__investment_datetime__gte=two_weeks_ago) &
+                       Q(fundraising__investment__investment_status='approve')
+            )
+        ).order_by('-num_recent_investors')[:3]
 
-        context['carousel_businesses'] = carousel_businesses
-        context['card_businesses'] = card_businesses
+        top_deal_fundraising_ids = TopDeal.objects.values_list('fundraising_id', flat=True)
+        top_deal_fundraising = Business.objects.filter(
+            fundraising__in=top_deal_fundraising_ids
+        ).distinct()
+
+        context['carousel_businesses'] = trending_fundraising
+        context['card_businesses'] = top_deal_fundraising
         context['settings'] = settings
 
         return context

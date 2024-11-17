@@ -64,6 +64,14 @@ class FundRaising(models.Model):
             return self.goal_amount / Decimal(self.shares)
         return Decimal('0.00')
 
+    def get_percentage_investment(self):
+        """Calculate the percentage of the investment goal that has been reached."""
+        current_investment = self.get_current_investment()
+        if self.goal_amount > Decimal('0.00') and current_investment > Decimal(
+                '0.00'):
+            return (current_investment / self.goal_amount) * Decimal('100.00')
+        return Decimal('0.00')
+
     def __str__(self):
         """Create a string representation of the FundRaising instance."""
         return (f"{self.business.name} - "
