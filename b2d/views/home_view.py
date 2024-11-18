@@ -22,6 +22,7 @@ class HomeView(ListView):
         # Fetch top 3 trending businesses for the carousel.
         two_weeks_ago = timezone.now() - timezone.timedelta(weeks=5)
         trending_fundraising = Business.objects.filter(
+            fundraising__fundraising_status='approve',
             fundraising__publish_date__lte=timezone.now(),
             fundraising__deadline_date__gt=timezone.now()
         ).annotate(

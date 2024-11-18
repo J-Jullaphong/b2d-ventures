@@ -11,19 +11,19 @@ class FundRaisingForm(ModelForm):
         model = FundRaising
         fields = [
             'goal_amount', 'publish_date', 'deadline_date',
-            'minimum_investment', 'share_type', 'shares'
+            'minimum_shares', 'share_type', 'shares'
         ]
         labels = {
             'goal_amount': 'Goal Amount ($)',
             'publish_date': 'Publish Date',
             'deadline_date': 'Deadline Date',
-            'minimum_investment': 'Minimum Investment ($)',
+            'minimum_shares': 'Minimum Shares',
             'share_type': 'Share Type',
             'shares': 'Number of Shares'
         }
         widgets = {
             'goal_amount': forms.NumberInput(attrs={'min': 0, 'placeholder': 'Goal Amount ($)'}),
-            'minimum_investment': forms.NumberInput(attrs={'min': 0, 'placeholder': 'Minimum Investment ($)'}),
+            'minimum_shares': forms.NumberInput(attrs={'min': 1, 'placeholder': 'Minimum Shares'}),
             'shares': forms.NumberInput(attrs={'min': 0, 'placeholder': 'Shares'}),
             'publish_date': forms.DateInput(format='%d-%m-%Y', attrs={'type': 'date'}),
             'deadline_date': forms.DateInput(format='%d-%m-%Y', attrs={'type': 'date'}),

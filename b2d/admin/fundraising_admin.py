@@ -11,7 +11,7 @@ class FundraisingAdmin(admin.ModelAdmin):
     """
     readonly_fields = [
         'business', '_goal_amount', 'publish_date', 'deadline_date',
-        '_minimum_investment', 'shares', 'share_type', 'price_per_share'
+        '_minimum_shares', 'shares', 'share_type', 'price_per_share'
     ]
     list_display = (
         'business', '_goal_amount', 'publish_date', 'deadline_date',
@@ -22,13 +22,12 @@ class FundraisingAdmin(admin.ModelAdmin):
         ('Information', {
             'fields': (
                 'business', '_goal_amount', 'publish_date', 'deadline_date',
-                '_minimum_investment', 'shares', 'share_type',
+                '_minimum_shares', 'shares', 'share_type',
                 'price_per_share', 'fundraising_status'
             )
         }),
     )
-    list_filter = (
-    'fundraising_status', 'publish_date', 'deadline_date', 'share_type')
+    list_filter = ('fundraising_status', 'publish_date', 'deadline_date', 'share_type')
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -59,9 +58,9 @@ class FundraisingAdmin(admin.ModelAdmin):
     def _goal_amount(self, obj):
         return f"${obj.goal_amount}"
 
-    @admin.display(description='Minimum Investment')
-    def _minimum_investment(self, obj):
-        return f"${obj.minimum_investment}"
+    @admin.display(description='Minimum Shares')
+    def _minimum_shares(self, obj):
+        return f"${obj.minimum_shares}"
 
     @admin.display(description='Price Per Share')
     def price_per_share(self, obj):
