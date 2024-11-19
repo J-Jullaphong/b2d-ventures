@@ -1,19 +1,6 @@
 {% extends "b2d/base.html" %}
 {% load static %}
 {% block content %}
-{#    {% if messages %}#}
-{#        <div class="container mt-3">#}
-{#            <div class="alert-box">#}
-{#                {% for message in messages %}#}
-{#                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">#}
-{#                        {{ message }}#}
-{#                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endif %}#}
-
     <div class="container mt-4">
         <!--   left image slide   -->
         <div class="card" style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
@@ -84,11 +71,11 @@
                 <!--   Right business details  -->
                 <div class="col-md-5">
                     <div class="card-body pt-3">
+                        {% with fundraisings.last as fundraise %}
                         <h1 class="card-title display-4 font-weight-bold">{{ business.name }}</h1>
                         <div style="min-height: 75px;">
                             <p class="card-text mb-4">{{ business.description }}</p>
                         </div>
-                        {% with fundraisings.last as fundraise %}
                             <h2 class="card-text ">${{ fundraise.get_current_investment|default:"0" }}</h2>
                             <div class="progress mt-3 mb-4">
                                 <div class="progress-bar" role="progressbar"
@@ -106,21 +93,25 @@
             <!--  Middle business details  -->
             <div class="row text-center card-content-text p-0 m-0">
                 {% with fundraisings.last as fundraise %}
-                    <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
+                    <div class="col-sm-2 pt-2 bg-dark text-white" style="border: 1px solid white;">
                         <h4>{{ fundraise.get_current_investors|default:"0" }}</h4>
                         <p>Investors</p>
                     </div>
-                    <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
+                    <div class="col-sm-2 pt-2 bg-dark text-white" style="border: 1px solid white;">
                         <h4>{{ fundraise.deadline_date|date:"d M Y"|default:"d M Y" }}</h4>
                         <p>Days Left</p>
                     </div>
-                    <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
+                    <div class="col-sm-2 pt-2 bg-dark text-white" style="border: 1px solid white;">
                         <h4>${{ fundraise.goal_amount|default:"0" }}</h4>
                         <p>Funding Goal</p>
                     </div>
-                    <div class="col-sm-3 pt-2 bg-dark text-white" style="border: 1px solid white;">
-                        <h4>${{ fundraise.minimum_investment|default:"0" }}</h4>
-                        <p>Minimum Invest</p>
+                    <div class="col-sm-2 pt-2 bg-dark text-white" style="border: 1px solid white;">
+                        <h4>{{ fundraise.shares|default:"0" }}</h4>
+                        <p>Shares</p>
+                    </div>
+                    <div class="col-sm-4 pt-2 bg-dark text-white" style="border: 1px solid white;">
+                        <h4>{% if fundraise.share_type == 'common' %}Common Stock{% else %}Preferred Stock{% endif %}</h4>
+                        <p>Share Type: </p>
                     </div>
                 {% endwith %}
             </div>
@@ -134,6 +125,9 @@
                             <div class="my-2">
                                 <h3 class="card-title pb-1" style="border-bottom: 1px solid #545454;">{{ pitch.topic }}</h3>
                                 <p class="card-text">{{ pitch.details }}</p>
+                                <div class="text-center">
+                                    <img src="{{ pitch.photo_url }}" onerror="this.style.display='none'" class="img-fluid rounded" style="width:80%;">
+                                </div>
                             </div>
                         {% endfor %}
                     </div>

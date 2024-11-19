@@ -3,7 +3,7 @@ from django.db.models import Count, Q
 from django.utils import timezone
 from django.views.generic import ListView
 
-from ..models import Business, TopDeal
+from ..models import Business, TopDeal, Category
 
 
 class HomeView(ListView):
@@ -37,7 +37,9 @@ class HomeView(ListView):
         top_deal_fundraising = Business.objects.filter(
             fundraising__in=top_deal_fundraising_ids
         ).distinct()
-
+        context['categories'] = Category.objects.all()
+        context['current_category'] = self.request.GET.get('category', None)
+        context['query'] = self.request.GET.get('q', '')
         context['carousel_businesses'] = trending_fundraising
         context['card_businesses'] = top_deal_fundraising
         context['settings'] = settings

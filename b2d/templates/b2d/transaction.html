@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container">
     <!-- Invest card content -->
-    <div class="card m-4 p-4 shadow-sm">
+    <div class="card m-4 p-4 shadow">
         <div class="mb-3" style="border-bottom: 1px solid #545454;">
             <h1 class="fw-medium">Invest in {{ fundraise.business.name }}</h1>
         </div>
@@ -78,10 +78,99 @@
             <div class="form-check mb-4 d-flex justify-content-center">
                 <input class="form-check-input mx-2 mt-2" type="checkbox" value="" id="agreementCheck" required>
                 <label class="form-check-label fs-5" for="agreementCheck">
-                    I have read and agree to the <a href="/learn-more/">investment agreement</a>
+                    I have read and agree to the <a href="#" class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#investment-agreement">investment agreement</a>
                 </label>
+                <!-- Modal -->
+                <div class="modal fade" id="investment-agreement" tabindex="-1" aria-labelledby="investment_agreement" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel">Investment agreement</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                This Investment Agreement (the “Agreement”) is made and entered on today (the “Effective Date”), between (“Investor”), and {{ fundraise.business.name }} (“Business”).
+                                <hr>
+                                <h5><strong>AGREEMENTS</strong><br></h5>
+                                The parties hereby agree as follows:<br>
+                                <strong>1. Investment</strong><br>
+                                Within 30 days from the Effective Date, Investor shall remit to Business the agreed-upon investment amount (the "Investment").<br>
+                                <br>
+                                <strong>2. Equity Issuance</strong><br>
+                                In return for the Investment, Business agrees to issue Investor the following equity:<br>
+                                <ol>
+                                    <li><strong>Preferred Stock:</strong> Shares of Series A Preferred Stock, representing [percentage] of ownership with the following rights:</li>
+                                    <ol>
+                                        <li>Voting Rights: Protect the investor’s interest in major corporate decisions.</li>
+                                        <li>Dividend Preferences: Offer predictable financial returns and priority over common stock.</li>
+                                        <li>Liquidation Preferences: In the event of liquidation, Series A Preferred Stockholders will receive [X times] their investment before any distribution to common stockholders.</li>
+                                        <li>Anti-Dilution Protection: Adjustments to the preferred stockholder's equity in the event of down-round funding.</li>
+                                    </ol>
+                                    <li><strong>Common Stock:</strong> Shares of common stock, representing [percentage] of ownership, issued with standard voting and economic rights.</li>
+                                </ol>
+                                <strong>3. Use of Funds</strong><br>
+                                Business shall use the Investment solely for the development and commercialization of the Project, including but not limited to:<br>
+                                <ol>
+                                    <li>Hiring qualified personnel.</li>
+                                    <li>Improving technology infrastructure.</li>
+                                    <li>Marketing and promotional activities.</li>
+                                </ol>
+                                The Business shall provide Investor with quarterly reports detailing the allocation and impact of funds.<br>
+                                <br>
+                                <strong>4. Governance and Investor Rights</strong><br>
+                                Investor shall be entitled to the following:<br>
+                                <ol>
+                                    <li>Board Representation: The right to appoint [1 or specify number] member(s) to the Board of Directors.</li>
+                                    <li>Observer Rights: The right to attend board meetings as a non-voting observer if no board seat is held.</li>
+                                    <li>Information Rights: Regular financial updates, including quarterly and annual reports.</li>
+                                </ol>
+                                <strong>5. Exit Rights</strong><br>
+                                Investor shall have the right to sell its Equity as follows:<br>
+                                <ul>
+                                    <li><strong>Preferred Stock:</strong></li>
+                                    <ul>
+                                        <li>May be sold after a lock-in period of five (5) years, subject to the Business’s right of first refusal.</li>
+                                    </ul>
+                                    <li><strong>Common Stock:</strong></li>
+                                    <ul>
+                                        <li>May be sold without restrictions after a lock-in period of three (3) years.</li>
+                                    </ul>
+                                </ul>
+                                <strong>6. Confidentiality and Publicity</strong><br>
+                                Neither party may disclose the terms of this Agreement without prior written consent, except where required by law or regulation.<br>
+                                <br>
+                                <strong>7. Binding Agreement and Assignment</strong><br>
+                                This Agreement shall bind and benefit the parties and their successors and permitted assigns. Neither party may assign this Agreement without prior written consent, except in the case of mergers or acquisitions.<br>
+                                <br>
+                                <strong>8. Entire Agreement, Headings, and Modification</strong><br>
+                                This Agreement constitutes the entire understanding between the parties. Modifications or amendments must be made in writing and signed by both parties.<br>
+                                <br>
+                                <strong>9. Choice of Law</strong><br>
+                                This Agreement shall be governed by and construed in accordance with the laws of Thailand, without regard to its conflict of law principles.<br>
+                                <br>
+                                <strong>10. Severability</strong><br>
+                                If any provision of this Agreement is deemed invalid or unenforceable, the remaining provisions shall remain in full force and effect.<br>
+                                <br>
+                                <strong>11. Dispute Resolution</strong><br>
+                                Any disputes arising from or in connection with this Agreement shall be resolved through arbitration in [city], Thailand, under the rules of the Thai Arbitration Institute.<br>
+                                <br>
+                                <strong>12. Counterparts</strong><br>
+                                This Agreement may be executed in counterparts, all of which shall constitute a single agreement.<br>
+                                <br>
+                                <hr>
+                                <strong>IN WITNESS WHEREOF</strong>, the parties have executed this Agreement as of today.
+                                <br>
+                                <div class="text-center mt-2">
+                                    <img src="{% static 'images/logo.png' %}" alt="B2D Ventures" width="200px" height="auto">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
             <!-- Button -->
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-dark btn-lg fw-light fs-3 w-75 shadow-sm">Submit Investment</button>

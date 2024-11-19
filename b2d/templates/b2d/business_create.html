@@ -1,5 +1,10 @@
 {% extends "b2d/base.html" %}
 {% load static %}
+
+{% block style %}
+    <link href="{% static 'css/business_create.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
@@ -32,8 +37,8 @@
 
             <!-- Category Section -->
             <div class="mb-3 row">
-                <div class="col-lg-2 pt-1">
-                    <h5><label for="category" class="form-label">Choose your categories:</label></h5>
+                <div class="col-lg-3 pt-1">
+                    <h4><label for="category" class="form-label">Choose your categories:</label></h4>
                 </div>
                 <div class="col">
                     <select class="form-select select2" id="category" name="category[]" multiple="multiple">
@@ -54,48 +59,50 @@
                     <h4><label for="businessPhotos" class="form-label">Business Photos</label></h4>
                 </div>
                 <div class="card p-2 mb-3">
-                    <div class="row mb-1">
-                        <div class="col-lg-1 pt-1 m-auto">
-                            <h5 class="text-center">image1:</h5>
+                    <div class="mb-1">
+                        <div class="col pt-1 m-auto">
+                            <h5 class="text-center">Slide image1: (1024 x 768 pixels), This image will use as advertisement.</h5>
                         </div>
-                        <div class="col-lg m-auto">
+                        <div class="col my-3">
                             <input type="file" class="form-control" id="photo1" name="photo1">
                         </div>
                         {% if photo1_url %}
-                            <div class="d-flex col-xl-2 justify-content-center">
-                                <img src="{{ photo1_url }}" class="rounded" alt="Photo 1"
-                                     style="width: 150px; height: 100px;"
-                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{ photo1_url }}" class="border border-2 rounded-3" alt="Photo 1"
+                                     style="width: 500px; height: 350px;"
+                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
                             </div>
                         {% endif %}
                     </div>
-                    <div class="row mb-1">
-                        <div class="col-lg-1 pt-1 m-auto">
-                            <h5 class="text-center">image2:</h5>
+                    <hr>
+                    <div class="mb-1">
+                        <div class="col pt-1 m-auto">
+                            <h5 class="text-center">Slide image2: (1024 x 768 pixels)</h5>
                         </div>
-                        <div class="col-lg m-auto">
+                        <div class="col my-3">
                             <input type="file" class="form-control" id="photo2" name="photo2">
                         </div>
                         {% if photo2_url %}
-                            <div class="d-flex col-xl-2 justify-content-center">
-                                <img src="{{ photo2_url }}" class="rounded" alt="Photo 2"
-                                     style="width: 150px; height: 100px;"
-                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{ photo2_url }}" class="border border-2 rounded-3" alt="Photo 2"
+                                     style="width: 500px; height: 350px;"
+                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
                             </div>
                         {% endif %}
                     </div>
-                    <div class="row">
-                        <div class="col-lg-1 pt-1 m-auto">
-                            <h5 class="text-center">image3:</h5>
+                    <hr>
+                    <div>
+                        <div class="col pt-1 m-auto">
+                            <h5 class="text-center">Slide image3: (1024 x 768 Pixels)</h5>
                         </div>
-                        <div class="col-lg m-auto">
+                        <div class="col my-3">
                             <input type="file" class="form-control" id="photo3" name="photo3">
                         </div>
                         {% if photo3_url %}
-                            <div class="d-flex col-xl-2 justify-content-center">
-                                <img src="{{ photo3_url }}" class="rounded" alt="Photo 3"
-                                     style="width: 150px; height: 100px;"
-                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{ photo3_url }}" class="border border-2 rounded-3" alt="Photo 3"
+                                     style="width: 500px; height: 350px;"
+                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
                             </div>
                         {% endif %}
                     </div>
@@ -105,7 +112,7 @@
             <!-- YouTube Video Embed Section -->
             <div class="mb-4">
                 <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="videoEmbed" class="form-label">YouTube Video Embed</label></h4>
+                    <h5><label for="videoEmbed" class="form-label">YouTube Video Embed</label></h5>
                 </div>
                 <input type="url" class="form-control" id="videoEmbed" name="videoEmbed"
                        placeholder="Paste your YouTube video URL" value="{{ youtube_video_url }}">
@@ -141,18 +148,19 @@
                                 <textarea class="form-control" name="details_{{ forloop.counter }}" rows="3" placeholder="Details">{{ pitch.details }}</textarea>
                             </div>
                         </div>
-                        <div class="mb-2 row">
-                            <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Photo:</label></h5>
+                        <div class="mb-2">
+                            <div class="col-md pt-1">
+                                <h5 class="text-center"><label for="photo" class="form-label">Pitch image: (Width:700 Pixels)</label></h5>
                             </div>
+                            <hr>
                             <div class="col">
                                 <input type="file" class="form-control" name="photo_{{ forloop.counter }}">
                             </div>
                         </div>
                         {% if pitch.photo_url %}
                             <div class="d-flex justify-content-center">
-                                <img src="{{ pitch.photo_url }}" alt="Pitch Photo" class="rounded" style="width: 150px; height: 100px;"
-                                     onerror="this.onerror=null; this.src='{% static 'images/empty_image.png' %}';">
+                                <img src="{{ pitch.photo_url }}" alt="Pitch Photo" class="rounded-3 border border-2 pitch_photo"
+                                     onerror="this.onerror=null; this.src='{% static 'images/empty_image.png' %}';style='width: 200px;'">
                             </div>
                         {% endif %}
                         <div class="d-flex justify-content-end">
@@ -177,10 +185,11 @@
                                 <textarea class="form-control" name="details_1" rows="3" placeholder="Details"></textarea>
                             </div>
                         </div>
-                        <div class="mb-2 row">
-                            <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Photo:</label></h5>
+                        <div class="mb-2">
+                            <div class="col pt-1">
+                                <h5 class="text-center"><label for="photo" class="form-label">Pitch image: (Width:700 Pixels)</label></h5>
                             </div>
+                            <hr>
                             <div class="col">
                                 <input type="file" class="form-control" name="photo_1">
                             </div>
@@ -216,18 +225,19 @@
                                 <input type="text" class="form-control" name="workAs_{{ forloop.counter }}" placeholder="Role" value="{{ member.work_as }}">
                             </div>
                         </div>
-                        <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Photo:</label></h5>
+                        <div class="mb-2">
+                            <div class="col pt-1">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Team Photo: (400 x 300 Pixels)</label></h5>
                             </div>
+                            <hr>
                             <div class="col">
                                 <input type="file" class="form-control" name="uploadFile_{{ forloop.counter }}">
                             </div>
                         </div>
                         {% if member.photo_url %}
                             <div class="d-flex justify-content-center">
-                                <img src="{{ member.photo_url }}" alt="Photo" class="rounded"
-                                     style="width: 200px; height: 150px;"
+                                <img src="{{ member.photo_url }}" alt="Photo" class="rounded-3 border border-2"
+                                     style="width: 300px; height: 230px;"
                                      onerror="this.onerror=null;  this.src='{% static 'images/user.png' %}';">
                             </div>
                         {% endif %}
@@ -253,10 +263,11 @@
                                 <input type="text" class="form-control" name="workAs_1" placeholder="Role">
                             </div>
                         </div>
-                        <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Photo:</label></h5>
+                        <div class="mb-2">
+                            <div class="col pt-1">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Team Photo: (400 x 300 Pixels)</label></h5>
                             </div>
+                            <hr>
                             <div class="col">
                                 <input type="file" class="form-control" name="uploadFile_1">
                             </div>
@@ -270,13 +281,73 @@
 
             <!-- Agreement -->
             <div class="mb-3 form-check d-flex justify-content-center">
-                <input type="checkbox" class="form-check-input me-2" id="agreement" onchange="toggleButton()">
-                <label class="form-check-label" for="agreement">I have read and agree to the <a href="/learn-more/">agreement</a></label>
+                <input type="checkbox" class="form-check-input mx-2 mt-2" id="agreement" onchange="toggleButton()">
+                <label class="form-check-label  fs-5" for="agreement">I have read and agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#business_agreement">agreement</a></label>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="business_agreement" tabindex="-1" aria-labelledby="business_agreement" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Pitch Submission Agreement</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            This Agreement is made and entered into on today (the "Effective Date") by and between:<br>
+                            B2D Ventures ("Platform Owner"), and ("Business").<br>
+                            <hr>
+                            <ol>
+                                <li><strong>Purpose of the Agreement</strong><br>
+                                    The purpose of this Agreement is to allow the Business to create and submit a pitch for display on the Platform Owner’s website.
+                                </li>
+                                <li><strong>Scope of Services</strong><br>
+                                    <ul>
+                                        <li>The Platform Owner provides an online platform where businesses can create and present pitches for potential investors.</li>
+                                        <li>The Business agrees to provide accurate, lawful, and non-confidential information in their pitch submission.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Business Obligations</strong><br>
+                                    The Business agrees to:
+                                    <ul>
+                                        <li>Ensure the content of the pitch complies with all applicable laws and does not infringe upon the rights of third parties.</li>
+                                        <li>Refrain from including false, misleading, or fraudulent information.</li>
+                                        <li>Grant the Platform Owner a non-exclusive, royalty-free license to display the pitch on the website.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Platform Owner’s Rights</strong><br>
+                                    <ul>
+                                        <li>The Platform Owner reserves the right to review, edit, or remove any pitch submission that violates the terms of this Agreement or the platform's policies.</li>
+                                        <li>The Platform Owner does not guarantee investor interest or funding as a result of the pitch being displayed.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Confidentiality and Intellectual Property</strong><br>
+                                    <ul>
+                                        <li>The Business retains ownership of all intellectual property related to the pitch.</li>
+                                        <li>The Platform Owner shall not disclose confidential information provided by the Business unless explicitly authorized in writing.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Limitation of Liability</strong><br>
+                                    The Platform Owner shall not be held liable for:
+                                    <ul>
+                                        <li>The success or failure of the pitch.</li>
+                                        <li>Any damages resulting from the display or use of the pitch content.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Term and Termination</strong><br>
+                                    This Agreement is effective from the date of submission until either party terminates it with written notice.
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Submit Button -->
             <div class="mb-3 d-flex justify-content-center">
-                <button type="submit" id="submitButton" class="btn btn-dark btn-lg" disabled>Save Changes</button>
+                <button type="submit" id="submitButton" class="btn btn-dark btn-lg fw-light fs-3 w-75 shadow-sm" disabled>Save Changes</button>
             </div>
         </form>
     </div>
@@ -333,10 +404,11 @@
                                 <textarea class="form-control" name="details_${pitchCount}" rows="3" placeholder="Details"></textarea>
                             </div>
                         </div>
-                        <div class="mb-2 row">
-                            <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Photo:</label></h5>
+                        <div class="mb-2">
+                            <div class="col pt-1">
+                                <h5 class="text-center"><label for="photo" class="form-label">Pitch image: (Width:700 Pixels)</label></h5>
                             </div>
+                            <hr>
                             <div class="col">
                                 <input type="file" class="form-control" name="photo_${pitchCount}">
                             </div>
@@ -369,10 +441,11 @@
                                 <input type="text" class="form-control" name="workAs_${teamCount}" placeholder="Role">
                             </div>
                         </div>
-                        <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Photo:</label></h5>
+                        <div class="mb-2">
+                            <div class="col pt-1">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Team Photo: (400 x 300 Pixels)</label></h5>
                             </div>
+                            <hr>
                             <div class="col">
                                 <input type="file" class="form-control" name="uploadFile_${teamCount}">
                             </div>

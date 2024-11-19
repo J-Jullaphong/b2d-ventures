@@ -1,0 +1,10 @@
+
+.pitch_photo {
+    width:700px;
+}
+
+@media only screen and (max-width: 991px) {
+    .pitch_photo {
+        width:100%;
+    }
+}
