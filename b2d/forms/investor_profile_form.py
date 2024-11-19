@@ -64,6 +64,11 @@ class InvestorProfileForm(forms.ModelForm):
             self.fields[field_name].help_text = None
             self.fields[field_name].widget.attrs["class"] = "form-control"
 
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['email'].required = True
+        self.fields['phone_number'].required = True
+
     def clean(self):
         cleaned_data = super().clean()
         current_password = cleaned_data.get('current_password')
