@@ -86,7 +86,6 @@
                         </div>
                         <div class="modal-body">
                             {% if not request.GET.form == 'business' %}
-                            <h4>For Investors:</h4>
                             <ul>
                                 <li><strong>Eligibility</strong> Investors must meet
                                     platform requirements, including the submission of
@@ -101,25 +100,12 @@
                                     does not guarantee any financial returns or business
                                     success.
                                 </li>
-                                <li><strong>Investment Approval</strong> All investments
-                                    are subject to admin review and approval for compliance
-                                    with platform rules.
-                                </li>
-                                <li><strong>Non-Liquidity</strong> Investments made via the
-                                    platform are not liquid, and you may not be able to
-                                    sell or transfer your shares without approval.
-                                </li>
                                 <li><strong>Data Privacy</strong> The platform will
                                     securely handle all personal and financial data in
                                     compliance with privacy laws.
                                 </li>
-                                <li><strong>Fees</strong> Certain transactions may incur
-                                    fees, which will be clearly disclosed before any
-                                    investment is made.
-                                </li>
                             </ul>
                             {% else %}
-                            <h4>For Business Owners:</h4>
                             <ul>
                                 <li><strong>Eligibility</strong> Businesses must meet all
                                     platform requirements, including document verification,
@@ -140,8 +126,7 @@
                                     confirmed.
                                 </li>
                                 <li><strong>Fees:</strong> The platform may charge fees for
-                                    launching fundraising campaigns or for processing
-                                    certain transactions, which will be disclosed upfront.
+                                    processing certain transactions, which will be disclosed upfront.
                                 </li>
                                 <li><strong>Responsibility</strong> Business owners are
                                     responsible for managing investor relations, delivering
@@ -183,16 +168,9 @@
                                 style="border-bottom: 1px solid #545454;">1. Information We
                                 Collect</h4>
                             {% if not request.GET.form == 'business' %}
-                            <h5 class="mt-3">Information for Investors:</h5>
                             <ul>
                                 <li><strong>Personal Information:</strong> Name, email
-                                    address, phone number, date of birth, residential
-                                    address, identification numbers (e.g., national ID or
-                                    passport).
-                                </li>
-                                <li><strong>Financial Information:</strong> Bank account
-                                    details, investment history, tax identification
-                                    numbers, proof of income or net worth.
+                                    address, phone number.
                                 </li>
                                 <li><strong>Investment Preferences:</strong> Types of
                                     businesses or industries you are interested in
@@ -204,7 +182,6 @@
                                 </li>
                             </ul>
                             {% else %}
-                            <h5 class="mt-3">Information for Business Owners:</h5>
                             <ul>
                                 <li><strong>Business Information:</strong> Business name,
                                     business registration number, tax identification
@@ -229,7 +206,6 @@
                                 Your
                                 Information</h4>
                             {% if not request.GET.form == 'business' %}
-                            <h5 class="mt-3">For Investors:</h5>
                             <ul>
                                 <li>Process and review your investment applications.</li>
                                 <li>Match your investment preferences with relevant
@@ -243,7 +219,6 @@
                                 <li>Ensure compliance with laws and regulations.</li>
                             </ul>
                             {% else %}
-                            <h5 class="mt-3">For Business Owners:</h5>
                             <ul>
                                 <li>Review and approve your business profile and
                                     fundraising campaigns.

@@ -19,19 +19,20 @@ class InvestorRegistrationForm(UserCreationForm):
             'first_name': 'First Name',
             'last_name': 'Last Name',
             'email': 'Email',
+            'phone_number': 'Phone Number',
         }
         widgets = {
             'first_name': forms.TextInput(attrs={
-                'placeholder': 'First name'
+                'placeholder': 'First Name'
             }),
             'last_name': forms.TextInput(attrs={
-                'placeholder': 'Last name'
+                'placeholder': 'Last Name'
             }),
             'email': forms.EmailInput(attrs={
                 'placeholder': 'Email'
             }),
             'phone_number': forms.TextInput(attrs={
-                'placeholder': 'Phone number'
+                'placeholder': 'Phone Number'
             })
         }
 

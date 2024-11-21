@@ -50,8 +50,8 @@ class InvestorProfileForm(forms.ModelForm):
             'financial_statements': 'Financial Statements',
         }
         widgets = {
-            'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),
-            'last_name': forms.TextInput(attrs={'placeholder': 'Last name'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
             'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
             'phone_number': forms.TextInput(attrs={'placeholder': 'Phone Number'}),
             'financial_statements': forms.ClearableFileInput(attrs={'accept': 'application/pdf'}),

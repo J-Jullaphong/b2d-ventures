@@ -61,52 +61,52 @@
             <!-- Business Photos Section -->
             <div class="mb-3">
                 <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="businessPhotos" class="form-label">Banner Images (Suggested Size: 1024 x 768 pixels)</label></h4>
+                    <h4><label for="businessPhotos" class="form-label">Banner Images</label></h4>
                 </div>
                 <div class="card p-2 mb-3">
-                    <div class="mb-1">
-                        <div class="col pt-1 m-auto">
+                    <div class="mb-1 row">
+                        <div class="col-lg-2 pt-1 m-auto">
                             <h5 class="text-center">Banner Image 1</h5>
                         </div>
-                        <div class="col my-3">
+                        <div class="col-lg-7 pt-1 m-auto">
                             <input type="file" class="form-control" id="photo1" name="photo1">
                         </div>
                         {% if photo1_url %}
-                            <div class="d-flex justify-content-center">
+                            <div class="col-lg-3 d-flex justify-content-center">
                                 <img src="{{ photo1_url }}" class="border border-2 rounded-3" alt="Photo 1"
-                                     style="width: 500px; height: 350px;"
+                                     style="width: 200px; height: 150px;"
                                      onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
                             </div>
                         {% endif %}
                     </div>
                     <hr>
-                    <div class="mb-1">
-                        <div class="col pt-1 m-auto">
+                    <div class="mb-1 row">
+                        <div class="col-lg-2 pt-1 m-auto">
                             <h5 class="text-center">Banner Image 2</h5>
                         </div>
-                        <div class="col my-3">
+                        <div class="col-lg-7 pt-1 m-auto">
                             <input type="file" class="form-control" id="photo2" name="photo2">
                         </div>
                         {% if photo2_url %}
-                            <div class="d-flex justify-content-center">
+                            <div class="col-lg-3 d-flex justify-content-center">
                                 <img src="{{ photo2_url }}" class="border border-2 rounded-3" alt="Photo 2"
-                                     style="width: 500px; height: 350px;"
+                                     style="width: 200px; height: 150px;"
                                      onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
                             </div>
                         {% endif %}
                     </div>
                     <hr>
-                    <div>
-                        <div class="col pt-1 m-auto">
+                    <div class="row">
+                        <div class="col-lg-2 pt-1 m-auto">
                             <h5 class="text-center">Banner Image 3</h5>
                         </div>
-                        <div class="col my-3">
+                        <div class="col-lg-7 pt-1 m-auto">
                             <input type="file" class="form-control" id="photo3" name="photo3">
                         </div>
                         {% if photo3_url %}
-                            <div class="d-flex justify-content-center">
+                            <div class="col-lg-3 d-flex justify-content-center">
                                 <img src="{{ photo3_url }}" class="border border-2 rounded-3" alt="Photo 3"
-                                     style="width: 500px; height: 350px;"
+                                     style="width: 200px; height: 150px;"
                                      onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
                             </div>
                         {% endif %}
@@ -139,7 +139,7 @@
                     <div class="card p-2 pitching-box mb-3">
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                                <h5 class="text-center"><label for="topic" class="form-label">Topic</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="topic_{{ forloop.counter0 }}" placeholder="Topic" value="{{ pitch.topic }}">
@@ -147,27 +147,27 @@
                         </div>
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
+                                <h5 class="text-center"><label for="details" class="form-label">Details</label></h5>
                             </div>
                             <div class="col">
                                 <textarea class="form-control" name="details_{{ forloop.counter0 }}" rows="3" placeholder="Details">{{ pitch.details }}</textarea>
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <div class="col-md pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Image: (Width:700 Pixels)</label></h5>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="photo" class="form-label">Image</label></h5>
                             </div>
-                            <hr>
-                            <div class="col">
+                            <div class="col-lg-8 pt-1 m-auto">
                                 <input type="file" class="form-control" name="photo_{{ forloop.counter0 }}">
                             </div>
+                            {% if pitch.photo_url %}
+                                <div class="d-flex justify-content-center col-lg-3 m-auto">
+                                    <img src="{{ pitch.photo_url }}" alt="Pitch Photo" class="rounded-3 border border-2 pitch_photo" style="width: 200px; height: 150px; object-fit: contain;"
+                                         onerror="this.onerror=null; this.src='{% static 'images/empty_image.png' %}';style='width: 200px;'">
+                                </div>
+                            {% endif %}
                         </div>
-                        {% if pitch.photo_url %}
-                            <div class="d-flex justify-content-center">
-                                <img src="{{ pitch.photo_url }}" alt="Pitch Photo" class="rounded-3 border border-2 pitch_photo"
-                                     onerror="this.onerror=null; this.src='{% static 'images/empty_image.png' %}';style='width: 200px;'">
-                            </div>
-                        {% endif %}
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-danger delete-pitch">Delete</button>
                         </div>
@@ -176,7 +176,7 @@
                     <div class="card p-2 pitching-box mb-3">
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                                <h5 class="text-center"><label for="topic" class="form-label">Topic</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="topic_0" placeholder="Topic">
@@ -184,18 +184,19 @@
                         </div>
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
+                                <h5 class="text-center"><label for="details" class="form-label">Details</label></h5>
                             </div>
                             <div class="col">
                                 <textarea class="form-control" name="details_0" rows="3" placeholder="Details"></textarea>
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <div class="col pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Image: (Width:700 Pixels)</label></h5>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="photo" class="form-label">Image</label></h5>
                             </div>
                             <hr>
-                            <div class="col">
+                            <div class="col m-auto">
                                 <input type="file" class="form-control" name="photo_0">
                             </div>
                         </div>
@@ -216,7 +217,7 @@
                     <div class="mb-3 card team-box p-2">
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="memberName" class="form-label">Name:</label></h5>
+                                <h5 class="text-center"><label for="memberName" class="form-label">Name</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="memberName_{{ forloop.counter0 }}" placeholder="Name" value="{{ member.name }}">
@@ -224,28 +225,28 @@
                         </div>
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="workAs" class="form-label">Role:</label></h5>
+                                <h5 class="text-center"><label for="workAs" class="form-label">Role</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="workAs_{{ forloop.counter0 }}" placeholder="Role" value="{{ member.work_as }}">
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <div class="col pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image: (400 x 300 Pixels)</label></h5>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image</label></h5>
                             </div>
-                            <hr>
-                            <div class="col">
+                            <div class="col-lg-8 m-auto">
                                 <input type="file" class="form-control" name="uploadFile_{{ forloop.counter0 }}">
                             </div>
+                            {% if member.photo_url %}
+                                <div class="col-lg-3 d-flex justify-content-center m-auto">
+                                    <img src="{{ member.photo_url }}" alt="Photo" class="rounded-3 border border-2"
+                                         style="width: 200px; height: 150px; object-fit: contain;"
+                                         onerror="this.onerror=null;  this.src='{% static 'images/user.png' %}';">
+                                </div>
+                            {% endif %}
                         </div>
-                        {% if member.photo_url %}
-                            <div class="d-flex justify-content-center">
-                                <img src="{{ member.photo_url }}" alt="Photo" class="rounded-3 border border-2"
-                                     style="width: 300px; height: 230px;"
-                                     onerror="this.onerror=null;  this.src='{% static 'images/user.png' %}';">
-                            </div>
-                        {% endif %}
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-danger delete-team">Delete</button>
                         </div>
@@ -254,7 +255,7 @@
                     <div class="mb-3 card team-box p-2">
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="memberName" class="form-label">Name:</label></h5>
+                                <h5 class="text-center"><label for="memberName" class="form-label">Name</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="memberName_0" placeholder="Name">
@@ -262,22 +263,23 @@
                         </div>
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="workAs" class="form-label">Role:</label></h5>
+                                <h5 class="text-center"><label for="workAs" class="form-label">Role</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="workAs_0" placeholder="Role">
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <div class="col pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image: (400 x 300 Pixels)</label></h5>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image</label></h5>
                             </div>
                             <hr>
-                            <div class="col">
+                            <div class="col m-auto">
                                 <input type="file" class="form-control" name="uploadFile_0">
                             </div>
                         </div>
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end col-lg-3 m-auto">
                             <button type="button" class="btn btn-danger delete-team">Delete</button>
                         </div>
                     </div>
@@ -394,7 +396,7 @@
                     <div class="card p-2 pitching-box mb-3">
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                                <h5 class="text-center"><label for="topic" class="form-label">Topic</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="topic_${pitchCount}" placeholder="Topic">
@@ -402,18 +404,18 @@
                         </div>
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
+                                <h5 class="text-center"><label for="details" class="form-label">Details</label></h5>
                             </div>
                             <div class="col">
                                 <textarea class="form-control" name="details_${pitchCount}" rows="3" placeholder="Details"></textarea>
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <div class="col pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Image: (Width:700 Pixels)</label></h5>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="photo" class="form-label">Image</label></h5>
                             </div>
-                            <hr>
-                            <div class="col">
+                            <div class="col m-auto">
                                 <input type="file" class="form-control" name="photo_${pitchCount}">
                             </div>
                         </div>
@@ -432,7 +434,7 @@
                     <div class="mb-3 card team-box p-2">
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="memberName" class="form-label">Name:</label></h5>
+                                <h5 class="text-center"><label for="memberName" class="form-label">Name</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="memberName_${teamCount}" placeholder="Name">
@@ -440,18 +442,18 @@
                         </div>
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="workAs" class="form-label">Role:</label></h5>
+                                <h5 class="text-center"><label for="workAs" class="form-label">Role</label></h5>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" name="workAs_${teamCount}" placeholder="Role">
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <div class="col pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image: (400 x 300 Pixels)</label></h5>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image</label></h5>
                             </div>
-                            <hr>
-                            <div class="col">
+                            <div class="col m-auto">
                                 <input type="file" class="form-control" name="uploadFile_${teamCount}">
                             </div>
                         </div>

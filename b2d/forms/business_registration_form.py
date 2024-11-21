@@ -21,7 +21,17 @@ class BusinessRegistrationForm(UserCreationForm):
             'bank_account_details'
         ]
         labels = {
-            'email': 'Email'
+            'email': 'Email',
+            'phone_number': 'Phone Number',
+            'business_registration_certificate':
+                'Business Registration Certificate',
+            'tax_identification_number': 'Tax Identification Number',
+            'proof_of_address': 'Proof Of Address',
+            'financial_statements': 'Financial Statements',
+            'ownership_documents': 'Ownership Documents',
+            'director_identification': 'Director Identification',
+            'licenses_and_permits': 'Licenses And Permits',
+            'bank_account_details': 'Bank Account Details',
         }
         widgets = {
             'name': forms.TextInput(attrs={
@@ -31,7 +41,7 @@ class BusinessRegistrationForm(UserCreationForm):
                 'placeholder': 'Email'
             }),
             'phone_number': forms.TextInput(attrs={
-                'placeholder': 'Phone number'
+                'placeholder': 'Phone Number'
             }),
             'business_registration_certificate': forms.ClearableFileInput(
                 attrs={
