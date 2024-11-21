@@ -17,51 +17,56 @@
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <!-- Business Name Section -->
-            <div class="mb-3">
-                <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="businessName" class="form-label">Business Name</label></h4>
+            <div class="card p-2 my-3">
+                <!-- Business Name Section -->
+                <div class="mb-3">
+                    <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                        <h4><label for="businessName" class="form-label">Name</label></h4>
+                    </div>
+                    <input type="text" class="form-control" id="businessName" name="businessName" placeholder="Name"
+                           value="{{ business_name }}">
                 </div>
-                <input type="text" class="form-control" id="businessName" name="businessName" placeholder="Name"
-                       value="{{ business_name }}">
-            </div>
 
-            <!-- Business Description Section -->
-            <div class="mb-3">
-                <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="businessDescription" class="form-label">Business Description</label></h4>
+                <!-- Business Description Section -->
+                <div class="mb-3">
+                    <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                        <h4><label for="businessDescription" class="form-label">Description</label></h4>
+                    </div>
+                    <textarea class="form-control" id="businessDescription" name="businessDescription" rows="4"
+                              placeholder="Describe your business" maxlength="200">{{ business_description }}</textarea>
                 </div>
-                <textarea class="form-control" id="businessDescription" name="businessDescription" rows="4"
-                          placeholder="Describe your business" maxlength="200">{{ business_description }}</textarea>
-            </div>
 
-            <!-- Category Section -->
-            <div class="mb-3 row">
-                <div class="col-lg-3 pt-1">
-                    <h4><label for="category" class="form-label">Choose your categories:</label></h4>
-                </div>
+                <!-- Category Section -->
+                <div class="mb-3">
+                    <div class="col pt-1">
+                        <h4><label for="category" class="form-label">Categories</label></h4>
+                        <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                    </div>
                 <div class="col">
-                    <select class="form-select select2" id="category" name="category[]" multiple="multiple">
-                        {% for category in categories %}
-                            <option value="{{ category.id }}"
-                                    {% if category.id in selected_category %}selected{% endif %}>
-                                {{ category.category_name }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                        <select class="form-select select2" id="category" name="category[]" multiple="multiple">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}"
+                                        {% if category.id in selected_category %}selected{% endif %}>
+                                    {{ category.category_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </div>
                 </div>
+
             </div>
 
 
             <!-- Business Photos Section -->
             <div class="mb-3">
                 <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="businessPhotos" class="form-label">Business Photos</label></h4>
+                    <h4><label for="businessPhotos" class="form-label">Banner Images (Suggested Size: 1024 x 768 pixels)</label></h4>
                 </div>
                 <div class="card p-2 mb-3">
                     <div class="mb-1">
                         <div class="col pt-1 m-auto">
-                            <h5 class="text-center">Slide image1: (1024 x 768 pixels), This image will use as advertisement.</h5>
+                            <h5 class="text-center">Banner Image 1</h5>
                         </div>
                         <div class="col my-3">
                             <input type="file" class="form-control" id="photo1" name="photo1">
@@ -77,7 +82,7 @@
                     <hr>
                     <div class="mb-1">
                         <div class="col pt-1 m-auto">
-                            <h5 class="text-center">Slide image2: (1024 x 768 pixels)</h5>
+                            <h5 class="text-center">Banner Image 2</h5>
                         </div>
                         <div class="col my-3">
                             <input type="file" class="form-control" id="photo2" name="photo2">
@@ -93,7 +98,7 @@
                     <hr>
                     <div>
                         <div class="col pt-1 m-auto">
-                            <h5 class="text-center">Slide image3: (1024 x 768 Pixels)</h5>
+                            <h5 class="text-center">Banner Image 3</h5>
                         </div>
                         <div class="col my-3">
                             <input type="file" class="form-control" id="photo3" name="photo3">
@@ -137,7 +142,7 @@
                                 <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="topic_{{ forloop.counter }}" placeholder="Topic" value="{{ pitch.topic }}">
+                                <input type="text" class="form-control" name="topic_{{ forloop.counter0 }}" placeholder="Topic" value="{{ pitch.topic }}">
                             </div>
                         </div>
                         <div class="mb-2 row">
@@ -145,16 +150,16 @@
                                 <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
                             </div>
                             <div class="col">
-                                <textarea class="form-control" name="details_{{ forloop.counter }}" rows="3" placeholder="Details">{{ pitch.details }}</textarea>
+                                <textarea class="form-control" name="details_{{ forloop.counter0 }}" rows="3" placeholder="Details">{{ pitch.details }}</textarea>
                             </div>
                         </div>
                         <div class="mb-2">
                             <div class="col-md pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Pitch image: (Width:700 Pixels)</label></h5>
+                                <h5 class="text-center"><label for="photo" class="form-label">Image: (Width:700 Pixels)</label></h5>
                             </div>
                             <hr>
                             <div class="col">
-                                <input type="file" class="form-control" name="photo_{{ forloop.counter }}">
+                                <input type="file" class="form-control" name="photo_{{ forloop.counter0 }}">
                             </div>
                         </div>
                         {% if pitch.photo_url %}
@@ -174,7 +179,7 @@
                                 <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="topic_1" placeholder="Topic">
+                                <input type="text" class="form-control" name="topic_0" placeholder="Topic">
                             </div>
                         </div>
                         <div class="mb-2 row">
@@ -182,16 +187,16 @@
                                 <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
                             </div>
                             <div class="col">
-                                <textarea class="form-control" name="details_1" rows="3" placeholder="Details"></textarea>
+                                <textarea class="form-control" name="details_0" rows="3" placeholder="Details"></textarea>
                             </div>
                         </div>
                         <div class="mb-2">
                             <div class="col pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Pitch image: (Width:700 Pixels)</label></h5>
+                                <h5 class="text-center"><label for="photo" class="form-label">Image: (Width:700 Pixels)</label></h5>
                             </div>
                             <hr>
                             <div class="col">
-                                <input type="file" class="form-control" name="photo_1">
+                                <input type="file" class="form-control" name="photo_0">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -210,28 +215,28 @@
                 {% for member in team_members_data %}
                     <div class="mb-3 card team-box p-2">
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
+                            <div class="col-md-1 pt-1">
                                 <h5 class="text-center"><label for="memberName" class="form-label">Name:</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="memberName_{{ forloop.counter }}" placeholder="Name" value="{{ member.name }}">
+                                <input type="text" class="form-control" name="memberName_{{ forloop.counter0 }}" placeholder="Name" value="{{ member.name }}">
                             </div>
                         </div>
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
+                            <div class="col-md-1 pt-1">
                                 <h5 class="text-center"><label for="workAs" class="form-label">Role:</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="workAs_{{ forloop.counter }}" placeholder="Role" value="{{ member.work_as }}">
+                                <input type="text" class="form-control" name="workAs_{{ forloop.counter0 }}" placeholder="Role" value="{{ member.work_as }}">
                             </div>
                         </div>
                         <div class="mb-2">
                             <div class="col pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Team Photo: (400 x 300 Pixels)</label></h5>
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image: (400 x 300 Pixels)</label></h5>
                             </div>
                             <hr>
                             <div class="col">
-                                <input type="file" class="form-control" name="uploadFile_{{ forloop.counter }}">
+                                <input type="file" class="form-control" name="uploadFile_{{ forloop.counter0 }}">
                             </div>
                         </div>
                         {% if member.photo_url %}
@@ -248,28 +253,28 @@
                 {% empty %}
                     <div class="mb-3 card team-box p-2">
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
-                                <h5 class="text-center"><label for="memberName" class="form-label">Member name:</label></h5>
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="memberName" class="form-label">Name:</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="memberName_1" placeholder="Name">
+                                <input type="text" class="form-control" name="memberName_0" placeholder="Name">
                             </div>
                         </div>
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
+                            <div class="col-md-1 pt-1">
                                 <h5 class="text-center"><label for="workAs" class="form-label">Role:</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="workAs_1" placeholder="Role">
+                                <input type="text" class="form-control" name="workAs_0" placeholder="Role">
                             </div>
                         </div>
                         <div class="mb-2">
                             <div class="col pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Team Photo: (400 x 300 Pixels)</label></h5>
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image: (400 x 300 Pixels)</label></h5>
                             </div>
                             <hr>
                             <div class="col">
-                                <input type="file" class="form-control" name="uploadFile_1">
+                                <input type="file" class="form-control" name="uploadFile_0">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -282,7 +287,7 @@
             <!-- Agreement -->
             <div class="mb-3 form-check d-flex justify-content-center">
                 <input type="checkbox" class="form-check-input mx-2 mt-2" id="agreement" onchange="toggleButton()">
-                <label class="form-check-label  fs-5" for="agreement">I have read and agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#business_agreement">agreement</a></label>
+                <label class="form-check-label  fs-5" for="agreement">I have read and agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#business_agreement">agreement</a>.</label>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="business_agreement" tabindex="-1" aria-labelledby="business_agreement" aria-hidden="true">
@@ -360,15 +365,15 @@
         });
 
         $(document).ready(function () {
-            var pitchCount = {{ pitch_data|length }};
-            var teamCount = {{ team_members_data|length }};
+            var pitchCount = $('#pitchingSection .pitching-box').length;
+            var teamCount = $('#teamSection .team-box').length;
 
             // Reindex pitches after a deletion
             function reindexPitches() {
                 $('#pitchingSection .pitching-box').each(function (index) {
-                    $(this).find('input[name^="topic_"]').attr('name', `topic_${index + 1}`);
-                    $(this).find('textarea[name^="details_"]').attr('name', `details_${index + 1}`);
-                    $(this).find('input[name^="photo_"]').attr('name', `photo_${index + 1}`);
+                    $(this).find('input[name^="topic_"]').attr('name', `topic_${index}`);
+                    $(this).find('textarea[name^="details_"]').attr('name', `details_${index}`);
+                    $(this).find('input[name^="photo_"]').attr('name', `photo_${index}`);
                 });
                 pitchCount = $('#pitchingSection .pitching-box').length;
             }
@@ -376,16 +381,15 @@
             // Reindex team members after a deletion
             function reindexTeamMembers() {
                 $('#teamSection .team-box').each(function (index) {
-                    $(this).find('input[name^="memberName_"]').attr('name', `memberName_${index + 1}`);
-                    $(this).find('input[name^="workAs_"]').attr('name', `workAs_${index + 1}`);
-                    $(this).find('input[name^="uploadFile_"]').attr('name', `uploadFile_${index + 1}`);
+                    $(this).find('input[name^="memberName_"]').attr('name', `memberName_${index}`);
+                    $(this).find('input[name^="workAs_"]').attr('name', `workAs_${index}`);
+                    $(this).find('input[name^="uploadFile_"]').attr('name', `uploadFile_${index}`);
                 });
                 teamCount = $('#teamSection .team-box').length;
             }
 
             // Add new pitch section
             $('#addPitch').on('click', function () {
-                pitchCount++;
                 $('#pitchingSection').append(`
                     <div class="card p-2 pitching-box mb-3">
                         <div class="mb-2 row">
@@ -406,7 +410,7 @@
                         </div>
                         <div class="mb-2">
                             <div class="col pt-1">
-                                <h5 class="text-center"><label for="photo" class="form-label">Pitch image: (Width:700 Pixels)</label></h5>
+                                <h5 class="text-center"><label for="photo" class="form-label">Image: (Width:700 Pixels)</label></h5>
                             </div>
                             <hr>
                             <div class="col">
@@ -418,6 +422,7 @@
                         </div>
                     </div>
                 `);
+                reindexPitches();
             });
 
             // Add new team section
@@ -426,7 +431,7 @@
                 $('#teamSection').append(`
                     <div class="mb-3 card team-box p-2">
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
+                            <div class="col-md-1 pt-1">
                                 <h5 class="text-center"><label for="memberName" class="form-label">Name:</label></h5>
                             </div>
                             <div class="col">
@@ -434,7 +439,7 @@
                             </div>
                         </div>
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
+                            <div class="col-md-1 pt-1">
                                 <h5 class="text-center"><label for="workAs" class="form-label">Role:</label></h5>
                             </div>
                             <div class="col">
@@ -443,7 +448,7 @@
                         </div>
                         <div class="mb-2">
                             <div class="col pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Team Photo: (400 x 300 Pixels)</label></h5>
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image: (400 x 300 Pixels)</label></h5>
                             </div>
                             <hr>
                             <div class="col">
@@ -455,6 +460,7 @@
                         </div>
                     </div>
                 `);
+                reindexTeamMembers();
             });
 
             // Delete pitch section

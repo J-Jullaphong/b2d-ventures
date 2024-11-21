@@ -67,7 +67,7 @@ class BusinessProfileView(View):
     def handle_pitch_data(self, request, business_id):
         """Handles pitch data update with dynamic reindexing, including optional photo upload."""
         pitch_data = []
-        index = 1
+        index = 0
 
         while True:
             topic = request.POST.get(f'topic_{index}')
@@ -93,7 +93,7 @@ class BusinessProfileView(View):
     def handle_team_members(self, request, business_id):
         """Handles team members data update with explicit indexing."""
         team_members_data = []
-        index = 1
+        index = 0
 
         while True:
             name = request.POST.get(f'memberName_{index}')
