@@ -1,14 +1,16 @@
 import uuid
+import shutil
 from decimal import Decimal
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from django.test import TestCase, Client
 from django.utils import timezone
 from b2d.models import Business, Category, FundRaising, Investment, Investor
 
 
-def generate_file_path(suffix):
-    """Helper method to generate file paths dynamically"""
-    return f'path/to/{suffix}.pdf'
+def generate_file(suffix):
+    """Helper method to generate file dynamically"""
+    return SimpleUploadedFile(f"{suffix}.pdf", b'content')
 
 
 class BaseCase(TestCase):
@@ -16,144 +18,138 @@ class BaseCase(TestCase):
     def setUp(self):
         self.client = Client()
 
-        # Create categories
         self.category_tech = Category.objects.create(category_name="Tech")
         self.category_food = Category.objects.create(category_name="Food")
         self.category_retail = Category.objects.create(category_name="Retail")
 
-        # Generate unique identifiers for business entries
         self.business1_uid = uuid.uuid4().hex
         self.business2_uid = uuid.uuid4().hex
         self.business3_uid = uuid.uuid4().hex
         self.business4_uid = uuid.uuid4().hex
         self.business5_uid = uuid.uuid4().hex
         self.business6_uid = uuid.uuid4().hex
+
         self.user1_uid = uuid.uuid4().hex
         self.user2_uid = uuid.uuid4().hex
 
-        # Create businesses with dynamic file paths and unique identifiers
         self.business1 = Business.objects.create_user(
-            username=f"username_{self.business1_uid}",
-            email=f"user{self.business1_uid}@example.com",
-            password="password123",
-            is_active = True,
-            name="business_tech_1",
-            phone_number="1234567890",
-            description="description_tech_1",
-            category=self.category_tech,
-            business_registration_certificate=generate_file_path('certificate1'),
-            tax_identification_number=generate_file_path('tin1'),
-            proof_of_address=generate_file_path('address1'),
-            financial_statements=generate_file_path('statements1'),
-            ownership_documents=generate_file_path('ownership1'),
-            director_identification=generate_file_path('director1'),
-            licenses_and_permits=generate_file_path('licenses1'),
-            bank_account_details=generate_file_path('bank1')
+            username="business_tester1",
+            email="business_teste1@example.com",
+            password="#Password1234",
+            is_active=True,
+            name="business1",
+            phone_number="0987654321",
+            business_registration_certificate=generate_file("certificate1"),
+            tax_identification_number=generate_file("tin1"),
+            proof_of_address=generate_file("address1"),
+            financial_statements=generate_file("statements1"),
+            ownership_documents=generate_file("ownership1"),
+            director_identification=generate_file("director1"),
+            licenses_and_permits=generate_file("licenses1"),
+            bank_account_details=generate_file("bank1")
         )
 
         self.business2 = Business.objects.create_user(
-            username=f"username_{self.business2_uid}",
-            email=f"user{self.business2_uid}@example.com",
-            password="password123",
+            username="business_tester2",
+            email="business_teste2@example.com",
+            password="#Password1234",
             is_active=True,
-            name="business_tech_2",
+            name="business2",
             phone_number="0987654321",
-            description="description_tech_2",
-            category=self.category_tech,
-            business_registration_certificate=generate_file_path('certificate2'),
-            tax_identification_number=generate_file_path('tin2'),
-            proof_of_address=generate_file_path('address2'),
-            financial_statements=generate_file_path('statements2'),
-            ownership_documents=generate_file_path('ownership2'),
-            director_identification=generate_file_path('director2'),
-            licenses_and_permits=generate_file_path('licenses2'),
-            bank_account_details=generate_file_path('bank2')
+            business_registration_certificate=generate_file("certificate2"),
+            tax_identification_number=generate_file("tin2"),
+            proof_of_address=generate_file("address2"),
+            financial_statements=generate_file("statements2"),
+            ownership_documents=generate_file("ownership2"),
+            director_identification=generate_file("director2"),
+            licenses_and_permits=generate_file("licenses2"),
+            bank_account_details=generate_file("bank2")
         )
 
         self.business3 = Business.objects.create_user(
-            username=f"username_{self.business3_uid}",
-            email=f"user{self.business3_uid}@example.com",
-            password="password123",
+            username="business_tester3",
+            email="business_teste3@example.com",
+            password="#Password1234",
             is_active=True,
-            name="business_food_1",
-            phone_number="1928374650",
-            description="description_food_1",
-            category=self.category_food,
-            business_registration_certificate=generate_file_path('certificate3'),
-            tax_identification_number=generate_file_path('tin3'),
-            proof_of_address=generate_file_path('address3'),
-            financial_statements=generate_file_path('statements3'),
-            ownership_documents=generate_file_path('ownership3'),
-            director_identification=generate_file_path('director3'),
-            licenses_and_permits=generate_file_path('licenses3'),
-            bank_account_details=generate_file_path('bank3')
+            name="business3",
+            phone_number="0987654321",
+            business_registration_certificate=generate_file("certificate3"),
+            tax_identification_number=generate_file("tin3"),
+            proof_of_address=generate_file("address3"),
+            financial_statements=generate_file("statements3"),
+            ownership_documents=generate_file("ownership3"),
+            director_identification=generate_file("director3"),
+            licenses_and_permits=generate_file("licenses3"),
+            bank_account_details=generate_file("bank3")
         )
 
         self.business4 = Business.objects.create_user(
-            username=f"username_{self.business4_uid}",
-            email=f"user{self.business4_uid}@example.com",
-            password="password123",
+            username="business_tester4",
+            email="business_teste4@example.com",
+            password="#Password1234",
             is_active=True,
-            name="business_food_2",
-            phone_number="1928374650",
-            description="description_food_2",
-            category=self.category_food,
-            business_registration_certificate=generate_file_path('certificate4'),
-            tax_identification_number=generate_file_path('tin4'),
-            proof_of_address=generate_file_path('address4'),
-            financial_statements=generate_file_path('statements4'),
-            ownership_documents=generate_file_path('ownership4'),
-            director_identification=generate_file_path('director4'),
-            licenses_and_permits=generate_file_path('licenses4'),
-            bank_account_details=generate_file_path('bank4')
+            name="business4",
+            phone_number="0987654321",
+            business_registration_certificate=generate_file("certificate4"),
+            tax_identification_number=generate_file("tin4"),
+            proof_of_address=generate_file("address4"),
+            financial_statements=generate_file("statements4"),
+            ownership_documents=generate_file("ownership4"),
+            director_identification=generate_file("director4"),
+            licenses_and_permits=generate_file("licenses4"),
+            bank_account_details=generate_file("bank4")
         )
 
         self.business5 = Business.objects.create_user(
-            username=f"username_{self.business5_uid}",
-            email=f"user{self.business5_uid}@example.com",
-            password="password123",
+            username="business_tester5",
+            email="business_teste5@example.com",
+            password="#Password1234",
             is_active=True,
-            name="business_retail_1",
-            phone_number="1928374650",
-            description="description_retail_1",
-            category=self.category_retail,
-            business_registration_certificate=generate_file_path('certificate5'),
-            tax_identification_number=generate_file_path('tin5'),
-            proof_of_address=generate_file_path('address5'),
-            financial_statements=generate_file_path('statements5'),
-            ownership_documents=generate_file_path('ownership5'),
-            director_identification=generate_file_path('director5'),
-            licenses_and_permits=generate_file_path('licenses5'),
-            bank_account_details=generate_file_path('bank5')
+            name="business5",
+            phone_number="0987654321",
+            business_registration_certificate=generate_file("certificate5"),
+            tax_identification_number=generate_file("tin5"),
+            proof_of_address=generate_file("address5"),
+            financial_statements=generate_file("statements5"),
+            ownership_documents=generate_file("ownership5"),
+            director_identification=generate_file("director5"),
+            licenses_and_permits=generate_file("licenses5"),
+            bank_account_details=generate_file("bank5")
         )
 
         self.business6 = Business.objects.create_user(
-            username=f"username_{self.business6_uid}",
-            email=f"user{self.business6_uid}@example.com",
-            password="password123",
+            username="business_tester6",
+            email="business_teste6@example.com",
+            password="#Password1234",
             is_active=True,
-            name="business_retail_2",
-            phone_number="1928374650",
-            description="description_retail_2",
-            category=self.category_retail,
-            business_registration_certificate=generate_file_path('certificate6'),
-            tax_identification_number=generate_file_path('tin6'),
-            proof_of_address=generate_file_path('address6'),
-            financial_statements=generate_file_path('statements6'),
-            ownership_documents=generate_file_path('ownership6'),
-            director_identification=generate_file_path('director6'),
-            licenses_and_permits=generate_file_path('licenses6'),
-            bank_account_details=generate_file_path('bank6')
+            name="business6",
+            phone_number="0987654321",
+            business_registration_certificate=generate_file("certificate6"),
+            tax_identification_number=generate_file("tin6"),
+            proof_of_address=generate_file("address6"),
+            financial_statements=generate_file("statements6"),
+            ownership_documents=generate_file("ownership6"),
+            director_identification=generate_file("director6"),
+            licenses_and_permits=generate_file("licenses6"),
+            bank_account_details=generate_file("bank6")
         )
+
+        self.business1.category.add(self.category_tech)
+        self.business2.category.add(self.category_food)
+        self.business3.category.add(self.category_retail)
+        self.business4.category.add(self.category_tech)
+        self.business5.category.add(self.category_food)
+        self.business6.category.add(self.category_retail)
 
         self.fundraising1 = FundRaising.objects.create(
             business=self.business1,
             goal_amount=Decimal("10000.00"),
-            publish_date=timezone.now().date(),
+            publish_date=timezone.now().date() + timezone.timedelta(days=-5),
             deadline_date=timezone.now().date() + timezone.timedelta(days=10),
-            minimum_investment=Decimal("500.00"),
-            shares_percentage=Decimal("10.00"),
-            fundraising_status='approve'
+            share_type="common",
+            shares=1000,
+            minimum_shares=10,
+            fundraising_status="approve"
         )
 
         self.fundraising2 = FundRaising.objects.create(
@@ -161,9 +157,10 @@ class BaseCase(TestCase):
             goal_amount=Decimal("20000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment=Decimal("1000.00"),
-            shares_percentage=Decimal("15.00"),
-            fundraising_status='approve'
+            share_type="common",
+            shares=1000,
+            minimum_shares=100,
+            fundraising_status="approve"
         )
 
         self.fundraising3 = FundRaising.objects.create(
@@ -171,9 +168,10 @@ class BaseCase(TestCase):
             goal_amount=Decimal("15000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=-15),
-            minimum_investment=Decimal("750.00"),
-            shares_percentage=Decimal("12.50"),
-            fundraising_status='approve'
+            share_type="common",
+            shares=1000,
+            minimum_shares=10,
+            fundraising_status="approve"
         )
 
         self.fundraising4 = FundRaising.objects.create(
@@ -181,9 +179,10 @@ class BaseCase(TestCase):
             goal_amount=Decimal("5000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment=Decimal("750.00"),
-            shares_percentage=Decimal("12.50"),
-            fundraising_status='rejects'
+            share_type="common",
+            shares=1000,
+            minimum_shares=10,
+            fundraising_status="rejects"
         )
 
         self.fundraising5 = FundRaising.objects.create(
@@ -191,58 +190,74 @@ class BaseCase(TestCase):
             goal_amount=Decimal("15000.00"),
             publish_date=timezone.now().date(),
             deadline_date=timezone.now().date() + timezone.timedelta(days=15),
-            minimum_investment=Decimal("750.00"),
-            shares_percentage=Decimal("12.50"),
-            fundraising_status='wait'
+            share_type="common",
+            shares=1000,
+            minimum_shares=10,
+            fundraising_status="wait"
         )
 
-        # Create investors
         self.investor1 = Investor.objects.create_user(
-            username=f"investor_{self.user1_uid}",
-            email=f"investor1@example.com",
-            password="password123",
+            username="investor_tester1",
+            email="investor_tester1@example.com",
+            password="#Password1234",
             is_active=True,
-            first_name="Investor",
-            last_name="One",
-            financial_statements=generate_file_path('investor1')
+            first_name="Investor1",
+            last_name="Tester1",
+            phone_number="0987654321",
+            financial_statements=generate_file("investor1")
 
         )
 
         self.investor2 = Investor.objects.create_user(
-            username=f"investor_{self.user2_uid}",
-            email=f"investor2@example.com",
-            password="password123",
+            username="investor_tester2",
+            email="investor_tester2@example.com",
+            password="#Password1234",
             is_active=True,
-            first_name="Investor",
-            last_name="Two",
-            financial_statements=generate_file_path('investor2')
+            first_name="Investor2",
+            last_name="Tester2",
+            phone_number="0987654321",
+            financial_statements=generate_file("investor2")
         )
 
-        # Create investments
+        self.investor3 = Investor.objects.create_user(
+            username="investor_tester3",
+            email="investor_tester3@example.com",
+            password="#Password1234",
+            is_active=True,
+            first_name="Investor3",
+            last_name="Tester3",
+            phone_number="0987654321",
+            financial_statements=generate_file("investor3")
+        )
+
         self.investment1 = Investment.objects.create(
             investor=self.investor1,
             fundraise=self.fundraising1,
             amount=Decimal("5000.00"),
-            shares_percentage=self.fundraising1.shares_percentage,
-            investment_status='approve'
+            shares=50,
+            transaction_slip=generate_file("slip1"),
+            investment_status="approve"
         )
 
         self.investment2 = Investment.objects.create(
             investor=self.investor1,
             fundraise=self.fundraising2,
             amount=Decimal("2500.00"),
-            shares_percentage=self.fundraising2.shares_percentage,
-            investment_status='approve'
+            shares=50,
+            transaction_slip=generate_file("slip2"),
+            investment_status="approve"
         )
 
         self.investment3 = Investment.objects.create(
             investor=self.investor2,
             fundraise=self.fundraising1,
             amount=Decimal("2500.00"),
-            shares_percentage=self.fundraising1.shares_percentage,
-            investment_status='approve'
+            shares=50,
+            transaction_slip=generate_file("slip3"),
+            investment_status="approve"
         )
 
     def tearDown(self):
         """Clean up data after each test case."""
         super().tearDown()
+

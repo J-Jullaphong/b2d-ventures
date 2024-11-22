@@ -1,5 +1,8 @@
 from django.urls import reverse
+
+
 from .basecase import BaseCase
+from ..models import TopDeal
 
 
 class HomeViewTest(BaseCase):
@@ -8,35 +11,40 @@ class HomeViewTest(BaseCase):
         url = reverse('b2d:home')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse('b2d:home'))
         self.assertTemplateUsed(response, 'b2d/home.html')
 
-    def test_home_view_carousel_businesses_count(self):
-        """Test if the correct businesses appear in the carousel (based on publish date and approval)."""
-        response = self.client.get(reverse('b2d:home'))
+    def test_carousel_businesses(self):
+        """
+        Test that the HomeView context contains the correct businesses for the carousel.
+        Carousel businesses should be the top 3 trending businesses based on recent investments.
+        """
+        url = reverse('b2d:home')
+        response = self.client.get(url)
         carousel_businesses = response.context['carousel_businesses']
-        self.assertEqual(len(carousel_businesses),2)
 
-    def test_home_view_card_businesses_count(self):
-        """Test if the correct businesses appear in the top deals section."""
-        response = self.client.get(reverse('b2d:home'))
+        self.assertEqual(len(carousel_businesses), 2)  # Only fundraising1 and fundraising2 are active
+        self.assertIn(self.business1, carousel_businesses)  # Has the most investments
+        self.assertIn(self.business2, carousel_businesses)
+
+    def test_card_businesses(self):
+        """
+        Test that the HomeView context contains the correct businesses for the card section.
+        Card businesses should be the ones in the TopDeal model.
+        """
+        # Add a TopDeal for business1 and business2
+        TopDeal.objects.create(fundraising=self.fundraising1, display_order=1)
+        TopDeal.objects.create(fundraising=self.fundraising2, display_order=2)
+
+        url = reverse('b2d:home')
+        response = self.client.get(url)
         card_businesses = response.context['card_businesses']
+
         self.assertEqual(len(card_businesses), 2)
+        self.assertIn(self.business1, card_businesses)
+        self.assertIn(self.business2, card_businesses)
 
-    def test_home_view_carousel_business_data(self):
-        """Test if carousel businesses data is correct and in the right order."""
-        response = self.client.get(reverse('b2d:home'))
-        carousel_businesses = response.context['carousel_businesses']
-
-        # Ensure businesses appear in the correct order by publish_date
-        self.assertEqual(carousel_businesses[0].name, self.business1.name)
-        self.assertEqual(carousel_businesses[1].name, self.business2.name)
-
-    def test_home_view_card_business_data(self):
-        """Test if the card businesses data is correct and ordered by investors."""
-        response = self.client.get(reverse('b2d:home'))
-        card_businesses = response.context['card_businesses']
-
-        # Ensure businesses appear in the correct oder by most investors
-        self.assertEqual(card_businesses[0].name, self.business1.name)
-        self.assertEqual(card_businesses[1].name, self.business2.name)
+    def test_context_settings(self):
+        """Test that the settings are included in the context."""
+        url = reverse('b2d:home')
+        response = self.client.get(url)
+        self.assertIn('settings', response.context)

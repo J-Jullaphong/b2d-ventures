@@ -1,11 +1,11 @@
 from datetime import timedelta
 
 from django.conf import settings
-from django.db.models import Count, Q, Min
+from django.db.models import Count, Q, Min, F
 from django.utils import timezone
 from django.views.generic import ListView
 
-from ..models import Business, Category, Investment
+from ..models import Business, Category
 
 
 class BusinessListView(ListView):
@@ -39,11 +39,11 @@ class BusinessListView(ListView):
 
         # Apply sorting based on the selected option
         if sort_by == 'most_recent':
-            queryset = queryset.order_by('-id')
+            queryset = queryset.annotate(publish_date=F('fundraising__publish_date')).order_by('-publish_date')
         elif sort_by == 'most_investors':
             queryset = queryset.annotate(num_investors=Count('fundraising__investment')).order_by('-num_investors')
-        elif sort_by == 'min_invest':
-            queryset = queryset.annotate(min_invest=Min('fundraising__minimum_investment')).order_by('min_invest')
+        elif sort_by == 'min_shares':
+            queryset = queryset.annotate(min_shares=Min('fundraising__minimum_shares')).order_by('min_shares')
         elif sort_by == 'trending':
             two_weeks_ago = timezone.now() - timezone.timedelta(weeks=5)
             queryset = queryset.annotate(
