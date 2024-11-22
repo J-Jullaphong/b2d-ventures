@@ -114,7 +114,7 @@ class TestBusinessRegistration(unittest.TestCase):
 
     def tearDown(self):
         """Clear out business in the database and remove S3 file after each test."""
-        test_business = Business.objects.last()
+        test_business = Business.objects.get(username='C1@gmail.com')
         self.clear_business_details(user_id=test_business.id)
         self.clear_s3_storage(user_id=test_business.id)
         self.driver.quit()

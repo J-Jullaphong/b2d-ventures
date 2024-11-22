@@ -18,7 +18,7 @@ class TestViewPortfolio(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/login/')
-        self.device = EmailDevice.objects.get(user_id=3)
+        self.device = EmailDevice.objects.get(user_id="effb52fe-9db8-455c-8810-a135f0ab6402")
         time.sleep(3)
         self.login()
 
@@ -71,7 +71,7 @@ class TestViewPortfolio(unittest.TestCase):
         time.sleep(1)
 
         portfolio_link = driver.find_element(By.XPATH,
-                                             '//*[@id="navbarContent"]/ul[2]/li/ul/li[1]/a')
+                                             '//*[@id="navbarContent"]/ul[2]/li/ul/li[2]/a')
         self.assertIsNotNone(portfolio_link, "Portfolio option not found!")
         portfolio_link.click()
         time.sleep(3)

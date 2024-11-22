@@ -19,7 +19,7 @@ class TestLoginProcess(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/')
-        self.device = EmailDevice.objects.get(user_id=3)
+        self.device = EmailDevice.objects.get(user_id="effb52fe-9db8-455c-8810-a135f0ab6402")
         time.sleep(3)
 
     def test_login_process(self):

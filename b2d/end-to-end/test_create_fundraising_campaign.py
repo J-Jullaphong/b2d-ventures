@@ -19,7 +19,7 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/login/')
-        self.device = EmailDevice.objects.get(user_id=16)
+        self.device = EmailDevice.objects.get(user_id="1711e45a-9af8-4740-ab4d-75dc1b437b57")
         time.sleep(3)
         self.login()
 
@@ -34,7 +34,7 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
 
         password_input = driver.find_element(By.NAME, 'password')
         password_input.clear()
-        password_input.send_keys('Hb!47xGk9$')
+        password_input.send_keys('Hb!47xGk9$Hb!47xGk9$')
         time.sleep(1)
 
         login_button = driver.find_element(By.XPATH,
@@ -94,17 +94,21 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
         deadline_date_input.send_keys('31/12/2024')
         time.sleep(1)
 
-        min_investment_input = driver.find_element(By.NAME,
-                                                   'minimum_investment')
-        self.assertIsNotNone(min_investment_input,
-                             "Minimum investment input field not found!")
-        min_investment_input.send_keys('10000')
+        minimum_shares_input = driver.find_element(By.NAME, 'minimum_shares')
+        self.assertIsNotNone(minimum_shares_input,
+                             "Minimum Shares input field not found!")
+        minimum_shares_input.send_keys('50')
         time.sleep(1)
 
-        shares_input = driver.find_element(By.NAME, 'shares_percentage')
+        share_type_input = driver.find_element(By.NAME, 'share_type')
+        self.assertIsNotNone(share_type_input, "Share Type input field not found!")
+        share_type_input.send_keys('preferred')
+        time.sleep(1)
+
+        shares_input = driver.find_element(By.NAME, 'shares')
         self.assertIsNotNone(shares_input,
-                             "Shares percentage input field not found!")
-        shares_input.send_keys('10')
+                             "Shares input field not found!")
+        shares_input.send_keys('1000')
         time.sleep(1)
 
         iframe = driver.find_element(By.CSS_SELECTOR, "iframe[title='reCAPTCHA']")
@@ -121,7 +125,7 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
         time.sleep(2)
 
         create_button = driver.find_element(By.XPATH,
-                                            '/html/body/div/form/div[2]/button')
+                                            '/html/body/div[1]/form/div/div[8]/button')
         self.assertIsNotNone(create_button,
                              "Create Fundraising button not found!")
         create_button.click()
@@ -137,7 +141,7 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
 
     def tearDown(self):
         """Close the browser and clear fundraising campaign after each test."""
-        self.clear_fundraising_campaign(user_id=16)
+        self.clear_fundraising_campaign(user_id="1711e45a-9af8-4740-ab4d-75dc1b437b57")
         self.driver.quit()
 
     def clear_fundraising_campaign(self, user_id):

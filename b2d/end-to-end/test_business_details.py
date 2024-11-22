@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
 
 from mysite.wsgi import *
 from ..models import Business
@@ -22,7 +23,7 @@ class TestBusinessDetails(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/login/')
-        self.device = EmailDevice.objects.get(user_id=16)
+        self.device = EmailDevice.objects.get(user_id='1711e45a-9af8-4740-ab4d-75dc1b437b57')
         time.sleep(3)
         self.login()
 
@@ -37,7 +38,7 @@ class TestBusinessDetails(unittest.TestCase):
 
         password_input = driver.find_element(By.NAME, 'password')
         password_input.clear()
-        password_input.send_keys('Hb!47xGk9$')
+        password_input.send_keys('Hb!47xGk9$Hb!47xGk9$')
         time.sleep(1)
 
         login_button = driver.find_element(By.XPATH,
@@ -90,8 +91,9 @@ class TestBusinessDetails(unittest.TestCase):
         business_description.send_keys('Provide Health')
         time.sleep(1)
 
-        category_dropdown = Select(driver.find_element(By.ID, 'category'))
-        category_dropdown.select_by_visible_text('Healthcare')
+        category_dropdown = driver.find_element(By.XPATH, '/html/body/div/form/div[1]/div[3]/div/div[2]/span/span[1]/span/span/input')
+        category_dropdown.send_keys('Healthcare')
+        category_dropdown.send_keys(Keys.RETURN)
         time.sleep(1)
 
         business_photos = driver.find_element(By.NAME, 'photo1')
@@ -191,46 +193,46 @@ class TestBusinessDetails(unittest.TestCase):
                          'https://youtu.be/dQw4w9WgXcQ?feature=shared',
                          "YouTube URL does not match!")
 
-        pitch_problem_displayed = driver.find_element(By.XPATH,
-                                                      '//*[@id="pitchingSection"]/div[2]/div[1]/div[2]/input').get_attribute(
+        pitch_problem_displayed = driver.find_element(By.NAME,
+                                                      'topic_0').get_attribute(
             'value')
         self.assertEqual(pitch_problem_displayed, 'Problem',
                          "Pitch problem does not match!")
 
-        pitch_problem_detail_displayed = driver.find_element(By.XPATH,
-                                                             '//*[@id="pitchingSection"]/div[2]/div[2]/div[2]/textarea').text
+        pitch_problem_detail_displayed = driver.find_element(By.NAME,
+                                                             'details_0').text
         self.assertEqual(pitch_problem_detail_displayed,
                          'This is the problem.',
                          "Pitch problem detail does not match!")
 
-        pitch_solution_displayed = driver.find_element(By.XPATH,
-                                                       '//*[@id="pitchingSection"]/div[3]/div[1]/div[2]/input').get_attribute(
+        pitch_solution_displayed = driver.find_element(By.NAME,
+                                                       'topic_1').get_attribute(
             'value')
         self.assertEqual(pitch_solution_displayed, 'Solution',
                          "Pitch solution does not match!")
 
-        pitch_solution_detail_displayed = driver.find_element(By.XPATH,
-                                                              '//*[@id="pitchingSection"]/div[3]/div[2]/div[2]/textarea').text
+        pitch_solution_detail_displayed = driver.find_element(By.NAME,
+                                                              'details_1').text
         self.assertEqual(pitch_solution_detail_displayed,
                          'This is the solution.',
                          "Pitch solution detail does not match!")
 
-        team_member_name_displayed = driver.find_element(By.XPATH,
-                                                         '//*[@id="teamSection"]/div[2]/div[1]/div[2]/input').get_attribute(
+        team_member_name_displayed = driver.find_element(By.NAME,
+                                                         'memberName_0').get_attribute(
             'value')
         self.assertEqual(team_member_name_displayed, 'John',
                          "Team member name does not match!")
 
-        team_member_role_displayed = driver.find_element(By.XPATH,
-                                                         '//*[@id="teamSection"]/div[2]/div[2]/div[2]/input').get_attribute(
+        team_member_role_displayed = driver.find_element(By.NAME,
+                                                         'workAs_0').get_attribute(
             'value')
         self.assertEqual(team_member_role_displayed, 'CEO',
                          "Team member role does not match!")
 
     def tearDown(self):
         """Clear out business details in the database and remove S3 files after each test."""
-        self.clear_business_details(user_id=8)
-        self.clear_s3_storage(user_id=8)
+        self.clear_business_details(user_id='1711e45a-9af8-4740-ab4d-75dc1b437b57')
+        self.clear_s3_storage(user_id='1711e45a-9af8-4740-ab4d-75dc1b437b57')
         self.driver.quit()
 
     def clear_business_details(self, user_id):
@@ -238,7 +240,8 @@ class TestBusinessDetails(unittest.TestCase):
         try:
             business = Business.objects.get(id=user_id)
             business.description = ''
-            business.category = None
+            business_category = business.category.first()
+            business.category.remove(business_category)
             business.save()
             print(
                 f"Business details for user {user_id} cleared from the database.")

@@ -19,7 +19,7 @@ class TestInvestment(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/login/')
-        self.device = EmailDevice.objects.get(user_id=3)
+        self.device = EmailDevice.objects.get(user_id="effb52fe-9db8-455c-8810-a135f0ab6402")
         time.sleep(3)
         self.login()
 
@@ -63,7 +63,7 @@ class TestInvestment(unittest.TestCase):
         verify_otp_button.click()
         time.sleep(3)
 
-        driver.get('http://localhost:8000/business/2/')
+        driver.get('http://localhost:8000/business/68a6583d-f6f5-498d-8b94-f9c4beef436e/')
         time.sleep(3)
 
     def test_investment_process(self):
@@ -75,9 +75,9 @@ class TestInvestment(unittest.TestCase):
         invest_button.click()
         time.sleep(2)
 
-        investment_amount = driver.find_element(By.NAME, 'amount')
+        investment_amount = driver.find_element(By.NAME, 'shares')
         investment_amount.clear()
-        investment_amount.send_keys("1000.00")
+        investment_amount.send_keys("1000")
         time.sleep(1)
 
         transfer_date = driver.find_element(By.NAME, 'investment_datetime')
@@ -113,9 +113,9 @@ class TestInvestment(unittest.TestCase):
         time.sleep(3)
 
         self.assertEqual(self.driver.current_url,
-                         'http://localhost:8000/business/2/')
+                         'http://localhost:8000/business/68a6583d-f6f5-498d-8b94-f9c4beef436e/')
 
-        alert_message = driver.find_element(By.XPATH, '/html/body/div[1]/div')
+        alert_message = driver.find_element(By.XPATH, '/html/body/div[1]')
         self.assertIn(
             'Your investment has been submitted and is pending admin approval.',
             alert_message.text)

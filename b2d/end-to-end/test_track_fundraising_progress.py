@@ -18,7 +18,7 @@ class TestTrackFundraisingProgress(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/login/')
-        self.device = EmailDevice.objects.get(user_id=2)
+        self.device = EmailDevice.objects.get(user_id="68a6583d-f6f5-498d-8b94-f9c4beef436e")
         time.sleep(3)
         self.login()
 
