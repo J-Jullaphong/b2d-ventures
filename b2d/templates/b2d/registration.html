@@ -5,21 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B2D Ventures - Registration</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     {% block style %}
         <link href="{% static 'css/registration.css' %}" rel="stylesheet">
     {% endblock %}
 </head>
 <body>
 <div class="background-image">
+    <a href="/login" class="btn btn-dark position-fixed top-0 start-0 m-3">
+        <i class="bi bi-arrow-left"></i> Return
+    </a>
     <div class="form-container">
         <img src="{% static 'images/logo.png' %}" alt="B2D Ventures">
         <h2 class="form-title">Registration</h2>
 
         {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             {{ message }}
         </div>
         {% endfor %}
@@ -41,23 +45,320 @@
             <div class="mb-3">
                 {% for field in form %}
                 <div class="mb-3">
-                    <label for="{{ field.id_for_label }}"
-                           class="form-label text-start">{{ field.label }}</label>
+                    <label for="{{ field.id_for_label }}" class="form-label text-start">{{ field.label }}</label>
+
+                    {% if field.name == "password1" or field.name == "password2" %}
+                    <div class="input-group">
+                        {{ field }}
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword_{{ field.name }}">
+                            <i class="bi bi-eye-slash" id="passwordIcon_{{ field.name }}"></i>
+                        </button>
+                    </div>
+                    {% elif field.name == "captcha" %}
+                    <div class="d-flex justify-content-center">
+                        {{ field }}
+                    </div>
+                    {% else %}
                     {{ field }}
+                    {% endif %}
+
+
                     <div class="text-danger small">{{ field.errors }}</div>
                 </div>
                 {% endfor %}
+
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <div class="form-footer d-flex align-items-start mb-2">
+                <input class="form-check-input me-2" type="checkbox" value="" id="termsCheckbox" style="width: 30px; height: 20px;">
+                <p class="mb-0">
+                    By signing up, I agree to B2D Ventures
+                    <a href="#" class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
+                    and <a href="#" class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#privacyPolicy">Privacy Policy</a>.
+                </p>
+            </div>
+            <!-- Terms of Service Modal -->
+            <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="termsModalLabel">Terms of Service</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {% if not request.GET.form == 'business' %}
+                            <ul>
+                                <li><strong>Eligibility</strong> Investors must meet
+                                    platform requirements, including the submission of
+                                    necessary financial documents, to ensure compliance
+                                    with local laws and regulations.
+                                </li>
+                                <li><strong>Risk Awareness</strong> All investments carry
+                                    risks, and by using the platform, you acknowledge that
+                                    you may lose your investment.
+                                </li>
+                                <li><strong>No Guarantee of Returns</strong> The platform
+                                    does not guarantee any financial returns or business
+                                    success.
+                                </li>
+                                <li><strong>Data Privacy</strong> The platform will
+                                    securely handle all personal and financial data in
+                                    compliance with privacy laws.
+                                </li>
+                            </ul>
+                            {% else %}
+                            <ul>
+                                <li><strong>Eligibility</strong> Businesses must meet all
+                                    platform requirements, including document verification,
+                                    to launch campaigns or solicit investments.
+                                </li>
+                                <li><strong>Compliance</strong> Businesses must comply with
+                                    local regulations, tax laws, and any applicable
+                                    licensing requirements.
+                                </li>
+                                <li><strong>Transparency</strong> Business owners are
+                                    responsible for providing accurate and complete
+                                    information about their business and must disclose any
+                                    material changes promptly.
+                                </li>
+                                <li><strong>Fundraising Terms</strong> All fundraising
+                                    campaigns are subject to admin approval, and funds
+                                    raised will be held until the campaign is reviewed and
+                                    confirmed.
+                                </li>
+                                <li><strong>Fees:</strong> The platform may charge fees for
+                                    processing certain transactions, which will be disclosed upfront.
+                                </li>
+                                <li><strong>Responsibility</strong> Business owners are
+                                    responsible for managing investor relations, delivering
+                                    promised returns (if applicable), and ensuring the
+                                    proper use of raised funds.
+                                </li>
+                                <li><strong>Data Privacy</strong> The platform will handle
+                                    business data securely and in compliance with
+                                    applicable privacy laws.
+                                </li>
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Terms of Service Modal -->
+            <div class="modal fade" id="privacyPolicy" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="privacyModalLabel">Privacy Policy</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Effective Date:</strong> October 7, 2024.</p>
+                            <p>
+                                B2D Ventures our values your privacy and is committed to
+                                protecting your personal and business information. This
+                                Privacy Policy explains how we collect, use, and disclose
+                                information from <strong>Investors</strong> and <strong>Business
+                                Owners</strong> when you access or use our platform.
+                            </p>
+
+                            <h4 id="information_collect" class="mt-4"
+                                style="border-bottom: 1px solid #545454;">1. Information We
+                                Collect</h4>
+                            {% if not request.GET.form == 'business' %}
+                            <ul>
+                                <li><strong>Personal Information:</strong> Name, email
+                                    address, phone number.
+                                </li>
+                                <li><strong>Investment Preferences:</strong> Types of
+                                    businesses or industries you are interested in
+                                    investing in.
+                                </li>
+                                <li><strong>Documents:</strong> Financial statements, proof
+                                    of accreditation (if applicable), and other
+                                    investment-related documents.
+                                </li>
+                            </ul>
+                            {% else %}
+                            <ul>
+                                <li><strong>Business Information:</strong> Business name,
+                                    business registration number, tax identification
+                                    number, address, ownership details.
+                                </li>
+                                <li><strong>Financial Information:</strong> Financial
+                                    statements, bank account details, profit and loss
+                                    statements.
+                                </li>
+                                <li><strong>Legal Documents:</strong> Business registration
+                                    certificates, ownership documents, licenses, and
+                                    permits.
+                                </li>
+                                <li><strong>Marketing Information:</strong> Business
+                                    profiles, images, videos, and promotional materials
+                                    related to fundraising campaigns.
+                                </li>
+                            </ul>
+                            {% endif %}
+                            <h4 id="how_we_use" class="mt-4"
+                                style="border-bottom: 1px solid #545454;">2. How We Use
+                                Your
+                                Information</h4>
+                            {% if not request.GET.form == 'business' %}
+                            <ul>
+                                <li>Process and review your investment applications.</li>
+                                <li>Match your investment preferences with relevant
+                                    businesses.
+                                </li>
+                                <li>Facilitate investments and manage your portfolio.</li>
+                                <li>Communicate updates related to your investments and
+                                    businesses you follow.
+                                </li>
+                                <li>Conduct identity and financial verification.</li>
+                                <li>Ensure compliance with laws and regulations.</li>
+                            </ul>
+                            {% else %}
+                            <ul>
+                                <li>Review and approve your business profile and
+                                    fundraising campaigns.
+                                </li>
+                                <li>Help you manage communication with potential
+                                    investors.
+                                </li>
+                                <li>Track fundraising progress and provide insights.</li>
+                                <li>Ensure compliance with applicable laws, including
+                                    financial reporting and data protection.
+                                </li>
+                            </ul>
+                            {% endif %}
+                            <h4 id="data_sharing" class="mt-4"
+                                style="border-bottom: 1px solid #545454;">3. Data Sharing
+                                and
+                                Disclosure</h4>
+                            <ul>
+                                <li><strong>Regulatory Authorities:</strong> To comply with
+                                    legal obligations, including tax reporting, anti-money
+                                    laundering (AML) laws, and other regulatory
+                                    requirements.
+                                </li>
+                                <li><strong>Third-Party Service Providers:</strong>
+                                    Companies that help us process payments, verify
+                                    identities, or provide analytics and platform
+                                    enhancements. These providers are required to keep your
+                                    information confidential.
+                                </li>
+                                <li><strong>Business Owners (for Investors):</strong> When
+                                    you make an investment, we will share your information
+                                    with the relevant business so they can manage your
+                                    investment and maintain communication.
+                                </li>
+                                <li><strong>Investors (for Business Owners):</strong>
+                                    Investors will see the public portions of your business
+                                    profile during fundraising campaigns. Any additional
+                                    disclosures will only happen with your consent.
+                                </li>
+                            </ul>
+
+                            <h4 id="data_security" class="mt-4"
+                                style="border-bottom: 1px solid #545454;">4. Data
+                                Security</h4>
+                            <ul>
+                                <li><strong>Encryption:</strong> All personal and financial
+                                    data is encrypted in transit and at rest.
+                                </li>
+                                <li><strong>Access Control:</strong> We limit access to
+                                    your information to employees and contractors who need
+                                    it to provide services to you.
+                                </li>
+                                <li><strong>Regular Audits:</strong> We regularly audit our
+                                    systems for security vulnerabilities and data
+                                    protection compliance.
+                                </li>
+                            </ul>
+
+                            <h4 id="your_rights" class="mt-4"
+                                style="border-bottom: 1px solid #545454;">5. Your
+                                Rights</h4>
+                            <ul>
+                                <li><strong>Access:</strong> You can request access to the
+                                    personal information we hold about you.
+                                </li>
+                                <li><strong>Correction:</strong> You can update or correct
+                                    any inaccurate information through your account
+                                    settings.
+                                </li>
+                                <li><strong>Deletion:</strong> You may request that we
+                                    delete your personal information, though some data may
+                                    be retained for legal or regulatory reasons.
+                                </li>
+                                <li><strong>Withdrawal of Consent:</strong> You may
+                                    withdraw consent for certain data processing
+                                    activities, though this may affect your ability to use
+                                    some platform features.
+                                </li>
+                            </ul>
+
+                            <h4 id="data_retention" class="mt-4"
+                                style="border-bottom: 1px solid #545454;">6. Data
+                                Retention</h4>
+                            <p>We retain personal and business information for as long as
+                                necessary to:</p>
+                            <ul>
+                                <li>Fulfill the purposes outlined in this Privacy Policy.
+                                </li>
+                                <li>Comply with legal obligations (e.g., regulatory
+                                    compliance, tax laws).
+                                </li>
+                                <li>Resolve disputes and enforce agreements.</li>
+                            </ul>
+
+                            <h4 id="change" class="mt-4"
+                                style="border-bottom: 1px solid #545454;">7. Changes to
+                                This Policy</h4>
+                            <p>
+                                We may update this Privacy Policy from time to time. Any
+                                changes will be posted on this page with an updated
+                                "Effective Date." Your continued use of the platform after
+                                changes are posted constitutes your acceptance of the
+                                revised policy.
+                            </p>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="signUpButton" disabled>Sign Up</button>
         </form>
-        <div class="form-footer">
-            <p>By signing up I agree to B2D Ventures <a
-                    href="/learn-more/#terms">Terms of Service</a> and <a
-                    href="/privacy-policy/">Privacy
-                Policy</a>.</p>
-        </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const passwordFields = ['password1', 'password2'];
+
+    passwordFields.forEach(function(fieldName) {
+        const togglePassword = document.querySelector('#togglePassword_' + fieldName);
+        const passwordField = document.querySelector('#id_' + fieldName);
+        const passwordIcon = document.querySelector('#passwordIcon_' + fieldName);
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+
+            passwordIcon.classList.toggle('bi-eye');
+            passwordIcon.classList.toggle('bi-eye-slash');
+        });
+    });
+
+    const termsCheckbox = document.getElementById('termsCheckbox');
+    const signUpButton = document.getElementById('signUpButton');
+
+    termsCheckbox.addEventListener('change', function() {
+        signUpButton.disabled = !termsCheckbox.checked;
+    });
+</script>
 </body>
 </html>

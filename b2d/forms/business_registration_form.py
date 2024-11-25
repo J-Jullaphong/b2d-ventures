@@ -1,12 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django_recaptcha.fields import ReCaptchaField
+from django_otp.plugins.otp_email.models import EmailDevice
 
-from ..models import Business
+from ..models import Business, UserConsent
 
 
 class BusinessRegistrationForm(UserCreationForm):
     """Form for registering a new business."""
     usable_password = None
+    captcha = ReCaptchaField()
 
     class Meta:
         model = Business
@@ -18,7 +21,17 @@ class BusinessRegistrationForm(UserCreationForm):
             'bank_account_details'
         ]
         labels = {
-            'email': 'Email'
+            'email': 'Email',
+            'phone_number': 'Phone Number',
+            'business_registration_certificate':
+                'Business Registration Certificate',
+            'tax_identification_number': 'Tax Identification Number',
+            'proof_of_address': 'Proof Of Address',
+            'financial_statements': 'Financial Statements',
+            'ownership_documents': 'Ownership Documents',
+            'director_identification': 'Director Identification',
+            'licenses_and_permits': 'Licenses And Permits',
+            'bank_account_details': 'Bank Account Details',
         }
         widgets = {
             'name': forms.TextInput(attrs={
@@ -28,7 +41,7 @@ class BusinessRegistrationForm(UserCreationForm):
                 'placeholder': 'Email'
             }),
             'phone_number': forms.TextInput(attrs={
-                'placeholder': 'Phone number'
+                'placeholder': 'Phone Number'
             }),
             'business_registration_certificate': forms.ClearableFileInput(
                 attrs={
@@ -63,7 +76,8 @@ class BusinessRegistrationForm(UserCreationForm):
         for field_name in self.fields:
             self.fields[field_name].required = True
             self.fields[field_name].help_text = None
-            self.fields[field_name].widget.attrs["class"] = "form-control"
+            if self.fields[field_name] != self.fields['captcha']:
+                self.fields[field_name].widget.attrs["class"] = "form-control"
 
         self.fields['password1'].widget.attrs["placeholder"] = "Password"
         self.fields['password2'].widget.attrs[
@@ -77,4 +91,7 @@ class BusinessRegistrationForm(UserCreationForm):
             user.is_active = False
             user.username = user.email
             user.save()
+            EmailDevice.objects.create(user=user, email=user.email,
+                                       name="Email")
+            UserConsent.objects.create(user=user, consent=True)
         return user

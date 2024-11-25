@@ -58,12 +58,21 @@ class TestInvestorRegistration(unittest.TestCase):
         driver.find_element(By.NAME, 'password2').send_keys('@Password123')
         time.sleep(1)
 
-        financial_statements_input = driver.find_element(By.NAME,
-                                                         'financial_statements')
-        self.assertIsNotNone(financial_statements_input,
-                             "Financial statements upload field not found!")
-        financial_statements_input.send_keys(
-            f'{os.path.abspath(os.getcwd())}/b2d/end-to-end/Financial_Statement.pdf')
+        iframe = driver.find_element(By.CSS_SELECTOR, "iframe[title='reCAPTCHA']")
+        time.sleep(1)
+
+        driver.switch_to.frame(iframe)
+        time.sleep(2)
+
+        captcha_checkbox = driver.find_element(By.ID, "recaptcha-anchor")
+        captcha_checkbox.click()
+        time.sleep(1)
+
+        driver.switch_to.default_content()
+        time.sleep(2)
+
+        terms_checkbox = driver.find_element(By.ID, 'termsCheckbox')
+        terms_checkbox.click()
         time.sleep(1)
 
         sign_up_button = driver.find_element(By.XPATH,
@@ -82,9 +91,8 @@ class TestInvestorRegistration(unittest.TestCase):
 
     def tearDown(self):
         """Clear out investor in the database and remove S3 file after each test."""
-        test_investor = Investor.objects.last()
+        test_investor = Investor.objects.get(username='FN@gmail.com')
         self.clear_investor_details(user_id=test_investor.id)
-        self.clear_s3_storage(user_id=test_investor.id)
         self.driver.quit()
 
     def clear_investor_details(self, user_id):
@@ -96,19 +104,6 @@ class TestInvestorRegistration(unittest.TestCase):
                 f"Investor record with user ID {user_id} deleted from the database.")
         except Investor.DoesNotExist:
             print(f"No investor found for user ID {user_id}.")
-
-    def clear_s3_storage(self, user_id):
-        """Delete the specified investor's financial statement file from S3 storage."""
-        s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                          region_name=settings.AWS_S3_REGION_NAME)
-        file_key = f'investor_docs/{user_id}.pdf'
-        try:
-            s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,
-                             Key=file_key)
-            print(f"File '{file_key}' deleted from S3 storage.")
-        except ClientError as e:
-            print(f"Error deleting file from S3: {e}")
 
 
 if __name__ == '__main__':

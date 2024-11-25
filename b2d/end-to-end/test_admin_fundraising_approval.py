@@ -18,8 +18,8 @@ class TestAdminApproveFundraising(unittest.TestCase):
         time.sleep(2)
 
         driver = self.driver
-        driver.find_element(By.NAME, 'username').send_keys('admin')
-        driver.find_element(By.NAME, 'password').send_keys('1234')
+        driver.find_element(By.NAME, 'username').send_keys('b2d-ventures-admin')
+        driver.find_element(By.NAME, 'password').send_keys('@AdminPassword123')
         driver.find_element(By.XPATH, '//input[@type="submit"]').click()
         time.sleep(2)
 
@@ -27,7 +27,7 @@ class TestAdminApproveFundraising(unittest.TestCase):
         """Test approving a pending fundraising request as admin."""
         driver = self.driver
 
-        driver.find_element(By.LINK_TEXT, 'Fundraisings').click()
+        driver.find_element(By.LINK_TEXT, 'Fundraising Campaigns').click()
         time.sleep(2)
 
         fundraising_request = driver.find_element(By.XPATH,

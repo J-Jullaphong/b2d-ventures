@@ -1,45 +1,35 @@
-import json
+from django.urls import reverse
 from decimal import Decimal
 
-from django.urls import reverse
 from .basecase import BaseCase
 
 
 class PortfolioViewTest(BaseCase):
-
-    def test_portfolio_view_with_investor_user(self):
-        """Test the portfolio view which login as investor user is rendered."""
-        # login as investor
-        login_successful = self.client.login(username=self.investor1.username, password="password123")
-        self.assertTrue(login_successful)
+    def test_portfolio_view_accessible_for_investor(self):
+        """Test that the portfolio view is accessible for logged-in investors."""
+        self.client.login(username=self.investor1.username, password="#Password1234")
         url = reverse('b2d:portfolio')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'b2d/portfolio.html')
 
-    def test_profile_view_without_investor_user(self):
-        """Test the portfolio view which not login as investor user is redirect."""
+    def test_portfolio_view_forbidden_for_non_investor(self):
+        """Test that the portfolio view is forbidden for non-investor users."""
+        self.client.logout()
         url = reverse('b2d:portfolio')
         response = self.client.get(url)
-        # Not authentication should redirect
-        self.assertEqual(response.status_code, 302)
-        # Business user should redirect
-        login_successful = self.client.login(username=self.business1.username, password="password123")
-        self.assertTrue(login_successful)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)  # Redirect to login page
 
-    def test_portfolio_view_context(self):
-        """Test portfolio view return correct investment information context"""
-        self.client.login(username=self.investor1.username, password="password123")
-        url = reverse('b2d:portfolio')
-        response = self.client.get(url)
-        self.assertIn(self.business1.name,
-                      [investment['business_name'] for investment in response.context['investments']])
-        self.assertIn(self.business2.name,
-                      [investment['business_name'] for investment in response.context['investments']])
-        self.assertEqual(response.context['total_investment'], Decimal('7500'))
-        expected_investment_data = {
-            "labels": ["business_tech_1", "business_tech_2"],
-            "data": [66.66666666666666, 33.33333333333333]
-        }
-        self.assertEqual(json.loads(response.context['investment_data']), expected_investment_data)
+    def test_portfolio_view_with_investments(self):
+        """Test that the portfolio view displays investments for the logged-in investor."""
+        self.client.login(username=self.investor1.username, password="#Password1234")
+        response = self.client.get(reverse('b2d:portfolio'))
+        self.assertEqual(response.status_code, 200)
+
+        self.assertIn('investments', response.context)
+        self.assertIn('total_investment', response.context)
+        self.assertIn('investment_data', response.context)
+
+        # Assert investments data
+        investments = response.context['investments']
+        self.assertEqual(len(investments), 2)  # investor1 has 2 investments

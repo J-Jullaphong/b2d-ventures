@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 
 from mysite.wsgi import *
 from ..models import Business, FundRaising
+from django_otp.plugins.otp_email.models import EmailDevice
 
 
 class TestFundraisingCampaignCreation(unittest.TestCase):
@@ -18,8 +19,8 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
         options.add_argument("--disable-extensions")
         self.driver = webdriver.Chrome(options=options)
         self.driver.get('http://localhost:8000/login/')
+        self.device = EmailDevice.objects.get(user_id="1711e45a-9af8-4740-ab4d-75dc1b437b57")
         time.sleep(3)
-
         self.login()
 
     def login(self):
@@ -33,12 +34,33 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
 
         password_input = driver.find_element(By.NAME, 'password')
         password_input.clear()
-        password_input.send_keys('Hb!47xGk9$')
+        password_input.send_keys('Hb!47xGk9$Hb!47xGk9$')
         time.sleep(1)
 
         login_button = driver.find_element(By.XPATH,
                                            '/html/body/div/div/form/button')
         login_button.click()
+        time.sleep(3)
+
+        get_otp_button = driver.find_element(By.XPATH,
+                                             '/html/body/div/div/form/button')
+        self.assertIsNotNone(get_otp_button, "Get OTP button not found!")
+        get_otp_button.click()
+        time.sleep(5)
+
+        self.device.refresh_from_db()
+
+        otp_token_input = driver.find_element(By.XPATH,
+                                              '//*[@id="id_otp_token"]')
+        self.assertIsNotNone(otp_token_input,
+                             "OTP Token input field not found!")
+        otp_token_input.send_keys(self.device.token)
+        time.sleep(1)
+
+        verify_otp_button = driver.find_element(By.XPATH,
+                                                '/html/body/div/div/form/button')
+        self.assertIsNotNone(verify_otp_button, "Verify OTP button not found!")
+        verify_otp_button.click()
         time.sleep(3)
 
     def test_create_fundraising_campaign(self):
@@ -72,21 +94,38 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
         deadline_date_input.send_keys('31/12/2024')
         time.sleep(1)
 
-        min_investment_input = driver.find_element(By.NAME,
-                                                   'minimum_investment')
-        self.assertIsNotNone(min_investment_input,
-                             "Minimum investment input field not found!")
-        min_investment_input.send_keys('10000')
+        minimum_shares_input = driver.find_element(By.NAME, 'minimum_shares')
+        self.assertIsNotNone(minimum_shares_input,
+                             "Minimum Shares input field not found!")
+        minimum_shares_input.send_keys('50')
         time.sleep(1)
 
-        shares_input = driver.find_element(By.NAME, 'shares_percentage')
-        self.assertIsNotNone(shares_input,
-                             "Shares percentage input field not found!")
-        shares_input.send_keys('10')
+        share_type_input = driver.find_element(By.NAME, 'share_type')
+        self.assertIsNotNone(share_type_input, "Share Type input field not found!")
+        share_type_input.send_keys('preferred')
         time.sleep(1)
+
+        shares_input = driver.find_element(By.NAME, 'shares')
+        self.assertIsNotNone(shares_input,
+                             "Shares input field not found!")
+        shares_input.send_keys('1000')
+        time.sleep(1)
+
+        iframe = driver.find_element(By.CSS_SELECTOR, "iframe[title='reCAPTCHA']")
+        time.sleep(1)
+
+        driver.switch_to.frame(iframe)
+        time.sleep(2)
+
+        captcha_checkbox = driver.find_element(By.ID, "recaptcha-anchor")
+        captcha_checkbox.click()
+        time.sleep(1)
+
+        driver.switch_to.default_content()
+        time.sleep(2)
 
         create_button = driver.find_element(By.XPATH,
-                                            '/html/body/div/form/div[2]/button')
+                                            '/html/body/div[1]/form/div/div[8]/button')
         self.assertIsNotNone(create_button,
                              "Create Fundraising button not found!")
         create_button.click()
@@ -102,7 +141,7 @@ class TestFundraisingCampaignCreation(unittest.TestCase):
 
     def tearDown(self):
         """Close the browser and clear fundraising campaign after each test."""
-        self.clear_fundraising_campaign(user_id=8)
+        self.clear_fundraising_campaign(user_id="1711e45a-9af8-4740-ab4d-75dc1b437b57")
         self.driver.quit()
 
     def clear_fundraising_campaign(self, user_id):

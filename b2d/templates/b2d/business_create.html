@@ -1,8 +1,14 @@
 {% extends "b2d/base.html" %}
 {% load static %}
+
+{% block style %}
+    <link href="{% static 'css/business_create.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <div class="card m-4 p-4" style="border-style: none;">
         <div class="mb-4" style="border-bottom: 1px solid #545454;">
@@ -11,80 +17,98 @@
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <!-- Business Name Section -->
-            <div class="mb-3">
-                <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="businessName" class="form-label">Business Name</label></h4>
+            <div class="card p-2 my-3">
+                <!-- Business Name Section -->
+                <div class="mb-3">
+                    <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                        <h4><label for="businessName" class="form-label">Name</label></h4>
+                    </div>
+                    <input type="text" class="form-control" id="businessName" name="businessName" placeholder="Name"
+                           value="{{ business_name }}">
                 </div>
-                <input type="text" class="form-control" id="businessName" name="businessName" placeholder="Name" value="{{ business_name }}">
-            </div>
 
-            <!-- Business Description Section -->
-            <div class="mb-3">
-                <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="businessDescription" class="form-label">Business Description</label></h4>
+                <!-- Business Description Section -->
+                <div class="mb-3">
+                    <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                        <h4><label for="businessDescription" class="form-label">Description</label></h4>
+                    </div>
+                    <textarea class="form-control" id="businessDescription" name="businessDescription" rows="4"
+                              placeholder="Describe your business" maxlength="200">{{ business_description }}</textarea>
                 </div>
-                <textarea class="form-control" id="businessDescription" name="businessDescription" rows="4" placeholder="Describe your business" maxlength="200">{{ business_description }}</textarea>
-            </div>
 
-            <!-- Category Section -->
-            <div class="mb-3 row">
-                <div class="col-lg-2 pt-1">
-                    <h5><label for="category" class="form-label">Choose your category:</label></h5>
-                </div>
+                <!-- Category Section -->
+                <div class="mb-3">
+                    <div class="col pt-1">
+                        <h4><label for="category" class="form-label">Categories</label></h4>
+                        <div class="mb-3" style="border-bottom: 1px solid #545454;">
+                    </div>
                 <div class="col">
-                    <select class="form-select" id="category" name="category">
-                        <option selected disabled>Choose...</option>
-                        {% for category in categories %}
-                        <option value="{{ category.id }}" {% if category.id == selected_category %}selected{% endif %}>{{ category.category_name }}</option>
-                        {% endfor %}
-                    </select>
+                        <select class="form-select select2" id="category" name="category[]" multiple="multiple">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}"
+                                        {% if category.id in selected_category %}selected{% endif %}>
+                                    {{ category.category_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </div>
                 </div>
+
             </div>
+
 
             <!-- Business Photos Section -->
             <div class="mb-3">
                 <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="businessPhotos" class="form-label">Business Photos</label></h4>
+                    <h4><label for="businessPhotos" class="form-label">Banner Images</label></h4>
                 </div>
                 <div class="card p-2 mb-3">
-                    <div class="row mb-1">
-                        <div class="col-lg-1 pt-1 m-auto">
-                            <h5 class="text-center">image1:</h5>
+                    <div class="mb-1 row">
+                        <div class="col-lg-2 pt-1 m-auto">
+                            <h5 class="text-center">Banner Image 1</h5>
                         </div>
-                        <div class="col-lg m-auto">
+                        <div class="col-lg-7 pt-1 m-auto">
                             <input type="file" class="form-control" id="photo1" name="photo1">
                         </div>
                         {% if photo1_url %}
-                        <div class="d-flex col-xl-2 justify-content-center">
-                            <img src="{{ photo1_url }}" class="rounded" alt="Photo 1" style="width: 150px; height: 100px;" onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
-                        </div>
+                            <div class="col-lg-3 d-flex justify-content-center">
+                                <img src="{{ photo1_url }}" class="border border-2 rounded-3" alt="Photo 1"
+                                     style="width: 200px; height: 150px;"
+                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
+                            </div>
                         {% endif %}
                     </div>
-                    <div class="row mb-1">
-                        <div class="col-lg-1 pt-1 m-auto">
-                            <h5 class="text-center">image2:</h5>
+                    <hr>
+                    <div class="mb-1 row">
+                        <div class="col-lg-2 pt-1 m-auto">
+                            <h5 class="text-center">Banner Image 2</h5>
                         </div>
-                        <div class="col-lg m-auto">
+                        <div class="col-lg-7 pt-1 m-auto">
                             <input type="file" class="form-control" id="photo2" name="photo2">
                         </div>
                         {% if photo2_url %}
-                        <div class="d-flex col-xl-2 justify-content-center">
-                            <img src="{{ photo2_url }}" class="rounded" alt="Photo 2" style="width: 150px; height: 100px;" onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
-                        </div>
+                            <div class="col-lg-3 d-flex justify-content-center">
+                                <img src="{{ photo2_url }}" class="border border-2 rounded-3" alt="Photo 2"
+                                     style="width: 200px; height: 150px;"
+                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
+                            </div>
                         {% endif %}
                     </div>
+                    <hr>
                     <div class="row">
-                        <div class="col-lg-1 pt-1 m-auto">
-                            <h5 class="text-center">image3:</h5>
+                        <div class="col-lg-2 pt-1 m-auto">
+                            <h5 class="text-center">Banner Image 3</h5>
                         </div>
-                        <div class="col-lg m-auto">
+                        <div class="col-lg-7 pt-1 m-auto">
                             <input type="file" class="form-control" id="photo3" name="photo3">
                         </div>
                         {% if photo3_url %}
-                        <div class="d-flex col-xl-2 justify-content-center">
-                            <img src="{{ photo3_url }}" class="rounded" alt="Photo 3" style="width: 150px; height: 100px;" onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}';">
-                        </div>
+                            <div class="col-lg-3 d-flex justify-content-center">
+                                <img src="{{ photo3_url }}" class="border border-2 rounded-3" alt="Photo 3"
+                                     style="width: 200px; height: 150px;"
+                                     onerror="this.onerror=null;  this.src='{% static 'images/empty_image.png' %}'; style='width: 200px; height: 150px;'">
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -93,13 +117,15 @@
             <!-- YouTube Video Embed Section -->
             <div class="mb-4">
                 <div class="mb-3" style="border-bottom: 1px solid #545454;">
-                    <h4><label for="videoEmbed" class="form-label">YouTube Video Embed</label></h4>
+                    <h5><label for="videoEmbed" class="form-label">YouTube Video Embed</label></h5>
                 </div>
-                <input type="url" class="form-control" id="videoEmbed" name="videoEmbed" placeholder="Paste your YouTube video URL" value="{{ youtube_video_url }}">
+                <input type="url" class="form-control" id="videoEmbed" name="videoEmbed"
+                       placeholder="Paste your YouTube video URL" value="{{ youtube_video_url }}">
                 {% if youtube_video_embed %}
-                <div class="mt-3 d-flex justify-content-center">
-                    <iframe width="560" height="315" src="{{ youtube_video_embed }}" frameborder="0" allowfullscreen></iframe>
-                </div>
+                    <div class="mt-3 d-flex justify-content-center">
+                        <iframe width="560" height="315" src="{{ youtube_video_embed }}" frameborder="0"
+                                allowfullscreen></iframe>
+                    </div>
                 {% endif %}
             </div>
 
@@ -110,49 +136,73 @@
                     <button type="button" id="addPitch" class="col-sm-1 btn btn-primary mb-1">Add +</button>
                 </div>
                 {% for pitch in pitch_data %}
-                <div class="card p-2 pitching-box mb-3">
-                    <div class="mb-2 row">
-                        <div class="col-md-1 pt-1">
-                            <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                    <div class="card p-2 pitching-box mb-3">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="topic" class="form-label">Topic</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="topic_{{ forloop.counter0 }}" placeholder="Topic" value="{{ pitch.topic }}">
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="topic[]" placeholder="Topic" value="{{ pitch.topic }}">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="details" class="form-label">Details</label></h5>
+                            </div>
+                            <div class="col">
+                                <textarea class="form-control" name="details_{{ forloop.counter0 }}" rows="3" placeholder="Details">{{ pitch.details }}</textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="photo" class="form-label">Image</label></h5>
+                            </div>
+                            <div class="col-lg-8 pt-1 m-auto">
+                                <input type="file" class="form-control" name="photo_{{ forloop.counter0 }}">
+                            </div>
+                            {% if pitch.photo_url %}
+                                <div class="d-flex justify-content-center col-lg-3 m-auto">
+                                    <img src="{{ pitch.photo_url }}" alt="Pitch Photo" class="rounded-3 border border-2 pitch_photo" style="width: 200px; height: 150px; object-fit: contain;"
+                                         onerror="this.onerror=null; this.src='{% static 'images/empty_image.png' %}';style='width: 200px;'">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger delete-pitch">Delete</button>
                         </div>
                     </div>
-                    <div class="mb-2 row">
-                        <div class="col-md-1 pt-1">
-                            <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
-                        </div>
-                        <div class="col">
-                            <textarea class="form-control" name="details[]" rows="3" placeholder="Details">{{ pitch.details }}</textarea>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-danger delete-pitch">Delete</button>
-                    </div>
-                </div>
                 {% empty %}
-                <div class="card p-2 pitching-box mb-3">
-                    <div class="mb-2 row">
-                        <div class="col-md-1 pt-1">
-                            <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                    <div class="card p-2 pitching-box mb-3">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="topic" class="form-label">Topic</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="topic_0" placeholder="Topic">
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="topic[]" placeholder="Topic">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="details" class="form-label">Details</label></h5>
+                            </div>
+                            <div class="col">
+                                <textarea class="form-control" name="details_0" rows="3" placeholder="Details"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="photo" class="form-label">Image</label></h5>
+                            </div>
+                            <div class="col m-auto">
+                                <input type="file" class="form-control" name="photo_0">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger delete-pitch">Delete</button>
                         </div>
                     </div>
-                    <div class="mb-2 row">
-                        <div class="col-md-1 pt-1">
-                            <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
-                        </div>
-                        <div class="col">
-                            <textarea class="form-control" name="details[]" rows="3" placeholder="Details"></textarea>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-danger delete-pitch">Delete</button>
-                    </div>
-                </div>
                 {% endfor %}
             </div>
 
@@ -163,105 +213,208 @@
                     <button type="button" id="addTeam" class="col-sm-1 btn btn-primary mb-1">Add +</button>
                 </div>
                 {% for member in team_members_data %}
-                <div class="mb-3 card team-box p-2">
-                    <div class="mb-2 row">
-                        <div class="col-md-2 pt-1">
-                            <h5 class="text-center"><label for="memberName" class="form-label">Member name:</label></h5>
+                    <div class="mb-3 card team-box p-2">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="memberName" class="form-label">Name</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="memberName_{{ forloop.counter0 }}" placeholder="Name" value="{{ member.name }}">
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="memberName[]" placeholder="Name" value="{{ member.name }}">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="workAs" class="form-label">Role</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="workAs_{{ forloop.counter0 }}" placeholder="Role" value="{{ member.work_as }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image</label></h5>
+                            </div>
+                            <div class="col-lg-8 m-auto">
+                                <input type="file" class="form-control" name="uploadFile_{{ forloop.counter0 }}">
+                            </div>
+                            {% if member.photo_url %}
+                                <div class="col-lg-3 d-flex justify-content-center m-auto">
+                                    <img src="{{ member.photo_url }}" alt="Photo" class="rounded-3 border border-2"
+                                         style="width: 200px; height: 150px; object-fit: contain;"
+                                         onerror="this.onerror=null;  this.src='{% static 'images/user.png' %}';">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger delete-team">Delete</button>
                         </div>
                     </div>
-                    <div class="mb-2 row">
-                        <div class="col-md-2 pt-1">
-                            <h5 class="text-center"><label for="workAs" class="form-label">Work as:</label></h5>
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="workAs[]" placeholder="ex. ceo, vp" value="{{ member.work_as }}">
-                        </div>
-                    </div>
-                    <div class="mb-2 row">
-                        <div class="col-md-2 pt-1">
-                            <h5 class="text-center"><label for="uploadFile" class="form-label">Upload Photo:</label></h5>
-                        </div>
-                        <div class="col">
-                            <input type="file" class="form-control" name="uploadFile[]">
-                        </div>
-                    </div>
-                    {% if member.photo_url %}
-                    <div class="d-flex justify-content-center">
-                        <img src="{{ member.photo_url }}" alt="Photo" class="rounded" style="width: 200px; height: 150px;" onerror="this.onerror=null;  this.src='{% static 'images/user.png' %}';">
-                    </div>
-                    {% endif %}
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-danger delete-team">Delete</button>
-                    </div>
-                </div>
                 {% empty %}
-                <div class="mb-3 card team-box p-2">
-                    <div class="mb-2 row">
-                        <div class="col-md-2 pt-1">
-                            <h5 class="text-center"><label for="memberName" class="form-label">Member name:</label></h5>
+                    <div class="mb-3 card team-box p-2">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="memberName" class="form-label">Name</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="memberName_0" placeholder="Name">
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="memberName[]" placeholder="Name">
+                        <div class="mb-2 row">
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="workAs" class="form-label">Role</label></h5>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="workAs_0" placeholder="Role">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image</label></h5>
+                            </div>
+                            <div class="col m-auto">
+                                <input type="file" class="form-control" name="uploadFile_0">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger delete-team">Delete</button>
                         </div>
                     </div>
-                    <div class="mb-2 row">
-                        <div class="col-md-2 pt-1">
-                            <h5 class="text-center"><label for="workAs" class="form-label">Work as:</label></h5>
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="workAs[]" placeholder="ex. ceo, vp">
-                        </div>
-                    </div>
-                    <div class="mb-2 row">
-                        <div class="col-md-2 pt-1">
-                            <h5 class="text-center"><label for="uploadFile" class="form-label">Upload Photo:</label></h5>
-                        </div>
-                        <div class="col">
-                            <input type="file" class="form-control" name="uploadFile[]">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-danger delete-team">Delete</button>
-                    </div>
-                </div>
                 {% endfor %}
             </div>
+
             <!-- Agreement -->
             <div class="mb-3 form-check d-flex justify-content-center">
-                <input type="checkbox" class="form-check-input me-2" id="agreement" onchange="toggleButton()">
-                <label class="form-check-label" for="agreement">I have read and agree to the <a href="/learn-more/">agreement</a></label>
+                <input type="checkbox" class="form-check-input mx-2 mt-2" id="agreement" onchange="toggleButton()">
+                <label class="form-check-label  fs-5" for="agreement">I have read and agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#business_agreement">agreement</a>.</label>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="business_agreement" tabindex="-1" aria-labelledby="business_agreement" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Pitch Submission Agreement</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            This Agreement is made and entered into on today (the "Effective Date") by and between:<br>
+                            B2D Ventures ("Platform Owner"), and ("Business").<br>
+                            <hr>
+                            <ol>
+                                <li><strong>Purpose of the Agreement</strong><br>
+                                    The purpose of this Agreement is to allow the Business to create and submit a pitch for display on the Platform Owner’s website.
+                                </li>
+                                <li><strong>Scope of Services</strong><br>
+                                    <ul>
+                                        <li>The Platform Owner provides an online platform where businesses can create and present pitches for potential investors.</li>
+                                        <li>The Business agrees to provide accurate, lawful, and non-confidential information in their pitch submission.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Business Obligations</strong><br>
+                                    The Business agrees to:
+                                    <ul>
+                                        <li>Ensure the content of the pitch complies with all applicable laws and does not infringe upon the rights of third parties.</li>
+                                        <li>Refrain from including false, misleading, or fraudulent information.</li>
+                                        <li>Grant the Platform Owner a non-exclusive, royalty-free license to display the pitch on the website.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Platform Owner’s Rights</strong><br>
+                                    <ul>
+                                        <li>The Platform Owner reserves the right to review, edit, or remove any pitch submission that violates the terms of this Agreement or the platform's policies.</li>
+                                        <li>The Platform Owner does not guarantee investor interest or funding as a result of the pitch being displayed.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Confidentiality and Intellectual Property</strong><br>
+                                    <ul>
+                                        <li>The Business retains ownership of all intellectual property related to the pitch.</li>
+                                        <li>The Platform Owner shall not disclose confidential information provided by the Business unless explicitly authorized in writing.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Limitation of Liability</strong><br>
+                                    The Platform Owner shall not be held liable for:
+                                    <ul>
+                                        <li>The success or failure of the pitch.</li>
+                                        <li>Any damages resulting from the display or use of the pitch content.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Term and Termination</strong><br>
+                                    This Agreement is effective from the date of submission until either party terminates it with written notice.
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Submit Button -->
             <div class="mb-3 d-flex justify-content-center">
-                <button type="submit" id="submitButton" class="btn btn-dark btn-lg" disabled>Save Changes</button>
+                <button type="submit" id="submitButton" class="btn btn-dark btn-lg fw-light fs-3 w-75 shadow-sm" disabled>Save Changes</button>
             </div>
         </form>
     </div>
 
     <script>
         $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: "Select one or more categories"
+            });
+        });
+
+        $(document).ready(function () {
+            var pitchCount = $('#pitchingSection .pitching-box').length;
+            var teamCount = $('#teamSection .team-box').length;
+
+            // Reindex pitches after a deletion
+            function reindexPitches() {
+                $('#pitchingSection .pitching-box').each(function (index) {
+                    $(this).find('input[name^="topic_"]').attr('name', `topic_${index}`);
+                    $(this).find('textarea[name^="details_"]').attr('name', `details_${index}`);
+                    $(this).find('input[name^="photo_"]').attr('name', `photo_${index}`);
+                });
+                pitchCount = $('#pitchingSection .pitching-box').length;
+            }
+
+            // Reindex team members after a deletion
+            function reindexTeamMembers() {
+                $('#teamSection .team-box').each(function (index) {
+                    $(this).find('input[name^="memberName_"]').attr('name', `memberName_${index}`);
+                    $(this).find('input[name^="workAs_"]').attr('name', `workAs_${index}`);
+                    $(this).find('input[name^="uploadFile_"]').attr('name', `uploadFile_${index}`);
+                });
+                teamCount = $('#teamSection .team-box').length;
+            }
+
             // Add new pitch section
             $('#addPitch').on('click', function () {
                 $('#pitchingSection').append(`
                     <div class="card p-2 pitching-box mb-3">
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="topic" class="form-label">Topic:</label></h5>
+                                <h5 class="text-center"><label for="topic" class="form-label">Topic</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="topic[]" placeholder="Topic">
+                                <input type="text" class="form-control" name="topic_${pitchCount}" placeholder="Topic">
                             </div>
                         </div>
                         <div class="mb-2 row">
                             <div class="col-md-1 pt-1">
-                                <h5 class="text-center"><label for="details" class="form-label">Details:</label></h5>
+                                <h5 class="text-center"><label for="details" class="form-label">Details</label></h5>
                             </div>
                             <div class="col">
-                                <textarea class="form-control" name="details[]" rows="3" placeholder="Details"></textarea>
+                                <textarea class="form-control" name="details_${pitchCount}" rows="3" placeholder="Details"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mb-2 row">
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="photo" class="form-label">Image</label></h5>
+                            </div>
+                            <div class="col m-auto">
+                                <input type="file" class="form-control" name="photo_${pitchCount}">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -269,34 +422,37 @@
                         </div>
                     </div>
                 `);
+                reindexPitches();
             });
 
             // Add new team section
             $('#addTeam').on('click', function () {
+                teamCount++;
                 $('#teamSection').append(`
                     <div class="mb-3 card team-box p-2">
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
-                                <h5 class="text-center"><label for="memberName" class="form-label">Member name:</label></h5>
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="memberName" class="form-label">Name</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="memberName[]" placeholder="Name">
+                                <input type="text" class="form-control" name="memberName_${teamCount}" placeholder="Name">
                             </div>
                         </div>
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
-                                <h5 class="text-center"><label for="workAs" class="form-label">Work as:</label></h5>
+                            <div class="col-md-1 pt-1">
+                                <h5 class="text-center"><label for="workAs" class="form-label">Role</label></h5>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="workAs[]" placeholder="ex. ceo, vp">
+                                <input type="text" class="form-control" name="workAs_${teamCount}" placeholder="Role">
                             </div>
                         </div>
+                        <hr>
                         <div class="mb-2 row">
-                            <div class="col-md-2 pt-1">
-                                <h5 class="text-center"><label for="uploadFile" class="form-label">Upload Photo:</label></h5>
+                            <div class="col-lg-1 pt-1 m-auto">
+                                <h5 class="text-center"><label for="uploadFile" class="form-label">Image</label></h5>
                             </div>
-                            <div class="col">
-                                <input type="file" class="form-control" name="uploadFile[]">
+                            <div class="col m-auto">
+                                <input type="file" class="form-control" name="uploadFile_${teamCount}">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -304,16 +460,19 @@
                         </div>
                     </div>
                 `);
+                reindexTeamMembers();
             });
 
             // Delete pitch section
             $(document).on('click', '.delete-pitch', function () {
                 $(this).closest('.pitching-box').remove();
+                reindexPitches();
             });
 
             // Delete team section
             $(document).on('click', '.delete-team', function () {
                 $(this).closest('.team-box').remove();
+                reindexTeamMembers();
             });
         });
 
@@ -324,5 +483,4 @@
             submitButton.disabled = !checkbox.checked;  // Enable button if checkbox is checked
         }
     </script>
-</body>
 {% endblock %}

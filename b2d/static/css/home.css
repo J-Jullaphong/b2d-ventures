@@ -14,12 +14,34 @@ body {
     object-fit: cover;
 }
 
+.carousel-item h1 {
+    font-size:60px;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.carousel-item p {
+    font-size:20px;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+@media only screen and (max-width: 991px) {
+    .carousel-item h1 {
+        font-size:45px;
+        text-shadow: 2px 2px 4px #000000;
+    }
+
+    .carousel-item p {
+        font-size:16px;
+        text-shadow: 2px 2px 4px #000000;
+    }
+}
+
 .card {
     background-color: #fff;
     color: #333;
     overflow: hidden;
     transition: transform 0.3s ease, height 0.3s ease;
-    height: 500px;
+    height: 520px;
 }
 
 .card-title,

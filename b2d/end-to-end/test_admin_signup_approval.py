@@ -17,8 +17,8 @@ class TestAdminApproveSignup(unittest.TestCase):
         time.sleep(2)
 
         driver = self.driver
-        driver.find_element(By.NAME, 'username').send_keys('admin')
-        driver.find_element(By.NAME, 'password').send_keys('1234')
+        driver.find_element(By.NAME, 'username').send_keys('b2d-ventures-admin')
+        driver.find_element(By.NAME, 'password').send_keys('@AdminPassword123')
         driver.find_element(By.XPATH, '//input[@type="submit"]').click()
         time.sleep(2)
 
@@ -26,7 +26,7 @@ class TestAdminApproveSignup(unittest.TestCase):
         """Test approving a pending signup request as admin."""
         driver = self.driver
 
-        driver.find_element(By.LINK_TEXT, 'Businesses').click()
+        driver.find_element(By.LINK_TEXT, 'Business Registrations').click()
         time.sleep(2)
 
         signup_request = driver.find_element(By.XPATH, '//*[@id="result_list"]/tbody/tr[1]/th/a')

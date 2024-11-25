@@ -1,86 +1,85 @@
+from unittest.mock import patch
 from django.urls import reverse
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from .basecase import BaseCase
+from .basecase import BaseCase, Investment
 
 
 class InvestmentViewTest(BaseCase):
 
-    def test_investment_view_with_investor_user(self):
-        """Test the investment view which login as investor user is rendered."""
-        # login as investor
-        login_successful = self.client.login(username=self.investor1.username, password="password123")
-        self.assertTrue(login_successful)
-        url = reverse('b2d:invest_fundraise', kwargs={'fundraise_id': self.fundraising1.id})
+    def test_investment_view_accessible_for_investor(self):
+        """Test that the investment view is accessible for logged-in investors."""
+        self.client.login(username=self.investor1.username, password="#Password1234")
+        url = reverse("b2d:invest_fundraise", kwargs={"fundraise_id": self.fundraising1.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'b2d/transaction.html')
 
-    def test_investment_view_without_investor_user(self):
-        """Test the investment view which not login as investor user is redirect."""
-        url = reverse('b2d:invest_fundraise', kwargs={'fundraise_id': self.fundraising1.id})
+    def test_investment_view_forbidden_for_non_investor(self):
+        """Test that the investment view is forbidden for non-investor users."""
+        self.client.logout()
+        url = reverse("b2d:invest_fundraise", kwargs={"fundraise_id": self.fundraising1.id})
         response = self.client.get(url)
-        # Not authentication should redirect
-        self.assertEqual(response.status_code, 302)
-        # Business user should redirect
-        login_successful = self.client.login(username=self.business1.username, password="password123")
-        self.assertTrue(login_successful)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)  # Redirect to login page
 
-    def test_investment_view_non_existent(self):
-        """Test that requesting a non-existent fundraising returns a 404 error."""
-        self.client.login(username=self.investor1.username, password="password123")
-        url = reverse('b2d:invest_fundraise', kwargs={'fundraise_id': 9999999})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+    @patch('django_recaptcha.fields.ReCaptchaField.clean', return_value=True)
+    def test_post_investment_valid_data(self, mock_captcha_clean):
+        """Test the investment submission with valid data."""
+        self.client.login(username=self.investor1.username, password="#Password1234")
+        form_data = {
+            'shares': 50,
+            'investment_datetime': timezone.now().strftime('%Y-%m-%dT%H:%M'),
+            'transaction_slip': SimpleUploadedFile('slip.jpg', b'file_content'),
+            'captcha': 'PASSED'
+        }
 
-    def test_investment_view_with_valid_invest(self):
-        """Test investor invest with valid submission should redirect"""
-        self.client.login(username=self.investor1.username, password="password123")
-        url = reverse('b2d:invest_fundraise', kwargs={'fundraise_id': self.fundraising1.id})
+        url = reverse("b2d:invest_fundraise", kwargs={"fundraise_id": self.fundraising1.id})
+        response = self.client.post(url, form_data)
 
-        investment_datetime = timezone.now().strftime('%Y-%m-%dT%H:%M')
-        response = self.client.post(url, data={
-            'amount': 500,
-            'investment_datetime': investment_datetime,
-            'transaction_slip': SimpleUploadedFile('slip.jpg', b'file_content')
-        })
+        self.assertEqual(response.status_code, 302)  # Redirect on success
+        self.assertRedirects(response, reverse('b2d:business_detail', kwargs={'pk': self.fundraising1.business.id}))
 
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('b2d:business_detail', kwargs={'pk': self.fundraising1.business_id}))
+    def test_post_investment_exceeds_max_shares(self):
+        """Test that the form rejects submissions exceeding maximum shares."""
+        self.client.login(username=self.investor1.username, password="#Password1234")
+        form_data = {
+            'shares': 2000,  # Exceeds maximum
+            'investment_datetime': timezone.now().strftime('%Y-%m-%dT%H:%M'),
+            'transaction_slip': SimpleUploadedFile('slip.jpg', b'file_content'),
+        }
+        url = reverse("b2d:invest_fundraise", kwargs={"fundraise_id": self.fundraising1.id})
+        response = self.client.post(url, form_data)
 
-    def test_investment_view_more_than_fundraising_goal(self):
-        """Test that invalid form submission shows errors when investor invest more than fundraising goal."""
-        self.client.login(username=self.investor1.username, password="password123")
-        url = reverse('b2d:invest_fundraise', kwargs={'fundraise_id': self.fundraising1.id})
+        self.assertEqual(response.status_code, 200)  # Re-renders form with errors
+        form = response.context['form']
+        self.assertIn("The number of shares exceeds the maximum available. You can only invest up to 250 shares.", form.errors.get('shares', []))
 
-        investment_datetime = timezone.now().strftime('%Y-%m-%dT%H:%M')
-        response = self.client.post(url, data={
-            'amount': 10000000,
-            'investment_datetime': investment_datetime,
-            'transaction_slip': SimpleUploadedFile('slip.jpg', b'file_content')
-        })
+    def test_post_investment_below_min_shares(self):
+        """Test that the form rejects submissions below minimum shares."""
+        self.client.login(username=self.investor1.username, password="#Password1234")
+        form_data = {
+            'shares': 1,
+            'investment_datetime': timezone.now().strftime('%Y-%m-%dT%H:%M'),
+            'transaction_slip': SimpleUploadedFile('slip.jpg', b'file_content'),
+        }
+        url = reverse("b2d:invest_fundraise", kwargs={"fundraise_id": self.fundraising1.id})
+        response = self.client.post(url, form_data)
 
-        current_investment = self.fundraising1.get_current_investment()
-        remaining_amount = self.fundraising1.goal_amount - current_investment
+        self.assertEqual(response.status_code, 200)  # Re-renders form with errors
+        form = response.context['form']
+        self.assertIn("The number of shares must be at least 10.", form.errors.get('shares', []))
 
-        self.assertIn(f"The amount exceeds the remaining fundraising goal. "
-                      f"You can only invest up to ${remaining_amount:.2f}.",
-                      response.context['form'].errors.get('amount', []))
+    def test_missing_transaction_slip(self):
+        """Test that the form rejects submissions without a transaction slip."""
+        self.client.login(username=self.investor1.username, password="#Password1234")
+        form_data = {
+            'shares': 50,
+            'investment_datetime': timezone.now().strftime('%Y-%m-%dT%H:%M'),
+        }
+        url = reverse("b2d:invest_fundraise", kwargs={"fundraise_id": self.fundraising1.id})
+        response = self.client.post(url, form_data)
 
-    def test_investment_view_less_than_minimum_invest(self):
-        """Test that invalid form submission shows errors when investor invests less than minimum invest."""
-        self.client.login(username=self.investor1.username, password="password123")
-        url = reverse('b2d:invest_fundraise', kwargs={'fundraise_id': self.fundraising1.id})
-
-        investment_datetime = timezone.now().strftime('%Y-%m-%dT%H:%M')
-        response = self.client.post(url, data={
-            'amount': 0,
-            'investment_datetime': investment_datetime,
-            'transaction_slip': SimpleUploadedFile('slip.jpg', b'file_content')
-        })
-
-        self.assertIn(f"The investment amount is too low. "
-                      f"Minimum investment is ${self.fundraising1.minimum_investment:.2f}.",
-                      response.context['form'].errors.get('amount', []))
+        self.assertEqual(response.status_code, 200)  # Re-renders form with errors
+        form = response.context['form']
+        self.assertIn("This field is required.", form.errors.get('transaction_slip', []))

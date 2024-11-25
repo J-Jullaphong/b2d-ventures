@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block content %}
-    <!-- image slide -->
-    <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <!-- Image slide -->
+    <div id="mainCarousel" class="carousel slide carousel-fade border-bottom border-dark shadow" data-bs-ride="carousel">
         <div class="carousel-indicators">
             {% for item in carousel_businesses %}
                 <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
@@ -15,17 +15,17 @@
                         aria-label="Slide {{ forloop.counter1 }}"></button>
             {% endfor %}
         </div>
-
         <div class="carousel-inner">
             {% for business in carousel_businesses %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
                     <img src="https://{{ settings.AWS_S3_CUSTOM_DOMAIN }}/business_docs/{{ business.id }}/photo1.jpg"
-                         class="d-block w-100 img_slide" alt="{{ business.name }}">
-                    <div class="carousel-caption">
-                        <h1 class="animated fadeInRight">{{ business.name }}</h1>
-                        <p class="animated fadeInRight">{{ business.description }}</p>
-                        <a href="{% url 'b2d:business_detail' business.id %}"
-                           class="btn btn-transparent btn-rounded btn-large">Learn More</a>
+                         class="d-block w-100 img_slide" alt="{{ business.name }}" style="height:500px;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center" style="top: 50%; transform: translateY(-50%);">
+                        <h1 class="animated fadeInRight mt-3 fw-bold">{{ business.name }}</h1>
+                        <p class="animated fadeInRight fw-light">{{ business.description }}</p>
+                        <a href="{% url 'b2d:business_detail' business.id %}" class="btn btn-transparent btn-rounded btn-large shadow mt-2">
+                            Learn More
+                        </a>
                     </div>
                 </div>
             {% empty %}
@@ -34,6 +34,7 @@
                 </div>
             {% endfor %}
         </div>
+
         <a class="carousel-control-prev" href="#mainCarousel" role="button" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -46,12 +47,12 @@
 
     <!--  Top deals sections  -->
     <div class="container my-5">
-        <h2 class="text-left" style="font-style:bold;">TOP DEAL</h2>
-        <p class="text-left" style="color:#585757;">The deals attracting the most interest right now</p>
-        <div class="row">
+        <h1 class="text-left">TOP DEAL</h1>
+        <h5 class="text-left fw-light" style="color:#585757;">The deals attracting the most interest right now</h5>
+        <div class="row mt-4">
             {% for business in card_businesses %}
                 <div class="col-md-4 mb-5">
-                    <div class="card mx-4 border border-2"
+                    <div class="card mx-4 border border-2 shadow"
                          onclick="location.href='{% url 'b2d:business_detail' business.id %}';"
                          style="cursor: pointer;">
                         <div class="card-img">
@@ -60,9 +61,13 @@
                         </div>
                         <div class="card-body">
                             <h3 class="card-title">{{ business.name }}</h3>
-                            {% if business.category %}
-                                <span class="badge bg-light border border-secondary mr-1 mb-2"
-                                      style="color:black;">{{ business.category.category_name }}</span>
+                            {% if business.category.exists %}
+                                <div class="mb-2">
+                                    {% for category in business.category.all %}
+                                        <span class="badge bg-light border border-secondary mr-1 mb-1"
+                                              style="color:black;">{{ category.category_name }}</span>
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                             <div class="card-body-info">
                                 <p class="card-text card-summary">{{ business.description|slice:":80" }}...</p>
@@ -101,7 +106,7 @@
         </div>
         <div class="row my-4  mx-4">
             <div class="text-center">
-                <a href="{% url 'b2d:search_page' %}" class="btn btn-dark col-md-4 seeMore">See more</a>
+                <a href="{% url 'b2d:search_page' %}" class="btn btn-dark col-md-4 seeMore">View More Fundraising Campaigns</a>
             </div>
         </div>
     </div>

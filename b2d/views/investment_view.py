@@ -1,3 +1,4 @@
+import logging
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -5,6 +6,8 @@ from django.views.generic.edit import FormView
 
 from ..models import FundRaising, Investor
 from ..forms import InvestmentForm
+
+db_logger = logging.getLogger('db')
 
 
 class InvestmentView(FormView):
@@ -24,14 +27,26 @@ class InvestmentView(FormView):
         try:
             investor = Investor.objects.get(id=request.user.id)
         except Investor.DoesNotExist:
+            messages.error(self.request, "Access restricted, investment page is for investor only.")
             return redirect("b2d:home")
 
-        fundraise = get_object_or_404(FundRaising, id=self.kwargs['fundraise_id'])
-        form = self.get_form(self.form_class)
+        if not investor.financial_statements:
+            messages.error(self.request, "You need to upload your financial statements before investing.")
+            return redirect(reverse("b2d:investor_profile"))
 
+        try:
+            fundraise = FundRaising.objects.get(id=self.kwargs['fundraise_id'])
+        except FundRaising.DoesNotExist:
+            return render(request, "b2d/404.html", status=404)
+
+        form = self.get_form(self.form_class)
+        min_shares = fundraise.minimum_shares
+        max_shares = int((fundraise.goal_amount - fundraise.get_current_investment()) / fundraise.get_price_per_share())
         context = {
             'fundraise': fundraise,
-            'form': form
+            'form': form,
+            'min_shares': min_shares,
+            'max_shares': max_shares
         }
         return render(request, self.template_name, context)
 
@@ -47,8 +62,9 @@ class InvestmentView(FormView):
 
         if form.is_valid():
             investment = form.save(investor=investor, fundraise=fundraise)
+            db_logger.info(f"Investor {investor.id} invest in fundraising {fundraise.id} for {investment.amount}$.")
             messages.success(self.request, "Your investment has been submitted and is pending admin approval.")
             return redirect(reverse('b2d:business_detail', kwargs={'pk': fundraise.business_id}))
 
-        messages.error(self.request, "There was an error with your submission.")
+        messages.error(self.request, "There was an error processing your investment.")
         return render(self.request, self.template_name, context)

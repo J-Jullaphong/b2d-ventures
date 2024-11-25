@@ -19,6 +19,7 @@
 
 <body>
 <header>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light m-0 p-0">
         <div class="container-fluid m-0 p-1">
@@ -85,15 +86,18 @@
                             aria-labelledby="dropdownUser">
                             {% if user_is_investor %}
                             <li><a class="dropdown-item"
+                               href="{% url 'b2d:investor_profile' %}">Profile</a>
+                            </li>
+                            <li><a class="dropdown-item"
                                    href="{% url 'b2d:portfolio' %}">Portfolio</a>
                             </li>
                             {% elif user_is_business %}
                             <li><a class="dropdown-item"
                                    href="{% url 'b2d:business_profile' %}">Business
-                                profile</a>
+                                Profile</a>
                             </li>
                             <li><a class="dropdown-item"
-                                   href="{% url 'b2d:fundraising' %}">Fundraising</a>
+                                   href="{% url 'b2d:fundraising' %}">Fundraising Campaigns</a>
                             </li>
                             {% endif %}
                             <li>
@@ -104,7 +108,7 @@
                                   class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="dropdown-item">
-                                    Sign out
+                                    Sign Out
                                 </button>
                             </form>
                         </ul>
@@ -118,6 +122,15 @@
         </div>
     </nav>
 </header>
+{% if messages %}
+    {% for message in messages %}
+        {% if forloop.last %}
+            <div class="alert alert-success rounded-0" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 
 {% block content %}
 {% endblock %}
@@ -131,7 +144,7 @@
                      height="auto">
             </div>
             <div class="col-md-4">
-                <h6>For investors</h6>
+                <h6>For Investors</h6>
                 <ul class="list-unstyled">
                     <li><a href="/learn-more/#investors"
                            class="text-white text-decoration-none">FAQ</a></li>
@@ -140,17 +153,17 @@
                     </li>
                     <li><a href="/privacy-policy/"
                            class="text-white text-decoration-none">Privacy
-                        policy</a></li>
+                        Policy</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <h6>For startups</h6>
+                <h6>For Startups</h6>
                 <ul class="list-unstyled">
                     <li><a href="/learn-more/#business_owners"
                            class="text-white text-decoration-none">FAQ</a></li>
                     <li><a href="/privacy-policy/"
                            class="text-white text-decoration-none">Privacy
-                        policy</a></li>
+                        Policy</a></li>
                 </ul>
             </div>
         </div>
