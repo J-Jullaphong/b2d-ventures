@@ -41,7 +41,9 @@ class BusinessListView(ListView):
         if sort_by == 'most_recent':
             queryset = queryset.annotate(publish_date=F('fundraising__publish_date')).order_by('-publish_date')
         elif sort_by == 'most_investors':
-            queryset = queryset.annotate(num_investors=Count('fundraising__investment')).order_by('-num_investors')
+            queryset = queryset.annotate(num_investors=Count('fundraising__investment__investor',
+                                                             filter=Q(fundraising__investment__investment_status='approve'),
+                                                             distinct=True)).order_by('-num_investors')
         elif sort_by == 'min_shares':
             queryset = queryset.annotate(min_shares=Min('fundraising__minimum_shares')).order_by('min_shares')
         elif sort_by == 'trending':
