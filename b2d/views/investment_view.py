@@ -46,7 +46,8 @@ class InvestmentView(FormView):
             'fundraise': fundraise,
             'form': form,
             'min_shares': min_shares,
-            'max_shares': max_shares
+            'max_shares': max_shares,
+            'price_per_share': fundraise.get_price_per_share(),
         }
         return render(request, self.template_name, context)
 

@@ -55,7 +55,7 @@ class BusinessListView(ListView):
                            Q(fundraising__investment__investment_status='approve')
                 )
             ).order_by('-num_recent_investors')
-        elif sort_by == 'coming_close':
+        elif sort_by == 'ending_soon':
             queryset = queryset.order_by('fundraising__deadline_date')
         return queryset
 
