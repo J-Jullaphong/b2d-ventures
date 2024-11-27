@@ -46,7 +46,8 @@ class InvestmentView(FormView):
             'fundraise': fundraise,
             'form': form,
             'min_shares': min_shares,
-            'max_shares': max_shares
+            'max_shares': max_shares,
+            'price_per_share': fundraise.get_price_per_share(),
         }
         return render(request, self.template_name, context)
 
@@ -63,7 +64,7 @@ class InvestmentView(FormView):
         if form.is_valid():
             investment = form.save(investor=investor, fundraise=fundraise)
             db_logger.info(f"Investor {investor.id} invest in fundraising {fundraise.id} for {investment.amount}$.")
-            messages.success(self.request, "Your investment has been submitted and is pending admin approval.")
+            messages.success(self.request, "Your investment has been waiting for approval.")
             return redirect(reverse('b2d:business_detail', kwargs={'pk': fundraise.business_id}))
 
         messages.error(self.request, "There was an error processing your investment.")

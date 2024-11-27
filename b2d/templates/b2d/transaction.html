@@ -32,7 +32,7 @@
                     <div class="mb-3">
                         <div class="mb-3" style="border-bottom: 1px solid #545454;">
                             <label for="number_of_shares" class="form-label fw-medium fs-4">
-                                Number of Shares (Minimum: {{ min_shares }} , Maximum: {{ max_shares }})
+                                Number of Shares (Price/Share: ${{ price_per_share }})
                             </label>
                         </div>
                         <input type="number" name="shares" id="number_of_shares" class="form-control"
@@ -89,24 +89,24 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                This Investment Agreement (the “Agreement”) is made and entered on today (the “Effective Date”), between (“Investor”), and {{ fundraise.business.name }} (“Business”).
+                                This Investment Agreement is made and entered on today (the “Effective Date”), between (“Investor”), and {{ fundraise.business.name }} (“Business”).
                                 <hr>
                                 <h5><strong>AGREEMENTS</strong><br></h5>
                                 The parties hereby agree as follows:<br>
                                 <strong>1. Investment</strong><br>
-                                Within 30 days from the Effective Date, Investor shall remit to Business the agreed-upon investment amount (the "Investment").<br>
+                                Within the Effective Date, Investor shall remit to Business the agreed-upon investment.<br>
                                 <br>
                                 <strong>2. Equity Issuance</strong><br>
                                 In return for the Investment, Business agrees to issue Investor the following equity:<br>
                                 <ol>
-                                    <li><strong>Preferred Stock:</strong> Shares of Series A Preferred Stock, representing [percentage] of ownership with the following rights:</li>
-                                    <ol>
+                                    <li><strong>Preferred Stock:</strong> Shares of Series A Preferred Stock with the following rights and benefits:</li>
+                                    <ul>
                                         <li>Voting Rights: Protect the investor’s interest in major corporate decisions.</li>
                                         <li>Dividend Preferences: Offer predictable financial returns and priority over common stock.</li>
-                                        <li>Liquidation Preferences: In the event of liquidation, Series A Preferred Stockholders will receive [X times] their investment before any distribution to common stockholders.</li>
+                                        <li>Liquidation Preferences: In the event of liquidation, Series A Preferred Stockholders will receive their investment before any distribution to common stockholders.</li>
                                         <li>Anti-Dilution Protection: Adjustments to the preferred stockholder's equity in the event of down-round funding.</li>
-                                    </ol>
-                                    <li><strong>Common Stock:</strong> Shares of common stock, representing [percentage] of ownership, issued with standard voting and economic rights.</li>
+                                    </ul>
+                                    <li><strong>Common Stock:</strong> Shares of common stock with standard voting rights and economic benefits.</li>
                                 </ol>
                                 <strong>3. Use of Funds</strong><br>
                                 Business shall use the Investment solely for the development and commercialization of the Project, including but not limited to:<br>
@@ -120,7 +120,7 @@
                                 <strong>4. Governance and Investor Rights</strong><br>
                                 Investor shall be entitled to the following:<br>
                                 <ol>
-                                    <li>Board Representation: The right to appoint [1 or specify number] member(s) to the Board of Directors.</li>
+                                    <li>Board Representation: The right to appoint members to the Board of Directors.</li>
                                     <li>Observer Rights: The right to attend board meetings as a non-voting observer if no board seat is held.</li>
                                     <li>Information Rights: Regular financial updates, including quarterly and annual reports.</li>
                                 </ol>
@@ -129,11 +129,11 @@
                                 <ul>
                                     <li><strong>Preferred Stock:</strong></li>
                                     <ul>
-                                        <li>May be sold after a lock-in period of five (5) years, subject to the Business’s right of first refusal.</li>
+                                        <li>May be sold after a lock-in period of five 5 years, subject to the Business’s right of first refusal.</li>
                                     </ul>
                                     <li><strong>Common Stock:</strong></li>
                                     <ul>
-                                        <li>May be sold without restrictions after a lock-in period of three (3) years.</li>
+                                        <li>May be sold without restrictions after a lock-in period of three 3 years.</li>
                                     </ul>
                                 </ul>
                                 <strong>6. Confidentiality and Publicity</strong><br>
@@ -152,7 +152,7 @@
                                 If any provision of this Agreement is deemed invalid or unenforceable, the remaining provisions shall remain in full force and effect.<br>
                                 <br>
                                 <strong>11. Dispute Resolution</strong><br>
-                                Any disputes arising from or in connection with this Agreement shall be resolved through arbitration in [city], Thailand, under the rules of the Thai Arbitration Institute.<br>
+                                Any disputes arising from or in connection with this Agreement shall be resolved through arbitration in Thailand, under the rules of the Thai Arbitration Institute.<br>
                                 <br>
                                 <strong>12. Counterparts</strong><br>
                                 This Agreement may be executed in counterparts, all of which shall constitute a single agreement.<br>
