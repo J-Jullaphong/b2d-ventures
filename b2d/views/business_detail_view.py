@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urlparse
 
 from django.conf import settings
 from django.contrib import messages
@@ -53,10 +54,11 @@ class BusinessDetailView(DetailView):
 
         # Transform YouTube URL into an embeddable format
         youtube_video_embed = youtube_video_url
-        if "youtube.com" in youtube_video_url:
+        parsed_url = urlparse(youtube_video_url)
+        if parsed_url.hostname in ["www.youtube.com", "youtube.com"]:
             youtube_video_embed = youtube_video_url.replace("watch?v=", "embed/")
-        elif "youtu.be" in youtube_video_url:
-            video_id = youtube_video_url.split('/')[-1]
+        elif parsed_url.hostname in ["youtu.be"]:
+            video_id = parsed_url.path.lstrip('/')
             youtube_video_embed = f"https://www.youtube.com/embed/{video_id}"
 
         context = {
