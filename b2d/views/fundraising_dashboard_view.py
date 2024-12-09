@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 from django.utils import timezone
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 from ..models import FundRaising, Investment, Business
 from ..forms import FundRaisingForm
@@ -11,6 +13,7 @@ from ..forms import FundRaisingForm
 db_logger = logging.getLogger('db')
 
 
+@method_decorator(permission_required("b2d.manage_fundraising_dashboard", login_url="b2d:home"), name="dispatch")
 class FundRaisingDashboardView(View):
     """
     View for handling the fundraising dashboard, allowing businesses to manage their fundraising events.

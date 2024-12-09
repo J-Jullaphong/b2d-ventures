@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 from ..models import Investor
 from ..forms import InvestorProfileForm
 
 
+@method_decorator(permission_required("b2d.update_investor_profile", login_url="b2d:home"), name="dispatch")
 class InvestorProfileView(View):
     """View to manage investor profile updates."""
     template_name = 'b2d/investor_profile.html'

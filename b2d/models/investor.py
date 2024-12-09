@@ -20,6 +20,11 @@ class Investor(CustomUser):
     class Meta:
         verbose_name = "Investor Registration"
         verbose_name_plural = "Investor Registrations"
+        permissions = [
+            ("view_portfolio", "Can view portfolio"),
+            ("make_investment", "Can make investment"),
+            ("update_investor_profile", "Can update investor profile"),
+        ]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"

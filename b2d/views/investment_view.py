@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views.generic.edit import FormView
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 from ..models import FundRaising, Investor
 from ..forms import InvestmentForm
@@ -10,6 +12,7 @@ from ..forms import InvestmentForm
 db_logger = logging.getLogger('db')
 
 
+@method_decorator(permission_required("b2d.make_investment", login_url="b2d:home"), name="dispatch")
 class InvestmentView(FormView):
     """View to handle the investment process for a fundraising campaign."""
     template_name = 'b2d/transaction.html'

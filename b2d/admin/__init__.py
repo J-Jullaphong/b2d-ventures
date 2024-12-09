@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 
 from .investor_registration_admin import InvestorRegistrationAdmin
 from .business_registration_admin import BusinessRegistrationAdmin
@@ -9,4 +9,3 @@ from .user_consent_admin import UserConsentAdmin
 from .topdeal_admin import TopDealAdmin
 
 admin.site.index_title = ''
-admin.site.unregister(Group)

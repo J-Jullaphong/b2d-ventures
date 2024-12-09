@@ -93,6 +93,10 @@ class Business(CustomUser):
     class Meta:
         verbose_name = "Business Registration"
         verbose_name_plural = "Business Registrations"
+        permissions = [
+            ("view_investments", "Can view investments"),
+            ("manage_business_profile", "Can manage business profile"),
+        ]
 
     def __str__(self):
         return f"{self.name} - {self.email}"

@@ -4,10 +4,13 @@ from django.db.models import Sum, F
 from django.views.generic import TemplateView
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 from ..models import Investment, Investor
 
 
+@method_decorator(permission_required("b2d.view_portfolio", login_url="b2d:home"), name="dispatch")
 class PortfolioView(TemplateView):
     """View for displaying the user's investment portfolio."""
     template_name = 'b2d/portfolio.html'

@@ -6,11 +6,14 @@ from django.core.files.base import ContentFile
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 from ..models import Business, Category
 from ..utils import upload_file, get_file
 
 
+@method_decorator(permission_required("b2d.manage_business_profile", login_url="b2d:home"), name="dispatch")
 class BusinessProfileView(View):
     """View to manage business profile creation and updates."""
     template_name = 'b2d/business_create.html'
