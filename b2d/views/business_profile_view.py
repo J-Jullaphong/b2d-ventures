@@ -1,15 +1,19 @@
 import json
+from urllib.parse import urlparse
 
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 from ..models import Business, Category
 from ..utils import upload_file, get_file
 
 
+@method_decorator(permission_required("b2d.manage_business_profile", login_url="b2d:home"), name="dispatch")
 class BusinessProfileView(View):
     """View to manage business profile creation and updates."""
     template_name = 'b2d/business_create.html'
@@ -136,10 +140,12 @@ class BusinessProfileView(View):
 
     def get_youtube_embed_url(self, url):
         """Parses and returns the YouTube embed URL."""
-        if "youtube.com" in url:
+        parsed_url = urlparse(url)
+        host = parsed_url.hostname
+        if host and (host == "youtube.com" or host == "www.youtube.com"):
             return url.replace("watch?v=", "embed/")
-        elif "youtu.be" in url:
-            video_id = url.split('/')[-1]
+        elif host and (host == "youtu.be" or host == "www.youtu.be"):
+            video_id = parsed_url.path.split('/')[-1]
             return f"https://www.youtube.com/embed/{video_id}"
         return url
 
