@@ -65,7 +65,7 @@ class InvestmentView(FormView):
         }
 
         if form.is_valid():
-            investment = form.save(investor=investor, fundraise=fundraise)
+            investment = form.save(investor=investor)
             db_logger.info(f"Investor {investor.id} invest in fundraising {fundraise.id} for {investment.amount}$.")
             messages.success(self.request, "Your investment has been waiting for approval.")
             return redirect(reverse('b2d:business_detail', kwargs={'pk': fundraise.business_id}))
