@@ -9,4 +9,6 @@ django_otp
 django-session-timeout
 boto3
 gunicorn
+uvicorn
 selenium
+whitenoise[brotli]
