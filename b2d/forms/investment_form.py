@@ -81,9 +81,6 @@ class InvestmentForm(ModelForm):
         if investment_datetime is None:
             raise ValidationError("The investment date/time is required.")
 
-        if investment_datetime < now():
-            raise ValidationError("The investment date/time cannot be in the past.")
-
         return escape(investment_datetime)
 
     def clean(self):
